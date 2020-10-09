@@ -93,7 +93,7 @@ namespace Sk_B2BAPI.Admin.main.ashx
                     //context.Session["username"] = dt.Rows[0]["username"].ToString();
 
                     context.Session["role"] = null;// DateTableTool.DataTableToList<Rolestr>(dq).Select(a=>a.power).ToList();
-                    RoleFuns.AddAdminLoginLog(dt.Rows[0]["username"].ToString(), context.Request.ServerVariables.Get("REMOTE_ADDR").ToString(), context.Request.ServerVariables.Get("REMOTE_PORT").ToString());
+                    //RoleFuns.AddAdminLoginLog(dt.Rows[0]["username"].ToString(), context.Request.ServerVariables.Get("REMOTE_ADDR").ToString(), context.Request.ServerVariables.Get("REMOTE_PORT").ToString());
                     r_json = JsonMethod.GetError(0, "登陆成功");
                 }
                 else
