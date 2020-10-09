@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title>规则详情</title>
+</head>
+<body>
+    <div class="page-container">
+        <form class="form form-horizontal" id="form_integral_editor">
+            <input type="hidden" value="" id="discountId" />
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规则类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <select id="ruleType" onchange="Variation()" class="select-box">
+                        <option value="data" selected="selected">日期</option>
+                        <option value="week">星期</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规则名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" id="ruleName" value="" />
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>满足金额：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" id="txtAmount" value="0" />
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>线下付款扣率：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" id="offLine" value="0" />
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>线上付款扣率：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" id="onLine" value="0" />
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>开始时间：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" id="dateMin" autocomplete="off" />
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>结束时间：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text Wdate" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'dateMin\')}',dateFmt:'yyyy-MM-dd HH:mm:ss' })" id="dateMax" autocomplete="off" />
+                </div>
+            </div>
+            <div class="row cl" style="display:none;">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>星期：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <select class="select-box" id="weekday">
+                        <option value="1">星期日</option>
+                        <option value="2">星期一</option>
+                        <option value="3">星期二</option>
+                        <option value="4">星期三</option>
+                        <option value="5">星期四</option>
+                        <option value="6">星期五</option>
+                        <option value="7">星期六</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否启用：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="radio" name="radio" value="0" checked="checked" />不启用
+                    <input type="radio" name="radio" value="1" />启用
+                </div>
+            </div>
+
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a onClick="Submit();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe632;</i> 保存</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+
+    <script>
+        $(function () {
+            var id = GetQueryString("id");
+            $('#discountId').val(id);
+            if (id != "0") {
+                GetRuler(id);
+            } 
+        });
+        //通过id获取规则
+        function GetRuler(id) {
+            var index = layer.load(2);
+            var data = {
+                type: "RulesListById",
+                id: id
+            };
+            var proc = "Proc_Admin_Rules";//存储过程名
+            var type = "ReturnList";
+            //加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "rules/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result.data;
+                        var divarry = $('div.row.cl');
+                        $('#ruleName').val(obj[0]["title"]);
+                        $('#offLine').val(obj[0]["offLine"]);
+                        $('#onLine').val(obj[0]["onLine"]);
+                        $('#ruleType').val(obj[0]["type"]);
+                        $('#txtAmount').val(obj[0]["meetAmount"]);
+                        if (obj[0]["type"] == "data") {
+                            $('#dateMin').val(obj[0]["startDate"]);
+                            $('#dateMax').val(obj[0]["endDate"]);
+                            $(divarry[5]).show();
+                            $(divarry[6]).show();
+                            $(divarry[7]).hide();
+                        } else {
+                            $('#weekday').val(obj[0]["week"]);
+                            $(divarry[7]).show();
+                            $(divarry[5]).hide();
+                            $(divarry[6]).hide();
+                        }
+                        $(":radio[name=radio][value='" + obj[0]["status"] + "']").attr("checked", "true");
+                        layer.close(index);
+                    }
+                    else if (type == '1') {
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            })
+        }
+        //保存
+        function Submit() {
+            var index = layer.load(2);
+            var id = $('#discountId').val();
+            var title = $('#ruleName').val();
+            var offLine = $('#offLine').val();
+            var onLine = $('#onLine').val();
+            var startDate = $('#dateMin').val();
+            var endDate = $('#dateMax').val();
+            var status = $('input[name=radio]:checked').val();
+            var ruleType = $('#ruleType').val();
+            var weekday = $('#weekday').val();
+            var meetAmount = $("#txtAmount").val();
+            var data = {
+                type: "RulesUpdate",
+                id: id,
+                title: title,
+                offLine: offLine,
+                onLine: onLine,
+                startDate: startDate,
+                endDate: endDate,
+                status: status,
+                ruleType: ruleType,
+                weekday: weekday,
+                meetAmount: meetAmount
+            };
+            var proc = "Proc_Admin_Rules";//存储过程名
+            var type = "ReturnNumber";
+            //加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "rules/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 1,
+                            skin: 'layer-ext-moon'
+                        });
+                        //parent.layer.close(index);
+                    }
+                    else if (type == '1') {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            })
+        }
+        //变化
+        function Variation() {
+            var ruleType = $('#ruleType').val();
+            var divarry = $('div.row.cl');
+            if (ruleType == "data") {
+                $(divarry[5]).show();
+                $(divarry[6]).show();
+                $(divarry[7]).hide();
+            } else {
+                $(divarry[7]).show();
+                $(divarry[5]).hide();
+                $(divarry[6]).hide();
+            }
+        }
+    </script>
+</body>
+</html>

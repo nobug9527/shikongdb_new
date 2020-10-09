@@ -1,0 +1,252 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <title>业务员审核</title>
+    <style>
+        .mtd {
+            width: 100%;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <!--style="display:none"-->
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 权限管理 <span class="c-gray en">&gt;</span> 注册业务员审核 <span class="c-gray en">&gt;</span> 审核操作<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" id="shuaxin"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            <input type="text" class="input-text" style="width:250px" id="txtStrWhere" placeholder="单位名">
+            <a href="javascript:sousuo()" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+        </div>
+        <div class="mt-20" style="width: 100%;overflow-x: auto;">
+            <div class="autodiv">
+                <table class="table table-border table-bordered table-hover table-bg table-sort" id="DataTable" style="table-layout:fixed;">
+                    <thead>
+                        <tr class="text-c">
+                            <th>序号</th>
+                            <th>机构编码</th>
+                            <th>机构名称</th>
+                            <th>机构联系方式</th>
+                            <th>机构编号</th>
+                            <th>省</th>
+                            <th>市</th>
+                            <th>区</th>
+                            <th>详细地址</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TbShows"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span style="float:right">
+                <a href="javascript:first();">首页</a>&nbsp;&nbsp;
+                <a href="javascript:prve();">上一页</a>&nbsp;&nbsp;
+                <b id="pageIndex">1</b>/<b id="pageCount">1</b>&nbsp;&nbsp;
+                <a href="javascript:next();">下一页</a>&nbsp;&nbsp;
+                <a href="javascript:last();">尾页</a>&nbsp;&nbsp;
+                <input type="number" class="input-text radius size-S" id="pagety" onmouseout="if (this.value <= 0) { this.value = 1; } if (this.value > pageCount) { this.value = pageCount;}" value="1" min="1" />
+                <a href="javascript:jump();">跳转</a>
+                <span class="r">&nbsp;&nbsp;共有数据：<strong id="recordCount">0</strong> 条</span>
+            </span>
+        </div>
+    </div>
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+    <script>
+        // 记录页面分页信息
+        var pageSize = 10;
+        var pageIndex = 1;
+        var recordCount = 0; // 总记录数
+        var pageCount = 1; // 总页数
+
+        $(function () {
+            GetEntList(1);
+            var cliHeight = document.body.clientHeight;
+            var divHeight = cliHeight * 0.57;
+            $('.autodiv').css("height", divHeight + "px");
+            $('body').removeAttr("style");
+        });
+        //获取列表信息
+        function GetEntList(pageindex,whr) {
+            var index = layer.load(2);
+            pageIndex = pageindex;
+            $("#pageIndex").html(pageindex);
+            var strWhere = (whr == undefined || whr == null) ? "" : whr;
+            var data = {
+                PageIndex: pageindex,
+                PageSize: pageSize,
+                SouStr: strWhere
+            };
+            //加载页面数据
+            $.ajax({
+                type: "Post",
+                url: "/Entdoc/GetEntdocListPager",
+                data: JSON.stringify(data),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    var obj = result.data;
+                    var html = "";
+                    for (var i = 0; i < obj.length; i++) {
+                        html += "<tr class='text-c'>";
+                        html += "<td align='center'>" + ((parseInt(pageIndex) - 1) * parseInt(pageSize) + parseInt(i) + 1) + "</td>";
+                        html += "<td>" + obj[i]["entid"] + "</td>";
+                        html += "<td>" + obj[i]["entname"] + "</div></td>";
+                        html += "<td>" + obj[i]["telphone"] + "</td>";
+                        html += "<td>" + obj[i]["entcode"] + "</td>";
+                        html += "<td>" + obj[i]["province"] + "</td>";
+                        html += "<td>" + obj[i]["city"] + "</td>";
+                        html += "<td>" + obj[i]["county"] + "</td>";
+                        html += "<td class='mtd' title='" + obj[i]["address"]+"'>" + obj[i]["address"] + "</td>";
+                        html += '<td><a href="javascript:admin_audit(\'' + obj[i]["entid"] + '\',\'' + getuserid() + '\');" class="label label-success radius" style="margin-left:2px;" ><i class="Hui-iconfont">&#xe6df;</i> 分配</a></td>';
+                        html += "</tr>";
+                    }
+                    $('#TbShows').empty();
+                    $("#TbShows").append(html);
+                    recordCount = result.total;
+                    pageCount = parseInt(recordCount/pageSize) + 1;
+                    $("#recordCount").html(recordCount);
+                    $("#pageCount").html(pageCount);
+                    $("#pagety").attr("max", pageCount);
+                    layer.close(index);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        // 首页
+        function first() {
+            if (pageIndex == 1) {
+                return false;
+            }
+            else {
+                GetEntList(1);
+            }
+        }
+        // 下一页
+        function next() {
+            if (pageCount == 1 || pageCount == pageIndex) {
+                return false;
+            }
+            else {
+                pageIndex += 1;
+                GetEntList(pageIndex);
+            }
+        }
+        // 最后一页
+        function last() {
+            if (pageCount == pageIndex || pageCount == 1) {
+                return false;
+            }
+            else {
+                pageIndex = pageCount;
+                GetEntList(pageIndex);
+            }
+        }
+        // 上一页
+        function prve() {
+            if (pageIndex == 1) {
+                return false;
+            }
+            else {
+                pageIndex -= 1;
+                GetEntList(pageIndex);
+            }
+        }
+        // 跳转
+        function jump() {
+            var num = parseInt($("#pagety").val());
+            if (num == pageIndex) {
+                return false;
+            }
+            else if (num > pageCount) {
+                $("#pagety").val(pageCount);
+                pageIndex = pageCount;
+            }
+            else if (num < 1) {
+                pageIndex = 1;
+            }
+            else {
+                pageIndex = num;
+            }
+            GetEntList(pageIndex);
+        }
+        // 搜索
+        function sousuo() {
+            pageIndex = 1;
+            var str = $("#txtStrWhere").val().trim();
+            if (str == '') {
+                layer.msg('请输入搜索的关键词！', { time: 1500 });
+                return false;
+            }
+            GetEntList(pageIndex, str);
+        }
+        // 分配审核
+        function admin_audit(entid,userid) {
+            layer.confirm("确定要将此业务员审核分配到此机构？",
+                { icon: 3, title: '提示' },
+                function (index) {
+                    var loading = layer.load(1, { shade: [0.1, '#fff'] });
+                    $.post("/Users/AuditSalesman", { userid: userid, entid: entid}, function (res) {
+                        if (res > 0) {
+                            layer.alert("审核分配成功", function () {
+                                layer.close(index);
+                                layer.close(loading);
+                                window.parent.getListRefresh(1);
+                                closeFrame();
+                            });
+                        }
+                        else if (res == 0) {
+                            layer.msg('此业务员已审核或不存在', { time: 1500 });
+                            layer.close(index);
+                            layer.close(loading); 
+                            return false;
+                        }
+                        else if (res == -1) {
+                            layer.msg('登陆超时,请重新登陆！', { time: 1500 });
+                            layer.close(index);
+                            layer.close(loading); 
+                            return false;
+                        }
+                    }, 'json');
+                }
+            );
+        }
+        // 获取url get userid参数
+        function getuserid() {
+            var reg = new RegExp("(^|&)userid=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+                return decodeURI(r[2]);
+            return null;
+        }
+        // 关闭子iframe
+        function closeFrame() {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(iframeIndex);
+            return false;
+        }
+    </script>
+</body>
+</html>

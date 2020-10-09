@@ -1,0 +1,291 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <title>权限路径</title>
+</head>
+<body style="display:none">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 权限管理 <span class="c-gray en">&gt;</span> 权限路径 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            是否启用：
+            <span class="select-box inline">
+                <select name="" class="select" id="sltStatus">
+                    <option value="99">全部</option>
+                    <option value="1">已启用</option>
+                    <option value="0">未启用</option>
+                </select>
+            </span>
+            类型：
+            <span class="select-box inline">
+                <select name="" class="select" id="sltSource">
+                    <option value="99">全部</option>
+                    <option value="B2B">后台功能</option>
+                    <option value="YWT">业务通</option>
+                </select>
+            </span>
+            <input type="text" class="input-text" style="width:250px" placeholder="输入编号/名称" id="txtStrWhere" name="">
+
+            <button type="submit" class="btn btn-success radius" id="btnClick" name="" onclick="GetMethodInfo()"><i class="Hui-iconfont">&#xe665;</i> 搜方案</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe60e;</i> 批量删除</a>
+                <a class="btn btn-primary radius" onclick="Open('新增权限路径','AddMethod.html','','1')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+            </span>
+        </div>
+        <div class="mt-20" style="width: 100%;overflow-x: auto;">
+            <div>
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                        <tr class="text-c">
+                            <th><input type="checkbox" name="" value=""></th>
+                            <th>Id</th>
+                            <th>权限名称</th>
+                            <th>控制器</th>
+                            <th>父级Id</th>
+                            <th>排序</th>
+                            <th>是否启用</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TbShows"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span style="float:right">
+                <a href="javascript:btnfirst(GetMethodInfo)">首页</a>
+                <a href="javascript:btnup(GetMethodInfo)">上一页</a>
+                <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+                <a href="javascript:btnnext(GetMethodInfo)">下一页</a>
+                <a href="javascript:btnlast(GetMethodInfo)">尾页</a>
+                <input type="number" class="input-text radius size-S" id="pagety" value="1" onchange="if (this.val <= 0) { this.val = 1; }" />
+                <a href="javascript:btntz(GetMethodInfo)">跳转</a>
+                <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+            </span>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(function () {
+            //设置默认日期
+            initDate();
+            GetMethodInfo();
+        });
+        function Open(title, url, id, class_layer) {
+            var index = layer.open({
+                type: 2,
+                title: title,
+                content: url + "?id=" + id + "&title=" + title + "&class_layer=" + class_layer
+            });
+            layer.full(index);
+        }
+        function GetMethodInfo() {
+            var index = layer.load(2);
+            var status = $("#sltStatus").val();
+            var source = $("#sltSource").val();
+            var strWhere = $("#txtStrWhere").val();
+            var pageIndex = $("#pageIndex").html();
+            var data = {
+                status: status,
+                source: source,
+                strWhere: strWhere,
+                pageIndex: pageIndex,
+                pageSize: 30,
+            }
+            $.ajax({
+                type: "Post",
+                url: "../Role/PowerList",
+                data: data,
+                cache: false,
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded",
+                success: function (result) {
+                    var type = result.Code;
+                    if (type) {
+                        var obj = result.Obj;
+                        var html = "";
+                        for (var i = 0; i < obj.length; i++) {
+                            html = html + "<tr class='text-c'>";
+                            html += "<td><input type='checkbox' value='" + obj[i]["Id"] + "' name='methodList'></td>";
+                            html += "<td>" + obj[i]["Id"] + "</td>";
+                            html += "<td>" + obj[i]["Title"] + "</td>";
+                            html += "<td>" + obj[i]["Power"] + "</td>";
+                            html += "<td>" + obj[i]["FatherId"] + "</td>";
+                            html += "<td>" + obj[i]["Sort"] + "</td>";
+                            var status = obj[i]["Status"] 
+                            html += "<td>";
+                            if (status == "1") {
+                                html += '<span class="label label-success radius">已启用</span>';
+                            }
+                            else {
+                                html += '<span class="label label-danger radius">已禁用</span>';
+                            }
+                            html += "<td>"
+                            if (status == "0") {
+                                html += '<a style="text-decoration:none" onClick="UpdateMethod(\'' + obj[i]["Id"] + '\',\'1\',\'' + obj[i]["FatherId"]+'\')" href="javascript:;" title="启用"><i class="Hui-icolor-blue">启用  </i></a>';
+
+                                html += '   <a style="text-decoration:none" onClick="Open(\'编辑权限路径\',\'AddMethod.html\',' + obj[i]["Id"] + ',\'1\')" href="javascript:;" title="编辑"><i class="Hui-icolor-blue">编辑  </i></a>';
+
+                                html += '<a style="text-decoration:none" onClick="UpdateMethod(\'' + obj[i]["Id"] + '\',\'2\')" href="javascript:;" title="删除"><i class="Hui-icolor-red">删除</i></a>';
+                            }
+                            else {
+                                html += '<a style="text-decoration:none" onClick="UpdateMethod(\'' + obj[i]["Id"] + '\',\'0\',\'' + obj[i]["FatherId"] +'\')" href="javascript:;" title="禁用"><i class="Hui-icolor-red">禁用</i></a>';
+
+                                html += '   <a style="text-decoration:none" onClick="Open(\'编辑权限路径\',\'AddMethod.html\',' + obj[i]["Id"] + ',\'1\',\'' + obj[i]["FatherId"] +'\')" href="javascript:;" title="编辑"><i class="Hui-icolor-blue">编辑  </i></a>';
+
+                               // html += '<a href="javascript:;" style="margin-left:2px" onclick="Open(\'编辑权限路径\',\'AddMethod.html\',' + obj[i]["Id"] + ',\'1\')" class="label label-success radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a>';
+                            }
+                           
+                            html += "</td>"
+                            html += "</tr>";
+                        }
+                        $('#TbShows').empty();
+                        $("#TbShows").append(html);
+                        var recordCount = result.Page;
+                        var pageCount = result.Total;
+                        $("#recordCount").html(recordCount);
+                        $("#pageCount").html(pageCount);
+                        layer.close(index);
+                        type = false;
+                    } else {
+                        layer.close(index);
+                        $('body').html('<img src="../UploadImages/素材/权限不足.png" style="width:75%"/>');
+                    }
+                    $('body').removeAttr("style");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+                }
+            })
+        };
+
+
+        ///修改会员分组状态
+        function UpdateMethod(id, status, fatherId) {
+            //下架
+            var msg = "";
+            if (status == "0") {
+                msg = "确认要禁用吗？";
+            }
+            else if (status == "1") {
+                msg = "确认要启用吗？";
+            }
+            else if (status == "2") {
+                msg = "确认要删除吗？";
+            }
+            layer.confirm(msg, function (index) {
+                var index = layer.load(2);
+                var data = {
+                    id: id,
+                    status: status,
+                    fatherId: fatherId
+                }; 
+                ///加载页面数据
+                $.ajax({
+                    type: "Post",
+                    url: "../Role/UpdateMethod",
+                    data: data,
+                    cache: false,
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded",
+                    success: function (result) {
+                        if (result.Code) {
+                            layer.alert(result.Msg, {
+                                icon: 1,
+                                skin: 'layer-ext-moon'
+                            });
+                            layer.close(index);
+                            GetMethodInfo();
+                        }
+                        else {
+                            layer.close(index);
+                            layer.alert(result.Msg, {
+                                icon: 2,
+                                skin: 'layer-ext-moon'
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                        layer.closeAll();
+                    }
+                })
+            });
+        }
+
+
+        function datadel() {
+            var s = '';
+            $('input[name="methodList"]:checked').each(function () {
+                s += $(this).val() + ',';
+            });
+            if (s.length > 0) {
+                //得到选中的checkbox值序列
+                s = s.substring(0, s.length - 1);
+            }
+            if (s == '') {
+                alert('你还没有选择任何内容！')
+            }
+            var json = {
+                type: "delMethod"
+            };
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "main/ashx/ReturnJson.ashx?type=delMethod&json=" + encodeURIComponent(JSON.stringify(json))+"&proc=1&status=1&strWhere=" + s,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.alert('删除成功', {
+                            icon: 1,
+                            skin: 'layer-ext-moon'
+                        });
+                        GetMethodInfo();
+                    }
+                    if (type == '1') {
+                        layer.alert('删除失败', {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                    else if (type == '2') {
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        parent.location.replace("login.html")
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                   
+                }
+            })
+        }
+    </script>
+</body>
+</html>

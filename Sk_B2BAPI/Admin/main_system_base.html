@@ -1,0 +1,191 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+<title>基本设置</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span>
+	系统管理
+	<span class="c-gray en">&gt;</span>
+	基本设置
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-article-add">
+		<div id="tab-system" class="HuiTab">
+			<div class="tabBar cl">
+				<span>基本设置</span>
+				<span>图片设置</span>
+				<span style="display:none">邮件设置</span>
+				<span>其他设置</span>
+			</div>
+            <div id="list">
+			 <div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						网站名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtTitle" placeholder="控制在25个字、50个字节以内" v-bind:value="web_name" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						主站域名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtIp" v-bind:value="web_ip" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						公司名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtCompany" placeholder="空制在50个汉字，160个字符以内" v-bind:value="company" class="input-text">
+					</div>
+				</div>
+                <div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						投诉电话：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtComplaints"  v-bind:value="complaints" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						互联网药品交易服务资格证：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtXxjyz" v-bind:value="xxjyz" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						互联网药品信息服务资格证：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtXxfwz"  v-bind:value="xxfwz" class="input-text">
+					</div>
+				</div>
+                <div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						 ICP备案证书号：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtICP" v-bind:value="icp" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						底部信息：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtBeizhu" placeholder="" v-bind:value="beizhu" class="input-text">
+					</div>
+				</div>
+			</div>
+			 <div class="tabCon">
+                <div class="row cl">
+		            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>网站Logo：</label>
+		            <div class="formControls col-xs-8 col-sm-9"> 
+			            <input class="input-text upload-url" v-bind:value="img_logo" type="text" name="uploadfile" id="txtImg_Logo" placeholder="请选择图片！" style="width:25%">
+			            <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			            <input type="file" class="input-file" id="file_Logo" onchange="UpLoadImg('Logo')">
+		            </div>
+	            </div>
+                <div class="row cl">
+		            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>App：</label>
+		            <div class="formControls col-xs-8 col-sm-9"> 
+			            <input class="input-text upload-url" v-bind:value="img_app" type="text" name="uploadfile" id="txtImg_App" placeholder="请选择图片！" style="width:25%">
+			            <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			            <input type="file" class="input-file" id="file_App" onchange="UpLoadImg('App')">
+		            </div>
+	            </div>
+                <div class="row cl">
+		            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>底部左侧图：</label>
+		            <div class="formControls col-xs-8 col-sm-9"> 
+			            <input class="input-text upload-url" type="text" v-bind:value="img_left" name="uploadfile" id="txtImg_Left" placeholder="请选择图片！" style="width:25%">
+			            <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			            <input type="file" class="input-file" id="file_Left" onchange="UpLoadImg('Left')">
+		            </div>
+	            </div>
+                <div class="row cl">
+		            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>底部右侧图：</label>
+		            <div class="formControls col-xs-8 col-sm-9"> 
+			            <input class="input-text upload-url" type="text" v-bind:value="img_right" name="uploadfile" id="txtImg_Right" placeholder="请选择图片！" style="width:25%">
+			            <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			            <input type="file" class="input-file" id="file_Right" onchange="UpLoadImg('Right')">
+		            </div>
+	            </div>
+                <div class="row cl">
+		            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>在线客服：</label>
+		            <div class="formControls col-xs-8 col-sm-9"> 
+			            <input class="input-text upload-url" type="text" name="uploadfile" v-bind:value="img_service" id="txtImg_Kf" placeholder="请选择图片！" style="width:25%">
+			            <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			            <input type="file" class="input-file" id="file_Kf" onchange="UpLoadImg('Kf')">
+		            </div>
+	            </div>
+                <div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						在线客服连接：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="txtLink_kf" v-bind:value="link_service" placeholder="" value="" class="input-text">
+					</div>
+				</div>
+			</div>
+            </div>
+			<div class="tabCon">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<a onClick="SaveBase();" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe632;</i> 保存</a>
+				<button style="display:none" onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+<script src="js/vue.min.js"></script>
+<script src="main/js/system_base.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+        $("#tab-system").Huitab({
+            index: 0
+        });
+    });
+    window.onload = function () { LoadWebBase() };
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

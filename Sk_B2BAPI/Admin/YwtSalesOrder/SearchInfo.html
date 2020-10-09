@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+
+    <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <script src="../js/main.js"></script>
+    <script src="js/searchInfo.js"></script>
+    <title>信息选择</title>
+    <script>
+          $(window).load(function () {
+              SearchInfo();
+          })
+    </script>
+</head>
+<body>
+    <div id="divcs"></div>
+    <div class="page-container">
+        <div class="text-c">
+            <input type="text" class="input-text" style="width:250px" placeholder="名称/编号" id="txtSearchValue" name="" />
+
+            <button type="submit" class="btn btn-success radius" name="" onclick="SearchInfo()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+
+            <button type="submit" class="btn btn-success radius" id="btnSave" name="" onclick="Save()"><i class="Hui-iconfont">&#xe632;</i> 存盘</button>
+
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span style="float:right">
+                <a href="javascript:Sbtnup(SearchInfo)">上一页</a>
+                <b id="SpageIndex">1</b>/<b id="SpageCount">1</b>
+                <a href="javascript:Sbtnnext(SearchInfo)">下一页</a>
+                <span class="r">共有数据：<strong id="SrecordCount">0</strong> 条</span>
+            </span>
+        </div>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                <thead id="conTable_Top">
+                </thead>
+                <tbody id="conTable_Body"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

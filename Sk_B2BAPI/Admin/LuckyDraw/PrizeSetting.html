@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>抽奖奖品设置</title>
+  <link href="../scripts/artdialog/ui-dialog.css" rel="stylesheet" />
+  <link href="../skin/default/style.css" rel="stylesheet" />
+  <link href="../css/pagination.css" rel="stylesheet" />
+  <link href="../skin/default/cxgz.css" rel="stylesheet" />
+  <link href="../skin/base.css" rel="stylesheet" />
+  <script type="text/javascript" src="../js/jquery.min.js"></script>
+  <script type="text/javascript" src="../../js/config.js"></script>
+  <script src="../js1/layeralert/layer.js"></script>
+  <script type="text/javascript" src="js/Common.js"></script>
+  <script type="text/javascript" src="js/PrizeSetting.js"></script>
+  <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+</head>
+
+<body>
+  <!-- 面包屑导航 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 抽奖管理 <span
+    class="c-gray en">&gt;</span> 抽奖 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+    href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <!-- 主体内容 -->
+  <div class="page-container">
+    <!-- 搜索栏 -->
+    <div class="text-c">
+      <input type="text" class="input-text" style="width:250px" id="keyword">
+      <a href="javascript:coupon_search()" class="btn btn-success"><i
+          class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+    </div>
+    <!-- 表格内容 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 90px);">
+      <table class="table table-border table-bordered table-hover table-bg table-sort">
+        <thead>
+          <tr class="text-c">
+            <th>编号</th>
+            <th>图片</th>
+            <th>奖品名称(5个字)</th>
+            <th>奖品类型</th>
+            <th>价值数量(积分，金钱)</th>
+            <th>最后修改时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="tbd">
+        </tbody>
+      </table>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:firstPage(0)">首页</a>
+        <a href="javascript:prePage(0)">上一页</a>
+        <b id="pageIndex_list">1</b>/<b id="pageSize_list">1</b>
+        <a href="javascript:nextPage(0)">下一页</a>
+        <a href="javascript:lastPage(0)">尾页</a>
+        <span class="r">共有数据：<strong id="recordCount_list">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+
+</body>
+
+</html>

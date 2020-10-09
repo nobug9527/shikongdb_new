@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link href="order/css/order.css" rel="stylesheet" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title>自定义退款</title>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 订单管理 <span class="c-gray en">&gt;</span> 自定义退款 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="tab-content">
+        <dl>
+            <dt>基本信息</dt>
+            <dd>
+                <div class="table-container">
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+                        <tbody>
+                            <tr>
+                                <th width="20%">订单号:</th>
+                                <td><input type="text" class="input-text" style="width:250px" placeholder="订单号" id="orderNo"></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">退款金额:</th>
+                                <td><input type="number" class="input-text" style="width:250px" placeholder="退款金额" id="fee"></td>
+                            </tr>
+                            <tr>
+                                <th width="90%" style="text-align:center;" colspan="2"><a href="javascript:Refund()" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>退 款</a></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script src="js/main.js"></script>
+    <script src="order/js/order_list.js"></script>
+    <script>
+        function Refund() {
+            layer.confirm("确定进行退款操作吗",
+                function (index) {
+                    var fee = $("#fee").val();
+                    if (!isNaN(fee)) {
+                        var data = {
+                            type: "CustomRefund",
+                            strWhere: $("#orderNo").val(),
+                            fee: fee
+                        };
+                        var proc = "proc_OrderQuery";//存储过程名
+                        var type = "ReturnNumber";
+                        ///加载页面数据
+                        $.ajax({
+                            type: "Post",
+                            cache: false,
+                            url: "article/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (result) {
+                                var type = result.flag;
+                                if (type == '0') {
+                                    layer.alert(result.message, {
+                                        icon: 1,
+                                        skin: 'layer-ext-moon'
+                                    });
+                                    parent.location.reload();
+                                }
+                                if (type == '1') {
+                                    layer.alert(result.message, {
+                                        icon: 2,
+                                        skin: 'layer-ext-moon'
+                                    });
+                                }
+                                else if (type == '2') {
+                                    layer.alert(result.message, {
+                                        icon: 2,
+                                        skin: 'layer-ext-moon',
+                                        yes: function () { parent.location.replace("login.html") }
+                                    });
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                                layer.close(index);
+                            }
+                        })
+                    } else {
+                        layer.msg('输入内容必须为数值');
+                    }
+
+                });
+        }
+    </script>
+</body>
+</html>

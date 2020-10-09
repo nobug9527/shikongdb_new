@@ -1,0 +1,300 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <!--/meta 作为公共模版分离出去-->
+
+    <title>用户信息修改</title>
+    <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+    <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+    <article class="page-container">
+        <form method="post" class="form form-horizontal" id="form-member-endit">
+            <div id="list">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" readonly="readonly" class="input-text" v-bind:value="username" placeholder="" id="txtUserName" name="username">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>会员姓名：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" v-bind:value="name" placeholder="" id="txtName" name="name">
+                    </div>
+                </div>
+                <div class="row cl" id="radio">
+                    <label class="form-label col-xs-4 col-sm-3">性别：</label>
+                    <div class="formControls -xcols-8 col-sm-9 skin-minimal">
+                        <div class="radio-box">
+                            <input name="sex" value="男" type="radio" id="sex-1" v-model="sex">
+                            <label for="sex-1">男</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" value="女" id="sex-2" name="sex" v-model="sex">
+                            <label for="sex-2">女</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" value="保密" id="sex-3" name="sex" v-model="sex" checked="checked">
+                            <label for="sex-3">保密</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>联系方式：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" v-bind:value="telphone" placeholder="" id="txtTelphone" name="mobile">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">会员生日：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" v-bind:value="birthday" id="txtBirthday" name="birthday" class="input-text Wdate">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">会员积分：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" v-bind:value="point" name="point" id="txtPoint">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>注册日期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" readonly="readonly" class="input-text" v-bind:value="add_time" name="txtAddTime" id="add_time">
+                    </div>
+                </div>
+                <div class="row cl" id="status">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>会员状态：</label>
+                    <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                        <div class="radio-box">
+                            <input name="status" value="1" type="radio" id="Radio1" v-model="status">
+                            <label for="sex-1">未审核</label>
+                        </div>
+                        <div class="radio-box">
+                            <input name="status" type="radio" value="2" id="Radio2" v-model="status">
+                            <label for="sex-2">已审核</label>
+                        </div>
+                        <div class="radio-box">
+                            <input name="status" type="radio" value="0" id="Radio3" v-model="status">
+                            <label for="sex-3">注销</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登陆密码：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="password" class="input-text" v-bind:value="password" name="password" id="txtPwd">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="password" class="input-text" v-bind:value="password" name="passwordN" id="txtPwdN">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所属企业：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" v-bind:value="entname" name="entname" id="txtEntName" onclick="UserChoseInfo('entDoc')">
+                        <input type="hidden" v-bind:value="entid" id="txtEntId" />
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所属单位：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" v-bind:value="businessname" name="businessname" id="txtBusinessName" onclick="UserChoseInfo('businessDoc')">
+                        <input type="hidden" v-bind:value="businessid" id="txtBusinessId" />
+                        <input type="hidden" v-bind:value="entid" id="khEntId" />
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>经营范围：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a1" v-bind:value="businesscont" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>客户类别：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a2" v-bind:value="clienttype" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>地址：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a3" v-bind:value="address" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">卫生许可证有效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a4" v-bind:value="wsxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">医疗器械经营许可证效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a4" v-bind:value="ylqxxkxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl" style="display:none">
+                    <label class="form-label col-xs-4 col-sm-3">药品生产：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a5" v-bind:value="ypscxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">医疗机构执业许可证：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a6" v-bind:value="yljgzyxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">年度报告有效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a7" v-bind:value="ndbgxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">质量保证协议有效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a8" v-bind:value="zlbzxyxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl" style="display:none">
+                    <label class="form-label col-xs-4 col-sm-3">母婴保健：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a9" v-bind:value="mybjxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl" style="display:none">
+                    <label class="form-label col-xs-4 col-sm-3">医疗器械生产许可证效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a10" v-bind:value="ylqxscxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl" style="display:none">
+                    <label class="form-label col-xs-4 col-sm-3">母婴保健技术：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a11" v-bind:value="mybjjsxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">GSP证书效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a12" v-bind:value="gspxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">药品经营许可证效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a13" v-bind:value="ypjyxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">营业执照有效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a13" v-bind:value="yyzzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">食品流通许可证效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a14" v-bind:value="spltxkzxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">委托书有效期：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" id="a15" v-bind:value="wtsxq" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <a class="btn btn-primary radius" href="javascript:UpdateUserInfo()"><i class="Hui-iconfont">&#xe632;</i> 提&nbsp;&nbsp;交</a>
+                        <button class="btn btn-default radius" href="javascript:layer_close()" type="submit"><i class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </article>
+
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="members/js/users.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            LoadUserInfo();
+            $("#form-member-endit").validate({
+                rules: {
+                    username: {
+                        required: true
+                    },
+                    name: {
+                        required: true,
+                        rangelength: [2, 10]
+                    },
+                    sex: {
+                        required: true
+                    },
+                    point: {
+                        required: true,
+                        digits: true
+                    },
+                    status: { required: true },
+                    password: { required: true },
+                    passwordN: { required: true },
+                    entname: { required: true },
+                    businessname: { required: true }
+                },
+                onkeyup: false,
+                focusCleanup: true,
+                success: "valid",
+                submitHandler: function (form) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            });
+            ////加载客户选择回车事件
+            //$("#txtEntName").keydown(function (even) {
+            //    if (even.keyCode == "13") {
+            //        UserChoseInfo("entDoc");
+            //    }
+            //})
+        });
+    </script>
+    <!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

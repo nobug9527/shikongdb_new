@@ -1,0 +1,359 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+  <title>商品推荐管理</title>
+  <style>
+    .mtd {
+      width: 100%;
+      word-break: keep-all;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+
+<body>
+  <!--style="display:none"-->
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商品推荐管理 <span
+      class="c-gray en">&gt;</span> 商品推荐列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新" id="shuaxin"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索框 -->
+    <div class="text-c">
+      位置类型：<span class="select-box" style="margin-right:10px;width:auto;">
+        <select class="select" size="1" id="selectType">
+          <option value="-1">全部</option>
+        </select>
+      </span>
+      状态：<span class="select-box" style="margin-right:10px;width:auto;">
+        <select class="select" size="1" id="selectStatus">
+          <option value="-1">全部</option>
+          <option value="1">上架</option>
+          <option value="0">下架</option>
+        </select>
+      </span>
+      <input type="text" class="input-text" style="width:250px" id="txtStrWhere" placeholder="商品名/助记词">
+      <a href="javascript:sousuo()" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a href="javascript:;" class="btn btn-primary radius" onclick="open_add();"><i class="Hui-iconfont">&#xe600;</i>
+          添加推荐</a>
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 160px);">
+      <div class="autodiv">
+        <table class="table table-border table-bordered table-hover table-bg table-sort" id="DataTable"
+          style="table-layout:fixed;">
+          <thead>
+            <tr class="text-c">
+              <th style="width:4%;">序号</th>
+              <th>商品名</th>
+              <th>助记码</th>
+              <th>生产厂商</th>
+              <th>国药准字</th>
+              <th>规格</th>
+              <th style="width:5%;">单位</th>
+              <th style="width:7%;">剂型</th>
+              <th>推荐位置</th>
+              <th style="width:6%;">状态</th>
+              <th style="width:190px;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="TbShows"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:first();">首页</a>&nbsp;&nbsp;
+        <a href="javascript:prve();">上一页</a>&nbsp;&nbsp;
+        <b class="pageIndex">1</b>/<b class="pageCount">1</b>&nbsp;&nbsp;
+        <a href="javascript:next();">下一页</a>&nbsp;&nbsp;
+        <a href="javascript:last();">尾页</a>&nbsp;&nbsp;
+        <input type="number" class="input-text radius size-S pagety"
+          onmouseout="if (this.value <= 0) { this.value = 1; } if (this.value > pageCount) { this.value = pageCount;}"
+          value="1" min="1" />
+        <a href="javascript:jump();">跳转</a>
+        <span class="r">&nbsp;&nbsp;共有数据：<strong class="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <script>
+    // 记录页面分页信息
+    var pageSize = 10;
+    var pageIndex = 1;
+    var recordCount = 0; // 总记录数
+    var pageCount = 1; // 总页数
+    var typeData = new Object;
+
+    $(function () {
+      $.ajax({
+        url: "goods/ashx/ReturnJson.ashx",
+        type: "post",
+        data: { "json": "{'type':'GoodsRecommendType'}", "type": "GoodsRecommendType", "proc": "" },
+        //contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+          typeData = data.data;
+          if (typeData == undefined || typeData == null) {
+            layer.msg("登录超时，请重新登录", { time: 2000 });
+            return false;
+          }
+          for (var i = 0; i < typeData.length; i++) {
+            $("#selectType").append("<option value='" + typeData[i]["Code"] + "'>" + typeData[i]["Name"] + "</option>");
+          }
+        }
+      });
+      GetGoodsRecommendList(1);
+      var cliHeight = document.body.clientHeight;
+      var divHeight = cliHeight * 0.57;
+      $('.autodiv').css("height", divHeight + "px");
+      $('body').removeAttr("style");
+      window.RefreshList = GetGoodsRecommendList;
+    });
+    // 获取列表信息
+    function GetGoodsRecommendList(pageindex) {
+      var index = layer.load(2);
+      pageIndex = pageindex;
+      $(".pageIndex").html(pageindex);
+      var data = {
+        type: "GoodsRecommendList",
+        proc: "",
+        json: soustr()
+      };
+      // 加载页面数据
+      $.ajax({
+        type: "Post",
+        url: "goods/ashx/ReturnJson.ashx",
+        data: data,
+        //contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (result) {
+          var obj = result.data;
+          var html = "";
+          for (var i = 0; i < obj.length; i++) {
+            html += "<tr class='text-c'>";
+            html += "<td align='center'>" + ((parseInt(pageIndex) - 1) * parseInt(pageSize) + parseInt(i) + 1) + "</td>";
+            html += "<td>" + obj[i]["sub_title"] + "</td>";
+            html += "<td>" + obj[i]["mnemonic_code"] + "</td>";
+            html += "<td>" + obj[i]["drug_factory"] + "</div></td>";
+            html += "<td>" + obj[i]["approval_number"] + "</td>";
+            html += "<td>" + obj[i]["drug_spec"] + "</td>";
+            html += "<td>" + obj[i]["package_unit"] + "</td>";
+            html += "<td>" + obj[i]["dosage_form"] + "</td>";
+            for (var j = 0; j < typeData.length; j++) {
+              if (typeData[j]["Code"] == obj[i]["type"]) {
+                html += "<td>" + typeData[j]["Name"] + "</td>";
+              }
+            }
+            html += "<td>" + (obj[i]["status"] == 0 ? "<span class='label label-danger radius'>已下架</span>" : "<span class='label label-success radius'>已上架</span>") + "</td>";
+            html += '<td>'
+              + (obj[i]["status"] == 0 ? '<input class="btn btn-success radius" type="button" value="上架" style="margin-left:2px;" onclick="on_status(' + obj[i]["article_id"] + ',' + obj[i]["type"] + ',1);">' : '<input class="btn btn-warning radius" type="button" value="下架" style="margin-left:2px;" onclick="on_status(' + obj[i]["article_id"] + ',' + obj[i]["type"] + ',0);">')
+              + '<input class="btn btn-danger radius" type="button" value="删除" style="margin-left:2px;" onclick="on_delete(' + obj[i]["article_id"] + ',' + obj[i]["type"] + ')">'
+              + '<input class="btn radius btn-secondary" onclick="open_edit(' + obj[i]["article_id"] + ',' + obj[i]["type"] + ');" type="button" value="修改" style="margin-left:2px;"></td >';
+            html += "</tr>";
+          }
+          $('#TbShows').empty();
+          $("#TbShows").append(html);
+          recordCount = result.recordcount;
+          pageCount = parseInt(recordCount / pageSize) + 1;
+          $(".recordCount").html(recordCount);
+          $(".pageCount").html(pageCount);
+          $(".pagety").attr("max", pageCount);
+          layer.close(index);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          layer.alert("出错了，请重试！" + "<br />readyState:" + jqXHR.readyState + "<br />responseText:" + jqXHR.responseText + "<br />status:" + jqXHR.status + "<br />statusText:" + jqXHR.statusText + "<br />textStatus:" + textStatus + "<br />errorThrown:" + errorThrown);
+        }
+      });
+    }
+    // 首页
+    function first() {
+      if (pageIndex == 1) {
+        return false;
+      }
+      else {
+        GetGoodsRecommendList(1);
+      }
+    }
+    // 下一页
+    function next() {
+      if (pageCount == 1 || pageCount == pageIndex) {
+        return false;
+      }
+      else {
+        pageIndex += 1;
+        GetGoodsRecommendList(pageIndex);
+      }
+    }
+    // 最后一页
+    function last() {
+      if (pageCount == pageIndex || pageCount == 1) {
+        return false;
+      }
+      else {
+        pageIndex = pageCount;
+        GetGoodsRecommendList(pageIndex);
+      }
+    }
+    // 上一页
+    function prve() {
+      if (pageIndex == 1) {
+        return false;
+      }
+      else {
+        pageIndex -= 1;
+        GetGoodsRecommendList(pageIndex);
+      }
+    }
+    // 跳转
+    function jump() {
+      var num = parseInt($(".pagety").val());
+      if (num == pageIndex) {
+        return false;
+      }
+      else if (num > pageCount) {
+        $(".pagety").val(pageCount);
+        pageIndex = pageCount;
+      }
+      else if (num < 1) {
+        pageIndex = 1;
+      }
+      else {
+        pageIndex = num;
+      }
+      GetGoodsRecommendList(pageIndex);
+    }
+    // 搜索
+    function sousuo() {
+      pageIndex = 1;
+      GetGoodsRecommendList(pageIndex);
+    }
+    function soustr() {
+      var code = $("#selectType").val();
+      var status = $("#selectStatus").val();
+      var soustr = $("#txtStrWhere").val();
+      var data = JSON.stringify({ type: "GoodsRecommendList", code: code, status: status, soustr: soustr, pageindex: pageIndex, pagesize: 15 });
+      return data;
+    }
+    function open_add() {
+      var index = layer.open({
+        title: '添加推荐',
+        type: 2,
+        shade: 0.2,
+        maxmin: true,
+        shadeClose: true,
+        area: ['95%', '95%'],
+        content: 'goods_recommend_add.html'
+      });
+    }
+    function open_edit(articleid, type) {
+      var index = layer.open({
+        title: '修改推荐',
+        type: 2,
+        shade: 0.2,
+        maxmin: true,
+        shadeClose: true,
+        area: ['95%', '95%'],
+        content: 'goods_recommend_edit.html?articleid=' + articleid + '&type=' + type
+      });
+    }
+    function on_status(articleid, type, status) {
+      var opt = "上架";
+      if (status == 0)
+        opt = "下架";
+      layer.confirm("确定要执行" + opt + "？",
+        { icon: 3, title: '提示' },
+        function (index) {
+          var loading = layer.load(1, { shade: [0.1, '#fff'] });
+          $.ajax({
+            url: "goods/ashx/ReturnJson.ashx",
+            type: "post",
+            data: { "json": "{'type':'StatusGoodsRecommend','articleid':'" + articleid + "','code':'" + type + "','status':'" + status + "'}", "type": "StatusGoodsRecommend", "proc": "" },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+              if (data.flag == 1) {
+                layer.msg(opt + "成功！", { time: 2000 });
+                GetGoodsRecommendList(pageIndex);
+                layer.close(index);
+                layer.close(loading);
+              }
+              else {
+                layer.msg(data.message, { time: 2000 });
+                layer.close(index);
+                layer.close(loading);
+                return false;
+              }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              layer.alert("出错了，请重试！" + "<br />readyState:" + jqXHR.readyState + "<br />responseText:" + jqXHR.responseText + "<br />status:" + jqXHR.status + "<br />statusText:" + jqXHR.statusText + "<br />textStatus:" + textStatus + "<br />errorThrown:" + errorThrown);
+            }
+          });
+        });
+    }
+    function on_delete(articleid, type) {
+      layer.confirm("确定要删除此推荐？",
+        { icon: 3, title: '提示' },
+        function (index) {
+          var loading = layer.load(1, { shade: [0.1, '#fff'] });
+          $.ajax({
+            url: "goods/ashx/ReturnJson.ashx",
+            type: "post",
+            data: { "json": "{'type':'DeleteGoodsRecommend','articleid':'" + articleid + "','code':'" + type + "'}", "type": "DeleteGoodsRecommend", "proc": "" },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+              if (data.flag == 1) {
+                layer.msg("删除成功！", { time: 2000 });
+                GetGoodsRecommendList(pageIndex);
+                layer.close(index);
+                layer.close(loading);
+              }
+              else {
+                layer.msg(data.message, { time: 2000 });
+                layer.close(index);
+                layer.close(loading);
+                return false;
+              }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              layer.alert("出错了，请重试！" + "<br />readyState:" + jqXHR.readyState + "<br />responseText:" + jqXHR.responseText + "<br />status:" + jqXHR.status + "<br />statusText:" + jqXHR.statusText + "<br />textStatus:" + textStatus + "<br />errorThrown:" + errorThrown);
+              layer.close(index);
+            }
+          });
+        });
+    }
+  </script>
+</body>
+
+</html>

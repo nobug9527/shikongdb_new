@@ -1,0 +1,530 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <style>
+        .text-c {
+            height:48px;
+        }
+        .table-border.table-bordered {
+            /*border: 1px solid #ddd;*/
+            border-top: none;
+        }
+    </style>
+    <title>控销配置</title>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 商品管理 <span class="c-gray en">&gt;</span> 控销配置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="mt-20" style="width: 100%;">
+            <div>
+                <input type="hidden" id="GovernId" value="" />
+                <table class="table table-border table-bordered table-bg table-sort" style="width:100%;border-top: 1px solid #ddd;border-bottom: none;">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" style="background-color: aliceblue;">
+                            <td style="width:7%;font-weight:bold">商品编码</td>
+                            <td style="width:28%;font-weight:bold">商品名称</td>
+                            <td style="width:10%;font-weight:bold">规格</td>
+                            <td style="width:10%;font-weight:bold">国药准字</td>
+                            <td style="width:20%;font-weight:bold">生产公司</td>
+                            <td style="width:30%;font-weight:bold">查找商品</td>
+                        </tr>
+                        <tr class="text-c">
+                            <td id="goodscode"></td>
+                            <td id="goodsname"></td>
+                            <td id="drug_spec"></td>
+                            <td id="approval_number"></td>
+                            <td id="drug_factory"></td>
+                            <td id="xzgoods">
+                                <input style="width:65%" type="text" id="txtGoodsName" value="" placeholder="输入商品名/编号" class="input-text" />
+                                <input type="hidden" id="txtArticleId" class="txtArticleIds" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <table class="table table-border table-bordered  table-bg table-sort" style="width:100%;border-top: 1px solid #ddd;border-bottom: none;">
+                    <tbody id="TbGoods">
+                        <tr class="text-c">
+                            <td colspan="2" style="font-weight:bold">单位控销</td>
+                            <td colspan="2" style="font-weight:bold">区域控销</td>
+                            <td colspan="2" style="font-weight:bold">类型控销</td>
+                        </tr>
+                        <!--<tr class="text-c">
+                <td colspan="2">
+                    <input style="width:40%" type="text" id="txtCompanyName" placeholder="输入单位名/编号然后双击" value="" class="input-text" ondblclick="GetKXSet('2')" />
+                    <input type="hidden" id="txtCompanyId" class="txtCompanyIds" />
+                    <a onclick="Conduct('Company','1','green')" class="btn btn-success radius">能卖</a>
+                    <a onclick="Conduct('Company','0','red')" class="btn btn-danger radius">不卖</a>
+                </td>
+                <td colspan="2">
+                    <input style="width:40%" type="text" id="txtRegionName" value="" placeholder="输入区域名/编号然后双击" class="input-text" ondblclick="GetKXSet('4')" />
+                    <input type="hidden" id="txtRegionId" class="txtRegions" />
+                    <a onclick="Conduct('Region','1','green')" class="btn btn-success radius">能卖</a>
+                    <a onclick="Conduct('Region','0','red')" class="btn btn-danger radius">不卖</a>
+                </td>
+                <td colspan="2">
+                    <input style="width:40%" type="text" id="txtTypeName" value="" placeholder="输入类型名/编号然后双击" class="input-text" ondblclick="GetKXSet('3')" />
+                    <input type="hidden" id="txtTypeId" class="txtTypeIds" />
+                    <a onclick="Conduct('Type','1','green')" class="btn btn-success radius">能卖</a>
+                    <a onclick="Conduct('Type','0','red')" class="btn btn-danger radius">不卖</a>
+                </td>
+            </tr>-->
+                        <tr class="text-c" style="background-color: aliceblue;">
+                            <td style="font-size: 14px;color: #6ACC6A;">
+                                <input style="width:80%" type="text" id="txtCompanyName0" placeholder="输入单位名/编号" value="" class="input-text" ondblclick="GetKXSet('2')" />
+                                <input type="hidden" id="txtCompanyId" class="txtCompanyIds" />
+                                <span>可销</span>
+                            </td>
+                            <td style="font-size: 14px;color: #F26662;">
+                                <input style="width:80%" type="text" id="txtCompanyName1" placeholder="输入单位名/编号" value="" class="input-text" ondblclick="GetKXSet('5')" />
+                                <input type="hidden" id="txtCompanyId" class="txtCompanyIds" />
+                                <span>禁销</span>
+                            </td>
+                            <td style="font-size: 14px;color: #6ACC6A;">
+                                <input style="width:80%" type="text" id="txtRegionName0" value="" placeholder="输入区域名/编号" class="input-text" ondblclick="GetKXSet('4')" />
+                                <input type="hidden" id="txtRegionId" class="txtRegions" />
+                                <span>可销</span>
+                            </td>
+                            <td style="font-size: 14px;color: #F26662;">
+                                <input style="width:80%" type="text" id="txtRegionName1" value="" placeholder="输入区域名/编号" class="input-text" ondblclick="GetKXSet('7')" />
+                                <input type="hidden" id="txtRegionId" class="txtRegions" />
+                                <span>禁销</span>
+                            </td>
+                            <td style="font-size: 14px;color: #6ACC6A;">
+                                <input style="width:80%" type="text" id="txtTypeName0" value="" placeholder="输入类型名/编号" class="input-text" ondblclick="GetKXSet('3')" />
+                                <input type="hidden" id="txtTypeId" class="txtTypeIds" />
+                                <span>可销</span>
+                            </td>
+                            <td style="font-size: 14px;color: #F26662;">
+                                <input style="width:80%" type="text" id="txtTypeName1" value="" placeholder="输入类型名/编号" class="input-text" ondblclick="GetKXSet('6')" />
+                                <input type="hidden" id="txtTypeId" class="txtTypeIds" />
+                                <span>禁销</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:16.69%;float:right;border-right:none">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" id="TypeList0" style="border-right: none"></tr>
+                    </tbody>
+                    <tbody id="TbGoverns"></tbody>
+                </table>
+                <table class="table  table-border table-bordered table-hover table-bg table-sort" style="width:16.69%;float:right;border-right:none">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" id="TypeList1" style="border-right: none"></tr>
+                    </tbody>
+                    <tbody id="TbGoverns"></tbody>
+                </table>
+                <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:16.69%;float:right;border-right:none">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" id="RegionList0" style="border-right: none"></tr>
+                    </tbody>
+                    <tbody id="TbGoverns"></tbody>
+                </table>
+                <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:16.69%;float:right;border-right:none">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" id="RegionList1" style="border-right: none"></tr>
+                    </tbody>
+                    <tbody id="TbGoverns"></tbody>
+                </table>
+                <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:16.67%;float:right;border-right:none">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" id="CompanyList0" style="border-right: none"></tr>
+                    </tbody>
+                    <tbody id="TbGoverns"></tbody>
+                </table>
+                <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:16.66%;float:right;border-right:none">
+                    <tbody id="TbGoods">
+                        <tr class="text-c" id="CompanyList1" style="border-right: none"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="width: 100%;position: fixed;bottom: 3px;text-align: center;" >
+            <a onclick="Save_GovernGood()" class="btn btn-warning radius" style="width:40%;background-color: #61C961;border-color: #61C961;">确认控销</a>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script src="js/main.js"></script>
+    <script>
+        $(function () {
+            var id = GetQueryString("id");
+            $('#GovernId').val(id);
+            if (id != "0") {
+                GetById(id);
+            } else {
+                $('#txtGoodsName').dblclick(function () {
+                    GetKXSet('1');
+                });
+            }
+        });
+        //通过Id获取数据GetById
+        function GetById(id) {
+            var index = layer.load(2);
+            var data = {
+                type: "GetById",
+                id: id
+            };
+            var proc = "Proc_Admin_GoodsList";//存储过程名
+            var type = "ReturnList";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "goods/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result.data;
+                        $("#goodsname").html(obj[0]["sub_title"]);
+                        $("#goodscode").html(obj[0]["goodscode"]);
+                        $("#drug_spec").html(obj[0]["drug_spec"]);
+                        $("#drug_factory").html(obj[0]["drug_factory"]);
+                        $("#approval_number").html(obj[0]["approval_number"]);
+                        $("#txtGoodsName").val(obj[0]["sub_title"]);
+                        $("#txtArticleId").val(obj[0]["article_id"]);
+
+                        if (obj[0]["kxdw"] != "") {
+                            var kxdw = obj[0]["kxdw"].split(',');//可销单位
+                            var kxdwmch = obj[0]["kxdwmch"].split(',');//可销单位名称
+                            for (var i = 0; i < kxdw.length; i++) {
+                                if (kxdw[i] != "") {
+                                    $("#CompanyList1").before("<tr  class='text-c'><td data-value='" + kxdw[i] + "' class='Companykx1' style='border-right: 1px solid #ddd;height:57px;color:green'><img src='../UploadFile/素材/组 586@2x.png' style='float: right; margin - top: -20px;' onclick='del(this)' />" + kxdwmch[i] + "</td></tr>")
+                                }
+                            }
+                        }
+
+                        if (obj[0]["bkxdw"] != "") {
+                            var bkxdw = obj[0]["bkxdw"].split(',');//不可销单位
+                            var bkxdwmch = obj[0]["bkxdwmch"].split(',');//不可销单位名称
+                            for (var i = 0; i < bkxdw.length; i++) {
+                                if (bkxdw[i] != "") {
+                                    $("#CompanyList0").before("<tr  class='text-c'><td data-value='" + bkxdw[i] + "' class='Companykx0' style='border-right: 1px solid #ddd;height:57px;color:red'><img src='../UploadFile/素材/组 586@2x.png' style='float: right; margin - top: -20px;' onclick='del(this)' />" + bkxdwmch[i] + "</td></tr>")
+                                }
+                            }
+                        }
+
+                        if (obj[0]["kxkehufl"] != "") {
+                            var kxkehufl = obj[0]["kxkehufl"].split(',');//可销客户分类
+                            var kxkehuflmc = obj[0]["kxkehuflmc"].split(',');//可销客户分类名称
+                            for (var i = 0; i < kxkehufl.length; i++) {
+                                if (kxkehufl[i] != "") {
+                                    $("#TypeList1").before("<tr  class='text-c'><td data-value='" + kxkehufl[i] + "' class='TypeList1' style='border-right: 1px solid #ddd;height:57px;color:green'><img src='../UploadFile/素材/组 586@2x.png' style='float: right; margin - top: -20px;' onclick='del(this)' />" + kxkehuflmc[i] + "</td></tr>")
+                                }
+                            }
+                        }
+                        if (obj[0]["bkxkehufl"] != "") {
+                            var bkxkehufl = obj[0]["bkxkehufl"].split(',');//不可销客户分类
+                            var bkxkehuflmc = obj[0]["bkxkehuflmc"].split(',');//不可销客户分类名称
+                            for (var i = 0; i < bkxkehufl.length; i++) {
+                                if (bkxkehufl[i] != "") {
+                                    $("#TypeList0").before("<tr  class='text-c'><td data-value='" + bkxkehufl[i] + "' class='TypeList0' style='border-right: 1px solid #ddd;height:57px;color:red'><img src='../UploadFile/素材/组 586@2x.png' style='float: right; margin - top: -20px;' onclick='del(this)' />" + bkxkehuflmc[i] + "</td></tr>")
+                                }
+                            }
+                        }
+
+                        if (obj[0]["kxquyufl"] != "") {
+                            var kxquyufl = obj[0]["kxquyufl"].split(',');//可销区域分类
+                            var kxquyuflmc = obj[0]["kxquyuflmc"].split(',');//可销区域分类名称
+                            for (var i = 0; i < kxquyufl.length; i++) {
+                                if (kxquyufl[i] != "") {
+                                    $("#RegionList1").before("<tr  class='text-c'><td data-value='" + kxquyufl[i] + "' class='RegionList1' style='border-right: 1px solid #ddd;height:57px;color:green'><img src='../UploadFile/素材/组 586@2x.png' style='float: right; margin - top: -20px;' onclick='del(this)' />" + kxquyuflmc[i] + "</td></tr>")
+                                }
+                            }
+                        }
+                        if (obj[0]["bkxquyufl"] != "") {
+                            var bkxquyufl = obj[0]["bkxquyufl"].split(',');//不可销区域分类
+                            var bkxquyuflmc = obj[0]["bkxquyuflmc"].split(',');//不可销区域分类名称
+                            for (var i = 0; i < bkxquyufl.length; i++) {
+                                if (bkxquyufl[i] != "") {
+                                    $("#RegionList0").before("<tr  class='text-c'><td data-value='" + bkxquyufl[i] + "' class='RegionList0' style='border-right: 1px solid #ddd;height:57px;color:red'><img src='../UploadFile/素材/组 586@2x.png' style='float: right; margin - top: -20px;' onclick='del(this)' />" + bkxquyuflmc[i] + "</td></tr>")
+                                }
+                            }
+                        }
+
+                        layer.close(index);
+                    }
+                    if (type == '1') {
+                        layer.close(index);
+                    }
+                    if (type == '2') {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        ///选择商品信息
+        function GetKXSet(ty) {
+            switch (ty) {
+                case '1':
+                    var strWhere = $("#txtGoodsName").val();
+                    layer_show("选择商品", "SearchInfo.html?type=kxproduct&proc=Proc_Admin_SearchInfo&sqlType=GoodsListKX&strWhere=" + encodeURI(strWhere), 1000, 400);
+                    break;
+                case '2':
+                    var strWhere = $("#txtCompanyName0").val();
+                    var spid = $("#txtArticleId").val();
+                    if (spid == undefined || spid == '' || spid == NaN) {
+                        layer.alert("请先选择控销商品！", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                    layer_show("选择单位", "SearchInfo.html?type=kxcompany&proc=Proc_Admin_SearchInfo&sqlType=CompanyList&strWhere=" + encodeURI(strWhere) + "&spid=" + encodeURI(spid), 1000, 400);
+                    break;
+                case '3':
+                    var strWhere = $("#txtTypeName0").val();
+                    var spid = $("#txtArticleId").val();
+                    if (spid == undefined || spid == '' || spid == NaN) {
+                        layer.alert("请先选择控销商品！", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                    layer_show("选择类型", "SearchInfo.html?type=kxtype&proc=Proc_Admin_SearchInfo&sqlType=TypeList&strWhere=" + encodeURI(strWhere) + "&spid=" + encodeURI(spid), 1000, 400);
+                    break;
+                case '4':
+                    var strWhere = $("#txtRegionName0").val();
+                    var spid = $("#txtArticleId").val();
+                    if (spid == undefined || spid == '' || spid == NaN) {
+                        layer.alert("请先选择控销商品！", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                    layer_show("选择区域", "SearchInfo.html?type=kxregion&proc=Proc_Admin_SearchInfo&sqlType=RegionList&strWhere=" + encodeURI(strWhere) + "&spid=" + encodeURI(spid), 1000, 400);
+                    break;
+                case '5':
+                    var strWhere = $("#txtCompanyName1").val();
+                    var spid = $("#txtArticleId").val();
+                    if (spid == undefined || spid == '' || spid == NaN) {
+                        layer.alert("请先选择控销商品！", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                    layer_show("选择单位", "SearchInfo.html?type=bkxcompany&proc=Proc_Admin_SearchInfo&sqlType=CompanyList&strWhere=" + encodeURI(strWhere) + "&spid=" + encodeURI(spid), 1000, 400);
+                    break;
+                case '6':
+                    var strWhere = $("#txtTypeName1").val();
+                    var spid = $("#txtArticleId").val();
+                    if (spid == undefined || spid == '' || spid == NaN) {
+                        layer.alert("请先选择控销商品！", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                    layer_show("选择类型", "SearchInfo.html?type=bkxtype&proc=Proc_Admin_SearchInfo&sqlType=TypeList&strWhere=" + encodeURI(strWhere) + "&spid=" + encodeURI(spid), 1000, 400);
+                    break;
+                case '7':
+                    var strWhere = $("#txtRegionName1").val();
+                    var spid = $("#txtArticleId").val();
+                    if (spid == undefined || spid == '' || spid == NaN) {
+                        layer.alert("请先选择控销商品！", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                    layer_show("选择区域", "SearchInfo.html?type=bkxregion&proc=Proc_Admin_SearchInfo&sqlType=RegionList&strWhere=" + encodeURI(strWhere) + "&spid=" + encodeURI(spid), 1000, 400);
+                    break;
+                default:
+                    return;
+                    break;
+            }
+        }
+        function Save_GovernGood() {
+            var index = layer.load(2);
+            var spid = $("#txtArticleId").val();
+            var id = $('#GovernId').val();
+            if (spid == undefined || spid == '' || spid == NaN) {
+                layer.alert("请先选择控销商品！", {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+                layer.close(index);
+                return;
+            }
+            var kxdw = '';
+            $(".Companykx1").each(function () {
+                kxdw += $(this).attr("data-value") + ',';
+            });
+            var kxdwmch = '';
+            $(".Companykx1").each(function () {
+                kxdwmch += $(this).text() + ',';
+            });
+            var bkxdw = '';
+            $(".Companykx0").each(function () {
+                bkxdw += $(this).attr("data-value")  + ',';
+            });
+            var bkxdwmch = '';
+            $(".Companykx0").each(function () {
+                bkxdwmch += $(this).text() + ',';
+            });
+            var kxkehufl = '';
+            $(".TypeList1").each(function () {
+                kxkehufl += $(this).attr("data-value") + ',';
+            });
+            var kxkehuflmc = '';
+            $(".TypeList1").each(function () {
+                kxkehuflmc += $(this).text() + ',';
+            });
+            var bkxkehufl = '';
+            $(".TypeList0").each(function () {
+                bkxkehufl += $(this).attr("data-value") + ',';
+            });
+            var bkxkehuflmc = '';
+            $(".TypeList0").each(function () {
+                bkxkehuflmc += $(this).text() + ',';
+            });
+            var kxquyufl = '';
+            $(".RegionList1").each(function () {
+                kxquyufl += $(this).attr("data-value") + ',';
+            });
+            var kxquyuflmc = '';
+            $(".RegionList1").each(function () {
+                kxquyuflmc += $(this).text() + ',';
+            });
+            var bkxquyufl = '';
+            $(".RegionList0").each(function () {
+                bkxquyufl += $(this).attr("data-value") + ',';
+            });
+            var bkxquyuflmc = '';
+            $(".RegionList0").each(function () {
+                bkxquyuflmc += $(this).text() + ',';
+            });
+            var data = {
+                type: "IncreaseLimitpin",
+                ableUnitCode: kxdw,
+                unableUnitCode: bkxdw,
+                ableUnitName: kxdwmch,
+                unableUnitName: bkxdwmch,
+                ableClassifyCode: kxkehufl,
+                unableClassifyCode: bkxkehufl,
+                ableClassifyName: kxkehuflmc,
+                unableClassifyName: bkxkehuflmc,
+                ableRegionCode: kxquyufl,
+                unableRegionCode: bkxquyufl,
+                ableRegionName: kxquyuflmc,
+                unableRegionName: bkxquyuflmc,
+                articleId: spid,
+                id: id
+            };
+            var proc = "Proc_Admin_RegionControlPin";//存储过程名
+            var type = "ReturnNumber";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "qualification/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.close(index);
+                        layer.msg("操作成功！", { time: 3000 });
+                        location.reload();
+                    }
+                    if (type == '1') {
+                        layer.close(index);
+                        layer.alert('失败', {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () {  }
+                        });
+                    }
+                    else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        function del(obj) {
+            //obj.parentNode.dataset.value = "";
+            //obj.parentNode.innerText = "";
+
+            var parent = obj.parentNode.parentNode.parentNode;
+            var index = obj.parentNode.parentNode.rowIndex;
+
+            parent.removeChild(parent.children[index]);
+        }
+        //加载客户选择回车事件
+        $("#txtCompanyName0").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('2')
+            }
+        })
+        $("#txtCompanyName1").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('5')
+            }
+        })
+        $("#txtRegionName0").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('4')
+            }
+        })
+        $("#txtRegionName1").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('7')
+            }
+        })
+        $("#txtTypeName0").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('3')
+            }
+        })
+        $("#txtTypeName1").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('6')
+            }
+        })
+        $("#txtGoodsName").keydown(function (even) {
+            if (even.keyCode == "13") {
+                GetKXSet('1')
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿/*验证码*/
+.code {
+    background-color: silver;
+    font-family: Arial; /*设置字体*/
+    font-style: initial;
+    color: brown;
+    font-size: 20px;
+    border: 0;
+    padding: 4px 2px;
+    letter-spacing: 3px;
+    font-weight: bolder;
+    width: 78px;
+    height: 26px;
+    margin-left: 120px;
+    margin-top: -35px;
+}
+
+a {
+    text-decoration: none;
+    font-size: 12px;
+    color: #288bc4;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+.yz {
+    position: absolute;
+    margin-left: 220px;
+    margin-top: -10px;
+}

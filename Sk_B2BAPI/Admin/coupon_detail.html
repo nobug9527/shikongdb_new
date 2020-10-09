@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link href="order/css/order.css" rel="stylesheet" />
+    <title>优惠卷详情</title>
+</head>
+<body>
+    <div class="tab-content">
+        <dl>
+            <dt>优惠卷方案</dt>
+            <dd>
+                <div class="table-container">
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+                        <tbody>
+                            <tr>
+                                <th width="20%">优惠卷编号</th>
+                                <td><span v-text="data[0].couponCode"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">优惠卷名称</th>
+                                <td><span v-text="data[0].couponName"></span></td>
+                            </tr>
+                            <tr>
+                                <th>渠道平台</th>
+                                <td><span v-text="data[0].typetitle"></span></td>
+                            </tr>
+                            <tr>
+                                <th>优惠券类型</th>
+                                <td><span v-text="data[0].receivingType1"></span></td>
+                            </tr>
+                            <tr v-if="data[0].receivingType=='4'">
+                                <th>订单赠送优惠券</th>
+                                <td>条件目标(件数)<br><span v-text="data[0].Num"></span></td>
+                            </tr>
+                            <tr v-else-if="data[0].receivingType=='5'">
+                                <th>订单赠送优惠券</th>
+                                <td>条件目标(金额)<br><span v-text="data[0].AllAmount"></span></td>
+                            </tr>
+                            <tr>
+                                <th>范围</th>
+                                <td v-if="data[0].SceneCoding=='0'">全场商品</td>
+                                <td v-else-if="data[0].SceneCoding=='1'">分类商品 <span v-text="data[0].SceneSon"></span></td>
+                                <td v-else-if="data[0].SceneCoding=='2'">品牌商品 <span v-text="data[0].SceneSon"></span></td>
+                                <td v-else-if="data[0].SceneCoding=='3'">独立商品 <span v-text="data[0].SceneSon"></span></td>
+                            </tr>
+                            <tr>
+                                <th>库存</th>
+                                <td><span v-text="data[0].couponsNumber"></span></td>
+                            </tr>
+                            <tr>
+                                <th>开始时间</th>
+                                <td><span v-text="data[0].startingTime"></span></td>
+                            </tr>
+                            <tr>
+                                <th>结束时间</th>
+                                <td><span v-text="data[0].endTime"></span></td>
+                            </tr>
+                            <tr>
+                                <th>规则类型</th>
+                                <td><span v-text="data[0].coupontype"></span></td>
+                            </tr>
+                            <tr>
+                                <th>规则详情</th>
+                                <td v-if="data[0].types==0">无条件优惠：<br><span v-text="data[0].deduction"></span></td>
+                                <td v-else-if="data[0].types==1">条件目标(金额)<br><span v-text="data[0].fullAmount"></span><br>优惠金额<br><span v-text="data[0].deduction"></span></td>
+                                <td v-else-if="data[0].types==2">优惠折扣<span v-text="data[0].discount"></span></td>
+                                <td v-else-if="data[0].types==3">条件目标(金额)<br><span v-text="data[0].fullAmount"></span><br>赠品<br><span v-if="data[0].ProName!='NULL'"><span v-text="data[0].ProName"></span></span><span v-else>无赠品</span></td>
+                                <td v-else-if="data[0].types==4">条件目标(件数)<br><span v-text="data[0].number"></span><br>赠品<br><span v-if="data[0].ProName!='NULL'"><span v-text="data[0].ProName"></span></span><span v-else>无赠品</span></td>
+                                <td v-else-if="data[0].types==5">免邮</td>
+                                <td v-else-if="data[0].types==6">条件目标(件数)<br><span v-text="data[0].number"></span><br>优惠折扣<br><span v-text="data[0].discount"></span></td>
+                                <td v-else-if="data[0].types==7">条件目标(件数)<br><span v-text="data[0].number"></span><br>优惠金额<br><span v-text="data[0].deduction"></span></td>
+                                <td v-else-if="data[0].types==9">条件目标(金额)<br><span v-text="data[0].fullAmount"></span><br>优惠折扣<br><span v-text="data[0].discount"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script>
+        $(function () {
+            LoadCouponDetail();
+        });
+        ////加载详情信息
+        function LoadCouponDetail() {
+            var index = layer.load(2);
+            var couponCode = GetQueryString("id");
+            var data = {
+                type: "PC_GetCouponDetail",
+                couponCode: couponCode
+            };
+            var proc = "PC_Coupon";//存储过程名
+            var type = "ReturnList";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "order/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result;
+                        new Vue({
+                            el: '.tab-content',
+                            data: obj
+                        });
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            })
+        }
+    </script>
+</body>
+</html>

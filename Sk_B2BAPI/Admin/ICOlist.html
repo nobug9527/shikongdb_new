@@ -1,0 +1,191 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <title>图标管理</title>
+</head>
+<body style="display:none">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 权限管理 <span class="c-gray en">&gt;</span> 图标管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe60e;</i> 批量删除</a>
+                <a class="btn btn-primary radius" onclick="Open('新增图标','AddICO.html','','1')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+            </span>
+        </div>
+        <div class="mt-20" style="width: 100%;overflow-x: auto;">
+            <div>
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                        <tr class="text-c">
+                            <th><input type="checkbox" name="" value=""></th>
+                            <th>图标名称</th>
+                            <th>描述</th>
+                            <th>图标</th>
+                            <!--<th>操作</th>-->
+                        </tr>
+                    </thead>
+                    <tbody id="TbShows"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span style="float:right">
+                <a href="javascript:btnfirst(GetIcoInfo)">首页</a>
+                <a href="javascript:btnup(GetIcoInfo)">上一页</a>
+                <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+                <a href="javascript:btnnext(GetIcoInfo)">下一页</a>
+                <a href="javascript:btnlast(GetIcoInfo)">尾页</a>
+                <input type="number" class="input-text radius size-S" id="pagety" value="1" onchange="if (this.val <= 0) { this.val = 1; }" />
+                <a href="javascript:btntz(GetIcoInfo)">跳转</a>
+                <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+            </span>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(function () {
+            initDate();
+            GetIcoInfo();
+        });
+        function Open(title, url, id, class_layer) {
+            var index = layer.open({
+                type: 2,
+                title: title,
+                content: url + "?id=" + id + "&title=" + title + "&class_layer=" + class_layer
+            });
+            layer.full(index);
+        }
+        function GetIcoInfo() {
+            var index = layer.load(2);
+            var strWhere = $("#txtStrWhere").val();
+            var pageIndex = $("#pageIndex").html();
+            $.ajax({
+                type: "Post",
+                cache: false,
+                async: false,
+                url: "../Role/IcoList?strWhere=" + strWhere + "&p=" + pageIndex + "&s=30",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.Code;
+                    if (type) {
+                        var obj = result.Obj;
+                        var html = "";
+                        for (var i = 0; i < obj.length; i++) {
+                            html = html + "<tr class='text-c'>";
+                            html += "<td><input type='checkbox' value='" + obj[i]["Id"] + "' name='RoleList'></td>";
+                            html += "<td>" + obj[i]["Title"] + "</td>";
+                            html += "<td>" + obj[i]["Describe"] + "</td>";
+                            html += "<td>" + obj[i]["CssName"] + "</td>";
+                            html += "</tr>";
+                        }
+                        $('#TbShows').empty();
+                        $("#TbShows").append(html);
+                        var recordCount = result.Page;
+                        var pageCount = result.Total;
+                        $("#recordCount").html(recordCount);
+                        $("#pageCount").html(pageCount);
+                        layer.close(index);
+                        type = false;
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        parent.location.replace("login.html")
+                    } else {
+                        layer.close(index);
+                        $('body').html('<img src="../UploadImages/素材/权限不足.png" style="width:75%"/>');
+                    }
+                    $('body').removeAttr("style");
+                    //if (type == '2') {
+                    //    layer.close(index);
+                    //    layer.alert(result.message, {
+                    //        icon: 2,
+                    //        skin: 'layer-ext-moon'
+                    //    });
+                    //}
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+                }
+            })
+        };
+
+        function datadel() {
+            var s = '';
+            $('input[name="RoleList"]:checked').each(function () {
+                s += $(this).val() + ',';
+            });
+            if (s.length > 0) {
+                //得到选中的checkbox值序列
+                s = s.substring(0, s.length - 1);
+            }
+            if (s == '') {
+                alert('你还没有选择任何内容！')
+            }
+            var json = {
+                type: "delRole"
+            };
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "main/ashx/ReturnJson.ashx?type=delRole&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=1&status=1&strWhere=" + s,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.alert('删除成功', {
+                            icon: 1,
+                            skin: 'layer-ext-moon'
+                        });
+                        GetRoleInfo();
+                    }
+                    if (type == '1') {
+                        layer.alert('删除失败', {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                    else if (type == '2') {
+
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        parent.location.replace("login.html")
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+                }
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+
+    <title>活动模板</title>
+    <!--<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+    <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">-->
+</head>
+<body>
+    <article class="page-container">
+        <form class="form form-horizontal" id="form-templateRelation-add">
+
+            <div class="row cl tr">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select class="select" id="sltType" onchange="Getlook(this)">
+                            <option value="0">请选择活动类型</option>
+                            <!--<option value="1">商品分类</option>-->
+                            <option value="2">商品组合活动</option>
+                            <!--<option value="2">公告新闻</option>-->
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl" id="lei" style="display:none">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品分类：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="sltcategory" class="select" id="sltcategory">
+                            <option value="0">请选择商品分类</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl tr" id="tr" style="display:none">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动模板：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="sltTemplateRelation" class="select" id="sltTemplateRelation">
+                            <option value="0">请选择活动模板</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row cl" id="zu" style="display:none">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品组合：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="sltprom" class="select" id="sltprom">
+                            <option value="0">请选择商品组合</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">排序值：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="0" placeholder="" id="txtSortId" name="txtSortId">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择图片：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input class="input-text upload-url" type="text" name="uploadfile" id="txtTemImgUrl" placeholder="请选择图片！" style="width:25%">
+                    <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                    <input type="file" class="input-file" id="TemFile" style="height:30px" onchange="UpLoadImg()">
+                </div>
+            </div>
+            <div class="row cl" id="divimg" style="display:none">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图片预览：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <img src="" id="imgId" style="width:40%;height:160px" />
+                </div>
+            </div>
+            <!--<div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2">：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <img src="../UploadImages/素材/暂无图片.jpg" id="ImgTemplateRelationImg" style="width:255px;height:255px" />
+            <input class="input-text upload-url" type="hidden" id="txtTemplateRelationImg">
+            <a href="javascript:void();" class="btn btn-primary radius upload-btn" style="position: absolute;" id="imgbutton">
+                <i class="Hui-iconfont">&#xe642;</i>
+                <input type="file" multiple name="templaterelationfile" id="imgbutton" onchange="UpLoadPicture(this,'TemplateRelationImg','imgFile')" style="position: inherit;width: 100%;height: 100%;top: 0;left: 0;outline: none;background-color: transparent; filter:alpha(opacity=0);opacity: 0;">
+                浏览文件
+            </a>
+            <span style="color:red;font-size: xx-small;display: block;">推荐使用高85宽85的倍数的图片</span>
+
+        </div>
+    </div>-->
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a class="btn btn-primary radius" href="javascript:SaveTemplateRelation()"><i class="Hui-iconfont">&#xe632;</i> 存&nbsp;&nbsp;盘</a>
+                </div>
+            </div>
+        </form>
+    </article>
+
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+    <script src="js/main.js"></script>
+    <script type="text/javascript">
+
+        window.onload = function () {
+            var id = GetQueryString("id");
+            if (id != "" & id != null) {
+                LoadTemplateRelationDetail();
+            } else {
+                LoadCheckBox()
+                LoadCheckBox1()
+                LoadCheckBox2()
+            }
+        };
+        //上传图片
+        function UpLoadImg() {
+
+            var index = layer.load(2);   //页面正在加载提示
+
+            var fileName = $('#TemFile').val();
+            var files = $('#TemFile').get(0).files;
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append("uploadfile", files[i]);
+            }
+            $.ajax({
+                type: "post",
+                url: "/Admin/ashx/UploadImg.ashx?type=UploadImage&imgType=Tem",
+                data: fileData,
+                cache: false,
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    layer.close(index);
+                    if (result.flag == "0") {
+                        $('#TemFile').attr('src', result.message);
+                        $("#txtTemImgUrl").val(result.message);
+                        $('#imgId').attr('src', result.message);
+                        $("#divimg").show();
+                    }
+                    else {
+                        layer.alert(result.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            });
+        }
+        //存盘
+        function SaveTemplateRelation() {
+            var index = layer.load(2);
+            var id = GetQueryString("id");
+            if (id != "" & id != null) {
+                var sltTemplateRelation =0;
+                var txtType = 0;
+                var sltcategory = 0;
+                var sltprom = 0;
+            } else {
+                var sltTemplateRelation = $("#sltTemplateRelation").val();
+                var txtType = $("#sltType").val();
+                var sltcategory = $("#sltcategory").val();
+                var sltprom = $("#sltprom").val();
+                id = "";
+                if (txtType == 0) {
+                    layer.close(index);
+                    layer.alert("条件不满足，请检查数据", {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
+                    return;
+                }
+                if (txtType == 1) {
+                    if (sltcategory == 0) {
+                        layer.close(index);
+                        layer.alert("类型《商品分类》条件未选择，请检查数据", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                }
+                else if (txtType == 2 | sltTemplateRelation == 0) {
+                    if (sltprom == 0) {
+                        layer.close(index);
+                        layer.alert("类型《商品组合》条件未选择，请检查数据", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        return;
+                    }
+                }
+            }
+            var txtImgUrl = $("#txtTemImgUrl").val();
+            //var txtImgUrl = $("#txtTemplateRelationImg").val();
+            var txtSortId = $("#txtSortId").val();
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "Template/ashx/ReturnJson.ashx?type=SaveTemplateRelation&sltTemplateRelation=" + sltTemplateRelation + "&strwhere=" + id + "&txtType=" + txtType + "&txtSortId=" + txtSortId + "&sltcategory=" + sltcategory + "&sltprom=" + sltprom + "&txtImgUrl=" + txtImgUrl,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var obj = data;
+                    var type = obj.flag;
+                    if (type == '0') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 1,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        });
+                        parent.location.reload();
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        parent.location.replace("login.html")
+                    } else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+
+        ////加载详情信息
+        function LoadTemplateRelationDetail() {
+            var index = layer.load(2);
+            $(".tr").attr("style", "display:none")
+            var strwhere = GetQueryString("id");
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "Template/ashx/ReturnJson.ashx?type=TemplateRelationDetail&strwhere=" + strwhere,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result.data[0];
+                        $("#txtSortId").val(obj.Sort_id);
+                        $('#TemFile').attr('src', obj.TemplateImg);
+                        $("#txtTemImgUrl").val(obj.TemplateImg);
+                        $('#imgId').attr('src', obj.TemplateImg);
+                        $("#divimg").show();
+                       
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                        parent.location.replace("login.html")
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            })
+        }
+
+        ///加载活动模板
+        function LoadCheckBox() {
+            var index = layer.load(2);
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "Template/ashx/returnJson.ashx?type=selectTemplate",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var obj = data;
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.templatestr != "") {
+                            $("#sltTemplateRelation").append(obj.templatestr);
+                        }
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+
+        //页面操作
+        function Getlook(obj) {
+            if (obj.value == 1) {
+                $("#lei").removeAttr("style")
+                $("#zu").attr("style", "display:none")
+                $("#tr").attr("style", "display:none")
+            } else if (obj.value == 2) {
+                $("#tr").removeAttr("style")
+                $("#zu").removeAttr("style")
+                $("#lei").attr("style", "display:none")
+            } else {
+                $("#lei").attr("style", "display:none")
+                $("#zu").attr("style", "display:none")
+                $("#tr").attr("style", "display:none")
+            }
+        }
+
+        ///加载商品组合
+        function LoadCheckBox1() {
+            var index = layer.load(2);
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "Template/ashx/returnJson.ashx?type=selectCategory",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var obj = data;
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.category != "") {
+                            $("#sltcategory").append(obj.category);
+                        }
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+
+        ///加载商品分类
+        function LoadCheckBox2() {
+            var index = layer.load(2);
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "Template/ashx/returnJson.ashx?type=selectTemPro",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var obj = data;
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.prom != "") {
+                            $("#sltprom").append(obj.prom);
+                        }
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+    </script>
+    <!--/请在上方写此页面业务相关的脚本-->
+    <!--url: "Template/ashx/ReturnJson.ashx?type=" + type + "&title=" + title + "&newsType=" + newsType + "&sortId=" + sortId + "&dates=" + dates + "&content=" + content,-->
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html style="overflow-y:hidden">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="Bookmark" href="/favicon.ico">
+  <link rel="Shortcut Icon" href="/favicon.ico" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+  <title>上传App</title>
+  <style>
+    .col-xs-8 {
+      padding-left: 0px;
+    }
+  </style>
+</head>
+
+<body style="background-color: #F2F2F2;padding:13px;">
+  <div class="page-container" style="background-color: white;border-radius: 10px;">
+    <form class="form form-horizontal" id="form_brand_editor">
+      <div class="row cl">
+        <label class="form-label col-xs-3 col-sm-2" style="text-align: right;">版本名<span class="c-red">*</span>：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+          <input type="text" class="input-text" min="0" value="" placeholder="版本名" id="txtVersionName"
+            name="VersionName">
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3 col-sm-2" style="text-align: right;">原版本号<span class="c-red">*</span>：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+          <input type="number" class="input-text" min="0" onchange="if (this.val < 0) { this.val = 0; }" value="0.01"
+            placeholder="原版本号" id="txtOldVersionNo" name="VersionNo" readonly="readonly">
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3 col-sm-2" style="text-align: right;">新版本号<span class="c-red">*</span>：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+          <input type="number" class="input-text" min="0" onchange="if (this.val < 0) { this.val = 0; }" value=""
+            placeholder="新版本号" id="txtNewVersionNo" name="VersionNo">
+        </div>
+      </div>
+
+      <div class="row cl">
+        <label class="form-label col-xs-3 col-sm-2" style="text-align: right;">强制更新<span class="c-red">*</span>：</label>
+        <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+          <div class="radio-box">
+            <input name="contentForceUpdate" type="radio" value="1">
+            <label for="sex-1">是</label>
+          </div>
+          <div class="radio-box">
+            <input name="contentForceUpdate" type="radio" checked="checked" value="0">
+            <label for="sex-2">否</label>
+          </div>
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3 col-sm-2" style="text-align: right;">版本文件<span class="c-red">*</span>：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+          <input class="input-text upload-url" type="text" name="uploadfile" id="txtAPKFile" placeholder="请选择APK文件！"
+            style="width:25%">
+          <a href="javascript:void();" style="height: 32px;line-height: 22px;"
+            class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+          <input type="file" multiple name="ShopAPKFile" class="input-file" id="APKFile"
+            style="position: relative; width: 100px;left: -105px;font: 400 13.3333px Arial;"
+            onchange="UpLoadAPK('APK','APKFile','ShopAPKFile')">
+          <input type="hidden" id="txtDownloadAddress" />
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3 col-sm-2" style="text-align: right;">更新说明<span class="c-red">*</span>：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+          <textarea style="width:98%;height: 155PX;border-color:#E6E6E6" placeholder="更新说明" id="txtUpdateDescription"
+            name="UpdateDescription"></textarea>
+        </div>
+      </div>
+      <div class="row cl">
+        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2" style="margin-left: 25%;">
+          <a class="btn btn-primary radius" style="line-height: 25px;" onClick="Save_AddAppUpdate()"><i
+              class="Hui-iconfont">&#xe632;</i> 确认保存</a>
+          <a id="closeId" style="display:none" class="btn btn-default radius" href="javascript:layer_close()"><i
+              class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(function () {
+      GetVersion();
+    });
+    function GetVersion() {
+      var index = layer.load(2);
+      var json = {
+        type: "AppVersion"
+      }
+      var proc = "Proc_AppPuse";//存储过程名
+      var type = "ReturnList";
+      $.post(
+        'qualification/ashx/ReturnJson.ashx',
+        {
+          json: JSON.stringify(json),
+          proc: proc,
+          type: type
+        },
+        function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            var obj = result.data;
+            $('#txtOldVersionNo').val(obj[0]["VersionNo"]);
+            layer.close(index);
+          }
+          else if (type == '1') {
+            layer.close(index);
+          } else if (type == '2') {
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+          } else {
+            layer.close(index);
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon'
+            });
+          }
+        },
+        'json')
+    }
+    //存盘
+    function Save_AddAppUpdate() {
+      var index = layer.load(2);
+      var VersionNo = $("#txtNewVersionNo").val();
+      var OldVersionNo = $("#txtOldVersionNo").val();
+      if (VersionNo <= 0) {
+        layer.close(index);
+        layer.msg("版本号不能为负数和零！", { time: 3000 });
+        return;
+      } else if (VersionNo <= OldVersionNo) {
+        layer.close(index);
+        layer.msg("新版本号不能比旧版本号低！", { time: 3000 });
+        return;
+      }
+      var UpdateDescription = $("#txtUpdateDescription").val();
+      var ForceUpdate = $('input[name="contentForceUpdate"]:checked').val();//是否强制
+      var DownloadAddress = $("#txtDownloadAddress").val();
+      if (DownloadAddress == "") {
+        layer.close(index);
+        layer.msg("下载地址不能为空！", { time: 3000 });
+        return;
+      }
+      var VersionName = $("#txtVersionName").val();
+      var json = {
+        type: "PC_SetAddApp",
+        VersionNo: VersionNo,
+        UpdateDescription: UpdateDescription,
+        ForceUpdate: ForceUpdate,
+        DownloadAddress: DownloadAddress,
+        VersionName: VersionName
+      }
+      var proc = "Proc_AppPuse";//存储过程名
+      var type = "ReturnNumber";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "qualification/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.close(index);
+            layer.msg("保存成功", { time: 3000 });
+            layer_close();
+          }
+          else {
+            layer.close(index);
+            layer.msg("保存异常，请检查网络，以及联系维护人员", { time: 3000 });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

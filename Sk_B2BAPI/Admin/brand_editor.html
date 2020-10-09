@@ -1,0 +1,130 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico" >
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title></title>
+ </head>
+ <body>
+   <div class="page-container">
+       <form class="form form-horizontal" id="form_brand_editor">
+           <div style="display:none" id="lsid"></div>
+           <div id="billnoId" style="display:none"></div>
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌名称：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <input type="text" class="input-text" value="" placeholder="最多20个字....." id="txtName" name="name">
+               </div>
+           </div>
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌Logo：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <input class="input-text upload-url" type="text" name="uploadfile" id="txtBrandImgUrl" placeholder="请选择图片！" style="width:25%">
+                   <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                   <input type="file" class="input-file" id="brandFile" style="height:30px" onchange="UpLoadImg()">
+               </div>
+           </div>
+           <div class="row cl" id="divimg" style="display:none">
+               <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图片预览：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <img src="" id="imgId" style="width:25%;height:120px" />
+               </div>
+           </div>
+
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>品牌大图：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <input class="input-text upload-url" type="text" name="uploadfileDt" id="txtBrandDtImgUrl" placeholder="请选择图片！" style="width:25%">
+                   <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                   <input type="file" class="input-file" id="brandDtFile" style="height:30px" onchange="UpLoadImgDt()">
+               </div>
+           </div>
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2">图片连接：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <input type="text" class="input-text" value="" id="txtLinkUrl">
+               </div>
+           </div>
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2">备注：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <input type="text" class="input-text" value="" placeholder="不能超过100个字....." id="txtNote" name="note">
+               </div>
+           </div>
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>首页品牌推荐：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <div class="radio-box">
+                       <input type="radio" id="radio-1" name="floorid" value="44"><!--44-->
+                       <label for="radio-1">是</label>
+                   </div>
+                   <div class="radio-box">
+                       <input type="radio" id="radio-2" name="floorid" value="">
+                       <label for="radio-2">否</label>
+                   </div>
+               </div>
+           </div>
+           <div class="row cl">
+               <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序：</label>
+               <div class="formControls col-xs-8 col-sm-9">
+                   <input type="text" class="input-text" value="99" id="txtSortId" name="sortId">
+               </div>
+           </div>
+           <!--<div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择商品：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" value="" id="txtGoodCode"  style="width:30%" ondblclick="BreadGoodsOpen()">
+            <a id="clickId" onclick="Query_Brand_Ls()"></a>
+        </div>
+    </div>-->
+           <div class="row cl">
+               <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                   <a class="btn btn-primary radius" onClick="Save_Brand()"><i class="Hui-iconfont">&#xe632;</i> 提&nbsp;&nbsp;交</a>
+                   <a id="closeId" class="btn btn-default radius" href="javascript:layer_close()"><i class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</a>
+               </div>
+           </div>
+       </form>
+</div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+
+      <!--请在下方写此页面业务相关的脚本--> 
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script src="js/main.js"></script>
+    <script src="brand/js/brand.js"></script>
+    <script>
+        $(function () {
+            //var timestamp = (new Date()).valueOf();
+            //$("#lsid").html(timestamp);///获取唯一单号
+            ////加载客户选择回车事件
+            //$("#txtGoodsCode").keydown(function (even) {
+            //    if (even.keyCode == "13") {
+            //        //QueryGoods();
+            //    }
+            //})
+        })
+        window.onload = function () {
+            //加载数据
+            LoadBrandDt();
+        };
+     </script>
+</body>
+</html>

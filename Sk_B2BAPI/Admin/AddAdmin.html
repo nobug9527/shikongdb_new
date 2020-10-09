@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>添加账号</title>
+  <meta name="viewport" content="width=device-width" />
+  <link href="Assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="Assets/css/ace.min.css" rel="stylesheet" />
+  <link href="Assets/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="Assets/css/ZhiLin.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="page-content">
+    <div class="row">
+      <div class="col-xs-12 margin-b50">
+        <form class="form-horizontal" role="form">
+
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for="username"> 用户名 </label>
+            <div class="col-xs-9">
+              <input type="text" id="username" placeholder="用户名" class="input-xlarge">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for="password"> 登录密码 </label>
+            <div class="col-xs-9">
+              <input type="password" id="password" placeholder="登录密码" class="input-xlarge">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for="entids"> 所属机构 </label>
+            <div class="col-xs-9">
+              <select class="input-xlarge valid" id="entids" name="entids"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for="roles"> 管理角色 </label>
+            <div class="col-xs-9">
+              <select class="input-xlarge valid" id="roles" name="roles"></select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for=""> 真实姓名 </label>
+            <div class="col-xs-9">
+              <input type="text" id="truename" placeholder="真实姓名" class="input-xlarge">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for=""> 手机号 </label>
+            <div class="col-xs-9">
+              <input type="text" id="phone" placeholder="手机号" class="input-xlarge">
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for="sex"> 性别 </label>
+            <div class="col-xs-9">
+              <select class="input-xlarge valid" id="sex" name="sex">
+                <option value="1">男</option>
+                <option value="2">女</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-xs-3 control-label no-padding-right text-right" for="address"> 住址 </label>
+            <div class="col-xs-9">
+              <input type="text" id="address" placeholder="住址" class="input-xlarge">
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="text-center bottomBtn">
+        <a class="btn btn-white btn-purple btn-sm" id="close">
+          取消
+        </a>
+
+        <a class="btn btn-white btn-purple btn-sm" id="add">
+          提交
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="Assets/js/jquery-2.0.3.min.js"></script>
+  <!--[if IE]>
+    <script src="Assets/js/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+  <script src="Assets/js/jquery.mobile.custom.min.js"></script>
+  <script src="Assets/js/bootstrap.min.js"></script>
+  <script src="Assets/js/typeahead-bs2.min.js"></script>
+  <!--[if lte IE 8]>
+      <script src="Assets/js/excanvas.min.js"></script>
+    <![endif]-->
+  <script src="Assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $.ajax({
+      type: "Post",
+      cache: true,
+      async: false,
+      url: "../Role/AdminAdd",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function (result) {
+
+        var menus = result.Obj;
+        var htmlstr = ""
+        if (result.Code) {
+          if (menus != null && menus.length > 0) {
+            for (var i = 0; i < menus.length; i++) {
+
+              htmlstr += ' <option value="' + menus[i]["Id"] + '">' + menus[i]["RoleName"] + '</option>'
+            }
+          } else {
+            htmlstr += '<option value="0">--请先添加角色--</option>'
+          }
+          var cont = document.getElementById("roles");
+          cont.innerHTML += htmlstr;
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+      }
+    })
+    $.ajax({
+      type: "Post",
+      cache: true,
+      async: false,
+      url: "../Role/EntidAdd",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function (result) {
+
+        var menus = result.Obj;
+        var htmlstr = ""
+        if (result.Code) {
+          if (menus != null && menus.length > 0) {
+            for (var i = 0; i < menus.length; i++) {
+
+              htmlstr += ' <option value="' + menus[i]["entid"] + '">' + menus[i]["entname"] + '</option>'
+            }
+          } else {
+            htmlstr += '<option value="0">--请先添加机构--</option>'
+          }
+          var cont = document.getElementById("entids");
+          cont.innerHTML += htmlstr;
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+      }
+    })
+    $(function () {
+      $('#close').click(function () {
+        window.parent.layer.closeAll();
+      });
+      $('#add').click(function () {
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var entids = $('#entids').val();
+        var roles = $('#roles').val();
+        var truename = $('#truename').val();
+        var phone = $('#phone').val();
+        var sex = $('#sex').val();
+        var address = $('#address').val();
+        var id = GetQueryString("id");
+        if (username == "") {
+          window.parent.layer.msg('请填写用户名');
+          return;
+        }
+        if (password == "") {
+          window.parent.layer.msg('请填写登录密码');
+          return;
+        }
+        if (entids == 0) {
+          window.parent.layer.msg('请在ERP中同步机构组织');
+          return;
+        }
+        if (roles == 0) {
+          window.parent.layer.msg('请在角色管理中添加角色');
+          return;
+        }
+        if (truename == "") {
+          window.parent.layer.msg('请填写管理员的真实姓名');
+          return;
+        }
+        if (phone == "") {
+          window.parent.layer.msg('请填写管理员的手机号');
+          return;
+        }
+        if (sex == "") {
+          window.parent.layer.msg('请选择管理员的性别');
+          return;
+        }
+        window.parent.layer.load(1);
+        $.ajax({
+          url: '../Role/AdminAdd_Action',
+          data: { username: username, password: password, Entid: entids, roles: roles, truename: truename, phone: phone, sex: sex, address: address, khId: id },
+          type: 'POST',
+          dataType: 'json',
+          success: function (data) {
+            window.parent.layer.closeAll('loading');
+            if (data.Code) {
+              window.parent.layer.msg(data.Msg, {
+                time: 1000
+              }, function () {
+                window.parent.layer.closeAll();
+              });
+              parent.location.reload();
+            } else {
+              window.parent.layer.msg(data.Msg);
+            }
+          },
+          error: function (data) {
+            window.parent.layer.closeAll('loading');
+            window.parent.layer.msg('网络连接错误');
+          }
+        });
+      });
+      var id = GetQueryString("id");
+      if (id != "") {
+        QueryAdmin(id);
+      }
+    });
+    function QueryAdmin(obj) {
+      var json = {
+        type: "PC_GetUser",
+        khId: obj
+      }
+      var proc = "Proc_Admin_MembersQuery";//存储过程名
+      var type = "ReturnList";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "manage/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            var obj = result.data[0];
+            $('#username').val(obj["username"]);
+            $('#password').val(obj["password"]);
+            $('#entids').val(obj["entid"]);
+            $('#roles').val(obj["role_id"]);
+            $('#truename').val(obj["name"]);
+            $('#phone').val(obj["telphone"]);
+            if (obj["sex"] == "男") {
+              $('#sex').val("1");
+            } else {
+              $('#sex').val("2");
+            }
+            $('#address').val(obj["address"]);
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+        }
+      })
+    }
+  </script>
+
+</body>
+
+</html>

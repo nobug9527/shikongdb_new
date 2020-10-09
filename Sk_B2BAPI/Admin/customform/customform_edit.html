@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
+
+  <title>编辑自定义表单</title>
+  <style>
+    .panel-body .row {
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 自定义表单管理 <span
+      class="c-gray en">&gt;</span> 自定义表单编辑 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新" id="shuaxin"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <div class="codeView docs-example" style="align-content:center">
+      <form class="form form-horizontal">
+        <div class="row cl">
+          <label class="form-label col-sm-2">自定义功能名：</label>
+          <div class="formControls col-sm-10">
+            <input type="text" class="input-text" maxlength="12" autocomplete="off" placeholder="功能名" id="name">
+          </div>
+        </div>
+        <div class="row cl">
+          <label class="form-label col-sm-2">查询字段定义：</label>
+          <div class="formControls col-sm-10">
+            <div class="panel panel-default" style="overflow:hidden;">
+              <div class="panel-body field_panel" style="overflow:hidden;" id="fieldrows">
+                <input class="btn btn-success radius" type="button" value="增加" onclick="AddField()">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row cl">
+          <label class="form-label col-sm-2">业务通APP模块ID：</label>
+          <div class="formControls col-sm-10">
+            <input type="text" maxlength="12" class="input-text" autocomplete="off" placeholder="业务通APP必填，不然关联不到模块"
+              id="moduleid">
+          </div>
+        </div>
+        <div class="row cl">
+          <label class="form-label col-sm-2">数据源SQL语句：</label>
+          <div class="formControls col-sm-10">
+            <textarea class="textarea" placeholder="" style="height:220px;" id="sql"></textarea>
+          </div>
+        </div>
+        <div class="row cl">
+          <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+            <input id="id" type="hidden" />
+            <input class="btn btn-primary radius" type="button" value="提交" id="btnSave">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script type="text/javascript" src="/admin/lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/admin/lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="/admin/static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="/admin/static/h-ui.admin/js/H-ui.admin.js"></script>
+  <script type="text/javascript" src="/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+  <script src="js/handle.js"></script>
+  <script>
+    $(function () {
+      Init();
+      $("#btnSave").click(function () {
+        var loading = layer.load(1, { shade: [0.1, '#fff'] });
+        var id = getUrlParam("id");
+        var name = $("#name").val().trim();
+        var sql = $("#sql").val().replace(/\n/g, " ");
+        var moduleid = $("#moduleid").val();
+        // 开始拼接json数据
+        var total = "{\"Name\":\"" + name + "\",\"SQL\":\"" + sql + "\",\"Fields\":";
+        // 开始拼接Fields数据
+        var fields = "\"[";
+        var length = $(".field_item").length;
+        $(".field_item").each(function (i) {
+          var name = $(this).find(".field_def").val().trim();
+          var field = $(this).find(".field_name").val().trim();
+          var type = $(this).find(".field_type").val();
+          if (name == "" || field == "") {
+            layer.alert("请确保字段定义中的数据完整！", function (index) {
+              layer.close(index);
+              layer.close(loading);
+            });
+            return false;
+          }
+          fields += "{"
+            + "\'name\':\'" + name + "\',"
+            + "\'field\':\'" + field + "\',"
+            + "\'type\':\'" + type + "\',";
+
+          // 如果类型为int,则需要拼接下拉选项selectValue
+          if (type == "int") {
+            fields += "\'selectItem\':[";
+            var sc = 0;// 计数器
+            $(this).find(".field_value").find("select option").each(function () {
+              fields += "{\'text\':\'" + $(this).text() + "\',\'value\':\'" + $(this).val() + "\'},";
+              sc += 1;
+            });
+            if (sc > 0) {
+              fields = fields.substr(0, fields.length - 1);
+            }
+            else {
+              layer.alert("如果类型为下拉，需要配置下拉选项，并保证数据完整！", function (index) {
+                layer.close(index);
+                layer.close(loading);
+              });
+              return false;
+            }
+            fields += "]";
+            fields += ",\'defaultValue\':\'" + $(this).find(".field_value").find("select option:selected").val() + "\'";
+          }
+          else {
+            fields += "\'defaultValue\':\'" + $(this).find(".field_value").val() + "\'";
+          }
+          fields += ",\'isShow\':" + $(this).find(".is_show").val() + "}";
+          if (i < length - 1) {
+            fields += ",";
+          }
+        });
+        fields += "]\"";
+        // 结束拼接Fields数据
+        total += fields + ",\"type\":\"upt\",\"ID\":" + id + ",\"ModuleID\":\"" + moduleid + "\"}";
+        // 结束整体json拼接
+        // 拼接结果示例：{"Name":"","SQL":"","Fields":"[{'name':'添加日期','field':'@addtime','type':'date','defaultValue':'2020-06-02 09:42:07'},{'name':'审核状态','field':'@status','type':'int','selectValue':[{'text':'未审核','value':'1'},{'text':'已审核','value':'2'}],'defaultValue':'1'}]","type":"add"}
+        var jsondata = JSON.parse(total);
+        //console.log(total);
+        $.post("ashx/custom_handle.ashx", jsondata, function (m) {
+          var d = JSON.parse(m);
+          if (d.IsSuccess == true) {
+            window.parent.getListRefresh(1);
+            layer.close(loading);
+            layer.alert(d.Message, function () {
+              closeFrame();
+            });
+          }
+          else {
+            layer.close(loading);
+            layer.msg(d.Message, { time: 2000 });
+          }
+        });
+      });
+      $("#fieldrows").on("change", ".field_type", function () {
+        var type = $(this).val();
+        $(this).parent().siblings(".field_value").replaceWith(chooseInput(type));
+      });
+    });
+    // 初始化数据
+    function Init() {
+      var loading = layer.load(1, { shade: [0.1, '#fff'] });
+      $.post("ashx/custom_handle.ashx", { "type": "single", "id": getUrlParam("id") }, function (res) {
+        var result = JSON.parse(res);
+        if (result.IsSuccess == false) {
+          layer.close(loading);
+          layer.msg(result.Message, { time: 2000 });
+          return false;
+        }
+        var data = result.data;
+        $("#name").val(data.Name);
+        $("#sql").val(data.SQL);
+        $("#id").val(data.ID);
+        var fields = JSON.parse(data.Fields);
+        for (var i = 0; i < fields.length; i++) {
+          var f_data = fields[i];
+          var f_html = '<div class="row field_item">'
+            + '<div class="formControls col-sm-12">'
+            + '<input type="text" value="' + f_data.name + '" class="input-text field_def" maxlength="10" autocomplete="off" placeholder="查询名" style="width:150px;margin-right:10px;">'
+            + '<input type="text" value="' + f_data.field + '" class="input-text field_name" maxlength="10" autocomplete="off" placeholder="参数名" style="width:150px;margin-right:10px;">';
+          if (f_data.type == "date") {
+            f_html += '<input type="text" value="' + f_data.defaultValue + '" class="input-text field_value Wdate" onfocus="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\',readOnly:true,isShowClear:false})" maxlength="20" autocomplete="off" placeholder="默认值" style="width:165px;">';
+          }
+          else if (f_data.type == "int") {
+            var ut = new Date().getTime();
+            f_html += '<span class="select-box field_value" style="width:195px;display:inline-block" ut="' + ut + '">'
+              + '<select class="select" size="1" style="width:150px;margin-right:2px">';
+            for (var j = 0; j < f_data.selectItem.length; j++) {
+              f_html += '<option value="' + f_data.selectItem[j].value + '"' + (f_data.defaultValue == f_data.selectItem[j].value ? ' selected' : '') + '>' + f_data.selectItem[j].text + '</option>';
+            }
+            f_html += '</select>' + '<a href="javascript:;" style="color:blue;" onclick="open_select(this,null);" ut="' + ut + '">修改</a>' + '</span>';
+          }
+          else {
+            f_html += '<input type="text" value="' + f_data.defaultValue + '" class="input-text field_value" maxlength="20" autocomplete="off" placeholder="默认值" style="width:165px;">';
+          }
+          f_html += '<label style="width:100px;padding-left:10px;">是否展示：</label>'
+            + '<span class="select-box" style="width:50px;margin-right:10px;">'
+            + '<select class="select is_show" size="1">'
+            + '<option value="true"' + (f_data.isShow == true ? " selected" : "") + '>是</option>'
+            + '<option value="false"' + (f_data.isShow == false ? " selected" : "") + '>否</option>'
+            + '</select>'
+            + '</span>';
+          f_html += '<label style="width:100px;padding-left:10px;">参数类型：</label>'
+            + '<span class="select-box" style="width:100px;margin-right:10px;">'
+            + '<select class="select field_type" size="1">'
+            + '<option value="text"' + (f_data.type == "text" ? " selected" : "") + '>文本</option>'
+            + '<option value="int"' + (f_data.type == "int" ? " selected" : "") + '>下拉</option>'
+            + '<option value="date"' + (f_data.type == "date" ? " selected" : "") + '>日期</option>'
+            + '</select>'
+            + '</span>'
+            + '<input class="btn btn-danger radius" type="button" value="取消" onclick="CancelField(this)">'
+            + '</div>'
+            + '</div>';
+          $(".field_panel").append(f_html);
+        }
+        layer.close(loading);
+      });
+    }
+    window.set_select = set_select;
+  </script>
+</body>
+
+</html>

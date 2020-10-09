@@ -1,0 +1,149 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <!--/meta 作为公共模版分离出去-->
+    <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+    <title></title>
+</head>
+<body>
+    <div class="page-container">
+        <form class="form form-horizontal">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>推荐商品：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <input type="text" class="input-text" id="txtGoodsCode" ondblclick="open_goods(this.value)" autocomplete="off">
+                    <div type="text" id="txtGoodsName" style="width:70%;color:red"></div>
+                    <input type="hidden" id="txtArticleId">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>位置类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select class="select" id="selectType">
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>状态：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select class="select" id="selectStatus">
+                            <option value="1">上架</option>
+                            <option value="0">下架</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <input type="number" class="input-text" id="txtSort" value="0" style="width:10%">
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a class="btn btn-primary radius" onclick="save();"><i class="Hui-iconfont">&#xe632;</i> 保存并提交</a>
+                    <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <script>
+        $(function () {
+            $.ajax({
+                url: "goods/ashx/ReturnJson.ashx",
+                type: "post",
+                data: { "json": "{'type':'GoodsRecommendType'}", "type": "GoodsRecommendType", "proc": "" },
+                //contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var typeData = data.data;
+                    if (typeData == undefined || typeData == null) {
+                        layer.msg("登录超时，请重新登录", { time: 2000 });
+                        return false;
+                    }
+                    for (var i = 0; i < typeData.length; i++) {
+                        $("#selectType").append("<option value='" + typeData[i]["Code"] + "'>" + typeData[i]["Name"] + "</option>");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.alert("出错了，请重试！" + "<br />readyState:" + jqXHR.readyState + "<br />responseText:" + jqXHR.responseText + "<br />status:" + jqXHR.status + "<br />statusText:" + jqXHR.statusText + "<br />textStatus:" + textStatus + "<br />errorThrown:" + errorThrown);
+                }
+            });
+        });
+        function open_goods(whr) {
+            var index = layer.open({
+                title: '商品列表',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['90%', '90%'],
+                content: '/Admin/SearchInfo.html?type=singlegift&proc=Proc_Admin_SearchInfo&sqlType=GoodsListHG&strWhere=' //+ whr
+            });
+        }
+        function save() {
+            var articleid = $("#txtArticleId").val();
+            if (articleid == '') {
+                layer.msg("请选择商品！");
+                return false;
+            }
+            var type = $("#selectType").val();
+            var status = $("#selectStatus").val();
+            var sort = $("#txtSort").val();
+            var loading = layer.load(1, { shade: [0.1, '#fff'] });
+            $.ajax({
+                url: "goods/ashx/ReturnJson.ashx",
+                type: "post",
+                data: { "json": "{'type':'AddGoodsRecommend','articleid':'" + articleid + "','code':'" + type + "','status':'" + status + "','sort':'" + sort + "'}", "type": "AddGoodsRecommend", "proc": "" },
+                //contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.flag == 1) {
+                        layer.alert("添加成功！", function () {
+                            window.parent.RefreshList(1);
+                            layer.close(loading);
+                            layer_close();
+                        });
+                    }
+                    else {
+                        layer.alert(data.message, function (index) {
+                            layer.close(loading);
+                            layer.close(index);
+                        });
+                        return false;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.alert("出错了，请重试！" + "<br />readyState:" + jqXHR.readyState + "<br />responseText:" + jqXHR.responseText + "<br />status:" + jqXHR.status + "<br />statusText:" + jqXHR.statusText + "<br />textStatus:" + textStatus + "<br />errorThrown:" + errorThrown);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

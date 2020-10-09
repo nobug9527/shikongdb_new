@@ -1,0 +1,207 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+  <title>优惠券管理</title>
+</head>
+
+<body>
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 优惠券管理 <span
+      class="c-gray en">&gt;</span> 优惠券管理<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索 -->
+    <div class="text-c">
+      领取类型：
+      <span class="select-box inline" style="margin: 0px 10px">
+        <select name="" class="select" id="sltLQ">
+          <option value="99">全部</option>
+          <option value="0">领劵中心</option>
+          <option value="2">新人</option>
+          <option value="3">订单-无限制</option>
+          <option value="4">订单-件数规则</option>
+          <option value="5">订单-满额规则</option>
+        </select>
+      </span>
+      设备类型：
+      <span class="select-box inline" style="margin: 0px 10px">
+        <select name="" class="select" id="sltSB">
+          <option value="99">全部</option>
+          <option value="10006">通用</option>
+          <option value="10000">电脑端</option>
+          <option value="10005">苹果</option>
+          <option value="10003">安卓</option>
+        </select>
+      </span>
+      范围规则：
+      <span class="select-box inline" style="margin: 0px 10px">
+        <select name="" class="select" id="sltCJ">
+          <option value="99">全部</option>
+          <option value="0">全部商品</option>
+          <option value="1">分类商品</option>
+          <option value="2">品牌商品</option>
+          <option value="3">独立商品</option>
+        </select>
+      </span>
+      规则类型：
+      <span class="select-box inline" style="margin: 0px 10px">
+        <select name="" class="select" id="sltGZ">
+          <option value="99">全部</option>
+          <option value="0">无门槛</option>
+          <option value="1">满减</option>
+          <!--<option value="2">折扣</option>
+          <option value="3">满额赠</option>
+          <option value="4">满件赠</option>
+          <option value="5">免邮</option>
+          <option value="6">满件折扣</option>
+          <option value="7">满件减额</option>
+          <option value="9">满额折扣</option>-->
+        </select>
+      </span>
+      状态：
+      <span class="select-box inline">
+        <select name="" class="select" id="sltStatus">
+          <option value="99" selected="selected">全部</option>
+          <option value="1">上架中</option>
+          <option value="0">未上架</option>
+        </select>
+      </span>
+      <span style="margin-left:5px">优惠券编码：</span>
+      <input type="text" class="input-text" style="width:250px;margin-left:5px" placeholder="编码" id="txtStrCode">
+      <span style="margin-left:5px">优惠券：</span>
+      <input type="text" class="input-text" style="width:250px;margin-left:5px" placeholder="名称" id="txtStrName">
+      <a href="javascript:QueryCouponList(1)" class="btn btn-success"><i
+          class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <!--<a href="javascript:;" onclick="datajy()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+        <a class="btn btn-primary radius" onclick="Open('新增优惠券','coupon_addcoupon.html','','','')"
+          href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加优惠券</a>
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 210px);">
+      <div style="min-width:1500px;">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+          <thead>
+            <tr class="text-c">
+              <th><input type="checkbox" name="" value=""></th>
+              <th>序号</th>
+              <th>操作</th>
+              <th>编码</th>
+              <th>名称</th>
+              <th>数量</th>
+              <th>渠道类型</th>
+              <th>领取类型</th>
+              <th>范围类型</th>
+              <th>范围</th>
+              <th>优惠类型</th>
+              <th>开始时间</th>
+              <th>结束时间</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="TbShows"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span>
+        <a href="javascript:btnfirst(QueryCouponList)">首页</a>
+        <a href="javascript:btnup(QueryCouponList)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(QueryCouponList)">下一页</a>
+        <a href="javascript:btnlast(QueryCouponList)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(QueryCouponList)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <!--请在下方写此页面业务相关的脚本-->
+  <script src="js/main.js"></script>
+  <script src="coupon/js/Coupon.js"></script>
+  <script>
+    $(function () {
+      ///加载
+      QueryCouponList();
+      var cliHeight = document.body.clientHeight;
+      var divHeight = cliHeight * 0.57;
+      $('.autodiv').css("height", divHeight + "px");
+    });
+    function dataStatus(obj, status) {
+      var index = layer.load(2);
+      var data = {
+        type: "PC_UpStatusCoupon",
+        couponCode: obj,
+        status: status
+      };
+      var proc = "Pc_Coupon"//存储过程名
+      var type = "ReturnNumber";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "coupon/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.close(index);
+            QueryCouponList();
+          }
+          if (type == '1') {
+            layer.alert('失败', {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { layer.closeAll(); }
+            });
+          }
+          else if (type == '2') {
+            layer.close(index);
+            layer.alert(obj.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+
+          }
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+
+
+  </script>
+</body>
+
+</html>

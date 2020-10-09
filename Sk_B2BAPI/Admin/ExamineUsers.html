@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link href="order/css/order.css" rel="stylesheet" />
+    <title>用户审核</title>
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    
+</head>
+<body>
+    <div class="tab-content">
+        <dl>
+            <dt>基本信息</dt>
+            <dd>
+                <div class="table-container">
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+                        <tbody>
+                            <tr>
+                                <th width="20%">机构</th>
+                                <td><span v-text="data[0].entId"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">单位名称</th>
+                                <td><span v-text="data[0].businessname"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">客户类型</th>
+                                <td><span v-text="data[0].clienttype"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">姓名</th>
+                                <td><span v-text="data[0].name"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">手机</th>
+                                <td><span v-text="data[0].telphone"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">性别</th>
+                                <td><span v-text="data[0].sex"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">邮箱</th>
+                                <td><span v-text="data[0].email"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">省-市-区</th>
+                                <td><span v-text="data[0].province"></span>-<span v-text="data[0].city"></span>-<span v-text="data[0].prefecture"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">地址</th>
+                                <td><span v-text="data[0].address"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">出生日期</th>
+                                <td><span v-text="data[0].birthday"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">审核意见</th>
+                                <td>
+                                    <span v-if="data[0].status=='0'" v-text="data[0].remark1"></span>
+                                    <span v-else-if="data[0].status=='2'">已通过</span>
+                                    <span v-else>未审核</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>资质证书图片列表</dt>
+            <dd>
+                <div class="table-container">
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+                        <thead>
+                            <tr>
+                                <th>证书名称</th>
+                                <th>图片</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="td_c" v-for="list in data">
+                                <td><span v-text="list.materialName" style="font-size: 55px;"></span></td>
+                                <td>
+                                    <img v-bind:src="list.materialUrl" style="width: 300px;height: 250px;" ondblclick="ExamineImg_s(this)" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="outerdiv" style="position: fixed; top: 0; left: 0; background: rgba(0, 0, 0, 0.1); z-index: 30; width: 100%; height: 100%; display: none;">
+                    <div id="innerdiv" style="width:600px;">
+                        <img id="bigimg" class="bigimg" style="border: 1px solid #48C9B1;width:100%;height:100%;" />
+                    </div>
+                </div>
+            </dd>
+        </dl>
+        <dl id="huizhe">
+            <dt>回执操作</dt>
+            <dd>
+                <div>
+                    <div class="row cl">
+                        <div class="formControls">
+                            <textarea style="height: 100px;margin-left: 2%;width:70%" class="textarea radius" type="text" id="txtRemrk" name="Remrk" placeholder="审核通过可不填，拒绝通过必须填！"></textarea>
+                        </div>
+                    </div>
+                    <div class="row cl" >
+                        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2" style="margin-top:20px">
+                            <a class="btn btn-success radius" onClick="UpStatus('2')"><i class="Hui-iconfont">&#xe6e1;</i> 通&nbsp;&nbsp;过</a>
+                            <a class="btn btn-danger radius" onClick="UpStatus('0')"><i class="Hui-iconfont">&#xe6dd;</i> 拒&nbsp;&nbsp;绝</a>
+                            <a id="closeId" style="display:none" class="btn btn-default radius" href="javascript:layer_close()"><i class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</a>
+                        </div>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script>
+        $(function () {
+            LoadExamineDetail();
+        });
+        ////加载详情信息
+        function LoadExamineDetail() {
+            var index = layer.load(2);
+            var UserId = GetQueryString("id");
+            var data = {
+                type: "Pc_GetEntidManage",
+                ExamUserId: UserId
+            };
+            var proc = "Proc_Admin_MembersQuery";//存储过程名
+            var type = "ReturnList";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "qualification/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result;
+                        new Vue({
+                            el: '.tab-content',
+                            data: obj
+                        });
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            })
+        }
+        /*查看*/
+        function ExamineImg_s(obj) {
+            layer_show("图片详情", "/admin/imgs/index.html?ur=" + $(obj).attr("src"), 1000, 600);
+        }
+        function UpStatus(num) {
+            var remark = $("#txtRemrk").val();
+            if (num == '0' && (remark == undefined || remark=="")) {
+                layer.msg("审核不通过请填写拒绝理由！", { time: 3000 });
+                return;
+            }
+            var data = {
+                type: "Pc_SetEntidManage",
+                strwhere: GetQueryString("id"),
+                uptype: num,
+                remark: remark
+            };
+            var proc = "Proc_Admin_MembersQuery";//存储过程名
+            var type = "ReturnNumber";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "qualification/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.alert('操作成功', {
+                            icon: 1,
+                            skin: 'layer-ext-moon'
+                        });
+                        parent.location.reload();
+                        layer_close();
+                    }
+                    if (type == '1') {
+                        layer.alert('操作失败', {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                    else if (type == '2') {
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+    </script>
+</body>
+</html>

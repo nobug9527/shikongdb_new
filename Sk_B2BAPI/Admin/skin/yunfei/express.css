@@ -1,0 +1,141 @@
+@charset "utf-8";
+/* CSS Document */
+*{color:#333;font: 13px/25px "宋体",Arial,Helvetica,sans-serif;margin: 0;padding: 0;}
+.wrap{margin:25px; min-width: 1100px;}
+.clear{clear:both; width:0; height:0; border:none; overflow:hidden;}
+.cl_red{color:#da1d31;}
+.cl_green{color:#009900;}
+h1{font-weight:700; border-bottom:2px solid #ccc; padding-left:5px;}
+/*快递公司管理*/
+.crSearch{ padding:0 5px; border-bottom:1px solid #ccc; overflow:hidden; height:60px;}
+.crSearch .inputBox{display:inline-block; width:500px; height:28px; line-height:28px; margin:15px 0 0 25px; float:left;}
+.crSearch .inputBox input{height:25px; width:195px; vertical-align:middle;}
+.crSearch .submitBtn{height:28px; width:102px; display:inline-block; float:left; margin:15px 0;background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; color:#666; cursor:pointer;}
+.crTable .crtBtn{background-color:#f6f6f6;border: 1px solid #dddddd; margin: 20px 0; padding:10px 5px;}
+.crTable .crtBtn input{height:28px; width:102px; background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; cursor:pointer; margin-left:5px; color:#666;}
+.crTable table{border-collapse:collapse; width:100%;}
+.crTable th{font-weight:700; text-align:center; border:1px solid #ddd; background-color:#f6f6f6; color:#666;}
+.crTable td{text-align:center; border:1px solid #ddd; color:#666;}
+.crTable .tLeft{text-align:left;}
+.crTable .tLeft a{text-decoration:none;}
+.crTable a{color:#477aff;}
+.crTable a:hover{color:#ff4700;}
+.crTable .operate a{ margin:0 6px;}
+.crTable tfoot td{ padding:5px 0;}
+/*快递单模版*/
+.modelManagement .message{background-color:#fffee6;border: 1px solid #ddd; margin: 20px 0; padding:10px 5px; color:#ff4700; line-height:28px; font-weight:700; overflow:hidden;}
+.modelManagement .message a{ float:right; height:28px; line-height:28px; width:102px; background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; color:#666; text-align:center; text-decoration:none; display:inline;}
+.modelManagement ul{list-style:none; height:30px;}
+.modelManagement ul li{float:left; border:1px solid #e4e4e4; border-bottom:none; margin:0 5px; background-color:#eeeff3; border-radius:3px;}
+.modelManagement ul a{ display:block; padding:2px 10px; text-decoration:none; color:#666;}
+.modelManagement ul .cur{background-color:#fff; padding-bottom:3px;}
+.modelManagement .modelTable{border:1px solid #e4e4e4; padding:0 10px;}
+.modelManagement .modelTable .modSearch{border-bottom:1px solid #ccc; overflow:hidden; height:60px; border-bottom:1px solid #ddd;}
+.modelTable .modSearch .inputBox{display:inline-block; width:600px; height:28px; line-height:28px; margin:15px 0; float:left; color:#666;}
+.modelTable .modSearch .inputBox input{height:25px; width:195px; vertical-align:middle; margin-right:20px; }
+.modelTable .modSearch .submitBtn{height:28px; width:102px; display:inline-block; float:left; margin:15px 0; background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; color:#666; cursor:pointer;}
+.modelTable .modtBtn{background-color:#f6f6f6; border: 1px solid #ddd; margin:10px 0; padding:10px 5px; overflow:hidden; _height:28px;}
+.modelTable .modtBtn input{height:28px; background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; color:#666; cursor:pointer; width:102px; float:right;}
+.modelManagement .modelTable table{border-collapse:collapse; width:100%; border:1px solid #ddd; margin-bottom:10px;}
+.modelManagement .modelTable th{font-weight:700; text-align:center; border:1px solid #ddd; background-color:#f6f6f6; color:#666;}
+.modelManagement .modelTable td{text-align:center; border:1px solid #dcdcdc; color:#666;}
+.modelManagement .modelTable .tLeft{text-align:left;}
+.modelManagement .modelTable .tLeft a{text-decoration:none;}
+.modelManagement .modelTable a{color:#477aff;}
+.modelManagement .modelTable a:hover{color:#ff4700;}
+.modelManagement .modelTable .operate a{ margin:0 6px;}
+.blackScreen{position:fixed; width:100%; height:100%; top:0; left:0; opacity:0.5; filter:alpha(opacity=50); background-color:#999; z-index:999; display:none; _position:absolute; _top:expression(documentElement.scrollTop);}
+.preview{position:fixed; top:0; left:0; width:950px; height:540px; background-color:#fff; border:1px solid #999; z-index:1000; display:none; _position:absolute; _top:expression(documentElement.scrollTop);}
+.preview .menu{background-color:#f6f6f6; height:30px; text-align:right;}
+.preview .menu .close_icon{ background:url(../../../images/admin/shipping/close_icon.png); display:inline-block; width:21px; height:16px; margin:7px;}
+/*新增快递模版*/
+.baseInfo{margin:10px 0;}
+.baseInfo h2{padding:25px 5px 0; font-weight:700; border-bottom:2px solid #ccc; margin-bottom:10px;}
+.baseInfo .infoTable{padding:5px;}
+.baseInfo .infoTable .inputBox{width:320px; height:28px; line-height:28px; float:left; text-align:right; padding:5px 0;}
+.baseInfo .infoTable .inputRadio{width:225px; height:28px; line-height:28px; float:left; text-align:right; padding:5px 0;}
+.baseInfo .infoTable .inputText{height:25px; width:195px; margin-left:5px; vertical-align:top;}
+.baseInfo .infoTable label{padding:0 10px;}
+.baseInfo .infoTable .areaBox{padding:5px 0 5px 20px;}
+.baseInfo .infoTable .areaBox textarea{width:950px; height:75px; resize:none; vertical-align:top; margin-left:12px;}
+.createModel{margin:10px 0;}
+.createModel h2{padding:25px 5px 0; font-weight:700; border-bottom:2px solid #ccc; margin-bottom:10px;}
+.createModel .company{padding:5px; margin:5px; border:1px solid #ccc; font-weight:700; height:25px; background-color:#fffee6; color:#ff4700;}
+.createModel .createTable{padding:5px;}
+.createModel .createTable .inputBox{width:328px; height:28px; line-height:28px; text-align:right; padding:5px 0 5px 4px;}
+.createModel .createTable .inputText{height:25px; width:195px; vertical-align:top;}
+.createModel .createTable .inputFileBox{width:225px; height:28px; line-height:28px; text-align:right; padding:5px 0;}
+.createModel .createTable .inputFileBox #uploadify_0Uploader{vertical-align:top; color:#666;}
+.createModel .createTable .areaBox{padding:5px 0 5px 10px;}
+.createModel .createTable .areaBox textarea{ width:950px; height:75px; resize:none; vertical-align:top; margin-left:13px;}
+.createModel .modelInfo{*height:540px; width:1080px; border:1px solid #aaa; margin:5px 10px; overflow:hidden;}
+.createModel .modelInfo .sideBar{ float:left; height:100%; width:129px;}
+.modelInfo .sideBar p{background-color:#78aadb; color:#fff; height:24px; line-height:24px; text-align:center; border-bottom:1px solid #aaa;}
+.modelInfo .sideBar dl{padding:5px;}
+.modelInfo .sideBar dt{font-weight:700;}
+.modelInfo .sideBar dd{ padding-left:1px;}
+.createModel .modelInfo .modelImg{float:right; height:100%; width:950px; border-left:1px solid #aaa; background-color:#ddd; position:relative;}
+.createModel .modelInfo .modelImg .notice{width:100%; height:100%; text-align:center; line-height:540px; font-weight:700;}
+.buttonSet{height:28px; background-color:#f6f6f6;border: 1px solid #dddddd; padding:10px 0; margin:5px; text-align:center;}
+.buttonSet a{text-decoration:none; background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; display:inline-block; height:28px; width:102px; line-height:28px; margin:0 10px;}
+
+/*商家运费模板管理  start*/
+.submitBtn{height:28px; width:102px; display:inline-block; background:url("/shop/upload_news_img/publish.png") no-repeat scroll 0px -161px; border:none; color:#666; cursor:pointer;}
+.set_shipping{border-top:1px solid #444444;height:48px;padding:10px 10px;}
+.set_msg{color:red;float:left;}
+.set_btn{float:right;width:200px;padding-top:10px;text-align:center;}
+.mb{width:100%;border-collapse:collapse;}
+.mb td{border:1px solid #0099cc;color:#444444;padding:3px;}
+#tbl_mb{border-collapse:collapse;}
+#tbl_mb td.mb_info{background-color:#efefef;}
+#tbl_mb th{background:none;}
+.mb td.mb_name{background-color:#D9EFFE;text-align:left;padding-left:15px;}
+.mb td.mb_name span{float:right;margin-right:100px;}
+.mb td.mb_t{text-align:left;padding-left:10px;}
+.mb td.mb_t span.t{font-weight:bold;}
+.mb td.mb_t span.cod_fee{margin-left:100px;}
+.mb td.shiptitle{text-align:center;font-weight:bold;}
+.codgs{background-color:#eee;width:98%;height:78px;padding-left:15px;padding-top:5px;}
+.createTable .codgs p{padding:0;margin:0;height:23px;line-height:23px;}
+.createTable .codgs p.t{font-weight:bold;}
+.plus_icon {
+	width:65px;
+/*height: 9px;width: 9px;margin: 7px 1px 0 5px;display: inline-block;
+background-image: url(../../../images/admin/order/plus_icon.png);
+overflow: hidden;_float: left;*/
+}
+.minus_icon {
+height: 9px;width: 9px;margin: 7px 1px 0 5px;display: inline-block;
+background-image: url(../../../images/admin/order/minus_icon.png);
+overflow: hidden;_float: left;
+}
+
+.add_ship{width:100%;border:none;}
+.add_ship td{padding:3px;}
+.height40{height:40px;}
+.add_ship td.l{width:130px;text-align:right;}
+.add_ship td span.shipname{color:red;font-weight:bold;}
+.add_ship .showTip{color:#FF6600;margin-left:20px;}
+.createTable h1{border-color:#FF6600}
+.createTable p{height:50px;line-height:50px;}
+.tbl_area{width:100%;border-collapse:collapse;}
+.tbl_area td{padding:5px;border:1px solid #00CCCC;}
+.tbl_area th{padding:5px;background-color:#D2EEF8;border:1px solid #00CCCC;}
+.inputT{width:60px;height:25px;}
+.tbl_area a{color:#0066cc}
+.tbl_area .areaEdit{float:right;}
+.tbl_area .areaEdit a{font-size:14px;font-weight:bold;font-weight:bold;}
+.tbl_area .nosetmail{font-weight:bold;text-align:center;}
+.tbl_area .showcitys li,.mb .showcitys li{list-style:none;}
+.tbl_area .showcitys li span,.mb .showcitys li span{font-weight:bold;}
+.tbl_area .unselcitys{height:80px;overflow:auto;}
+/*#areaSelectDiv ul{border:1px solid #ff0000;}*/
+#areaSelectDiv ul li{list-style:none;margin:6px 10px;border-bottom:1px dashed #eee;}
+#areaSelectDiv ul li span{font-weight:bold;}
+#areaSelectDiv ul li label{margin-left:10px;}
+#areaSelectDiv .citycount{color:red;}
+#areaSelectDiv ul li span.selcity{cursor:pointer;width:12px;height:12px;background:url(../../../images/admin/shipping/seldown.png) no-repeat;}
+#areaSelectDiv .citylist{float:left;display:none;z-index:99999999;border:1px solid #ccc;background-color:#f7f7f7;/*position:fixed;_position:relative;*/width:650px;}
+#areaSelectDiv .citylist ul li{float:left;margin:4px 8px;white-space: nowrap;}
+.areaSelect{font-weight:bold;}
+/*商家运费模板管理  end*/

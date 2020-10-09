@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
+  <style>
+    .panel-body .row {
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 自定义表单编辑 <span
+      class="c-gray en">&gt;</span> 编辑下拉选项 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新" id="shuaxin"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <div class="codeView docs-example" style="align-content:center;padding: 5px 19px 5px;margin: 5px 0;">
+      <form class="form form-horizontal">
+        <div class="row cl">
+          <label class="form-label col-sm-3">下拉选项：</label>
+          <div class="formControls col-sm-9">
+            <div class="panel panel-default" style="overflow:hidden;">
+              <div class="panel-body field_panel" style="overflow:hidden;" id="fieldrows">
+                <input class="btn btn-success radius" type="button" value="增加" onclick="AddField()">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row cl">
+          <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+            <input type="hidden" value="0" id="customid" />
+            <input class="btn btn-primary radius" type="button" value="确定" id="btnSave">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script type="text/javascript" src="/admin/lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/admin/lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="/admin/static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="/admin/static/h-ui.admin/js/H-ui.admin.js"></script>
+  <script type="text/javascript" src="/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+  <script>
+    $(function () {
+      Init();
+      $("#btnSave").click(function () {
+        var loading = layer.load(1, { shade: [0.1, '#fff'] });
+        var fields = "[";
+        // 计数器
+        var cs = 0;
+        // 组合下拉字段数据
+        $(".field_panel > .field_item").each(function () {
+          var t = $(this).find(".field_key").eq(0).val();
+          var v = $(this).find(".field_value").eq(0).val();
+          if (t.trim() != "" && v.trim() != "") {
+            fields += "{"
+              + "\"text\":\"" + t + "\","
+              + "\"value\":\"" + v + "\""
+              + "},";
+            cs += 1;
+          }
+        });
+        // 如果计数器大于0，说明有数据，去除末尾逗号，等于0则提示返回
+        if (cs > 0) {
+          fields = fields.substr(0, fields.length - 1);
+        }
+        else {
+          layer.alert("请配置下拉选项，并保证数据完整！", function (index) {
+            layer.close(index);
+            layer.close(loading);
+          });
+          return false;
+        }
+        fields += "]";
+        //console.log(fields);
+        var jsondata = JSON.parse(fields);
+        // 将数据转为json对象后，传给父页面
+        window.parent.set_select(getut(), jsondata);
+        layer.close(loading);
+        closeFrame();
+      });
+      $("#fieldrows").on("change", ".field_type", function () {
+        var type = $(this).val();
+        $(this).parent().siblings(".field_value").replaceWith(chooseInput(type));
+      });
+    });
+    function Init() {
+      if (window.parent.ut_selectdata != null) {
+        var data = window.parent.ut_selectdata;
+        for (var i = 0; i < data.length; i++) {
+          $(".field_panel").append(field_html(data[i].text, data[i].value));
+        }
+      }
+    }
+    function AddField() {
+      $(".field_panel").append(field_html("", ""));
+    }
+    function CancelField(t) {
+      $(t).parents(".field_item").remove();
+    }
+    function field_html(key, value) {
+      var htmlstr = '<div class="row field_item">'
+        + '<div class="formControls col-sm-12">'
+        + '<input type="text" class="input-text field_key" value="' + key + '" maxlength="10" autocomplete="off" placeholder="名称" style="width:150px;margin-right:10px;">'
+        + '<input type="number" class="input-text field_value" value="' + value + '" autocomplete="off" placeholder="参数值" style="width:100px;margin-right:10px;">'
+        + '<input class="btn btn-danger radius" type="button" value="取消" onclick="CancelField(this)">'
+        + '</div>'
+        + '</div>';
+      return htmlstr;
+    }
+    function getut() {
+      var reg = new RegExp("(^|&)ut=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null)
+        return decodeURI(r[2]);
+      return null;
+    }
+    // 关闭子iframe
+    function closeFrame() {
+      var iframeIndex = parent.layer.getFrameIndex(window.name);
+      parent.layer.close(iframeIndex);
+      return false;
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,938 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title>生成优惠券</title>
+</head>
+<body>
+    <div class="page-container">
+        <form class="form form-horizontal">
+            <div class="row cl" id="fatherclass">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>渠道平台：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="stlSource" class="select" id="typeCoding"></select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="stlSource" class="select" id="receivingType" onchange="Bianhua()"></select>
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="row cl" id="cxTime">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动开始时间：</label>
+                <div class="formControls col-xs-8 col-sm-9" style="width:180px">
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'cxdatemin\')}' })" id="cxdatemin" name="datemin" class="input-text Wdate" style="width:180px;">
+                </div>
+
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动结束时间：</label>
+                <div class="formControls col-xs-8 col-sm-9" style="width:20%">
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'cxdatemax\')}' })" id="cxdatemax" name="datemax" class="input-text Wdate" style="width:180px;">
+                </div>
+            </div>
+
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>客户范围：</label>
+                <div class="formControls col-xs-8 col-sm-9" style="width:180px">
+                    <span class="select-box" style="width:180px">
+                        <select name="sltkhkz" class="select" id="sltkhkz" style="width:170px" onchange="ChooseKhkz()">
+                            <option value="0">无限制</option>
+                            <option value="1">客户类型</option>
+                            <option value="2">客户分组</option>
+                            <option value="3">指定区域</option>
+                        </select>
+                    </span>
+                </div>
+                <div id="divKhfw" style="display:none">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span><span id="txtKhfw">选择客户：</span></label>
+                    <div class="formControls col-xs-8 col-sm-9" style="width:180px">
+                        <input type="text"  class="input-text" placeholder="请选择"  style="width:180px;">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>范围类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="stlSource" class="select" id="sceneType" onchange="gainData()"></select>
+                    </span>
+                </div>
+            </div>
+            <!--<div class="row cl" id="sceneCategoryFather">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>范围-分类选择: </label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="text" style="width: 15%;" class="input-text" placeholder="分类编号" id="sceneCategory" name="sceneCategory" onchange="CheckCategroy(this)">
+            <b>分类名称： </b><span id="categoryname"></span>
+
+        </div>
+    </div>-->
+            <div class="row cl" id="sceneBrandFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动品牌: </label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="sceneBrand" class="select" id="sceneBrand"></select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl" id="sceneCategoryFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>>活动分类：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <input type="text" class="input-text" name="categry" id="txtCategryCode" ondblclick="GetDPGoods('2')" style="width:15%">
+                    <input type="text" class="input-text" id="txtCategryName" style="width:25%;" readonly="readonly">
+                    <input type="hidden" id="txtCategryId">
+                </div>
+            </div>
+            <div class="row cl" id="sceneProuctFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动商品：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <input type="text" class="input-text" name="goods" id="txtGoodsCode" ondblclick="GetDPGoods('1')" style="width:15%">
+                    <div id="txtGoodsName" style="width:70%;color:red"></div>
+                    <input type="hidden" id="txtArticleId">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" max="1" min="0" class="input-text" value="" id="couponName">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券数量：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" min="0" class="input-text" value="0" id="couponsNumber">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券开始时间：</label>
+                <div class="formControls col-xs-8 col-sm-9" style="width:180px">
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')}' })" id="datemin" name="datemin" class="input-text Wdate" style="width:180px;">
+                </div>
+
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券结束时间：</label>
+                <div class="formControls col-xs-8 col-sm-9" style="width:180px">
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" name="datemax" class="input-text Wdate" style="width:180px;">
+                </div>
+            </div>
+            <div class="row cl" id="AllAmountFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>订单赠送条件-满额: </label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" value="0" id="AllAmount" name="AllAmount">
+                </div>
+            </div>
+            <div class="row cl" id="NumFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>订单赠送条件-件数：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="0" id="Num">
+
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>使用规则：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="stlSource" class="select" id="roleType" onchange="receiveType()">
+                            <option value="" selected="selected">请选择规则</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl" id="fullAmountFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规则-满额: </label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" value="0" id="fullAmount" name="fullAmount">
+                </div>
+            </div>
+            <div class="row cl" id="deductionFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规则-减额: </label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" value="0" id="deduction">
+                </div>
+            </div>
+            <div class="row cl" id="discountFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规则-折扣：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" max="1" min="0" class="input-text" value="1" id="discount">
+                </div>
+            </div>
+            <!--<div class="row cl" id="maximumAmountFather">
+        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>最大金额：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="number" class="input-text" value="0" id="maximumAmount">
+        </div>
+    </div>-->
+            <div class="row cl" id="numberFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规则-件数：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" value="0" id="number">
+                </div>
+            </div>
+            <div class="row cl" id="premiumIdFather">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>赠品选择: </label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" id="txtGiftName" value="" class="input-text" ondblclick="ChoseGift()" style="width:15%" />
+                    <input type="hidden" id="txtGiftId" value="" class="input-text" />
+                </div>
+            </div>
+            <div class="row cl" id="couponbutton">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a class="btn btn-primary radius" href="javascript:Save_Coupon()"><i class="Hui-iconfont">&#xe632;</i> 提&nbsp;&nbsp;交</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> .
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <!--请在下方写此页面业务相关的脚本-->
+    <script src="js/main.js"></script>
+    <script src="coupon/js/Coupon.js"></script>
+    <script>
+        $(function () {
+            gainData();
+            var id = GetQueryString("id");
+            if (id != "") {
+                $('#couponbutton').css("display", "none");
+                LoadDetail();
+            } else {
+                //$("#fatherclass").remove();
+                ///加载类型选项
+                LoadCheckBox();
+                LoadCheckBox1();
+                LoadCheckBox2();
+                LoadCheckBox3();
+                LoadCheckBox4();
+                Bianhua();
+                gainData();
+                receiveType();
+
+            }
+        })
+        window.onload = function () {
+            var id = GetQueryString("id");
+            var code = GetQueryString("code");
+            if (code != "") {
+                LoadDetail();
+            }
+        };
+        //领取方式
+        function LoadCheckBox() {
+            var index = layer.load(2);
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnBox";
+            var json = {
+                type: "Pc_GetClassType",
+                strWhere: "",
+                ConfigType: "501"
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.objList != "" && obj.objList.length > 0) {
+                            $("#receivingType").append(obj.objList);
+                        }
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        //设备类型
+        function LoadCheckBox1() {
+            var index = layer.load(2);
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnBox";
+            var json = {
+                type: "Pc_GetCouponType"
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.objList != "" && obj.objList.length > 0) {
+                            $("#typeCoding").append(obj.objList);
+                        }
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                        
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        //范围类型
+        function LoadCheckBox2() {
+            var index = layer.load(2);
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnBox";
+            var json = {
+                type: "Pc_GetClassType",
+                strWhere: "",
+                ConfigType: "505"
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.objList != "" && obj.objList.length > 0) {
+                            $("#sceneType").append(obj.objList);
+                        }
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                       
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        //规则类型
+        function LoadCheckBox3() {
+            var index = layer.load(2);
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnBox";
+            var json = {
+                type: "Pc_GetClassType",
+                strWhere: "",
+                ConfigType: "502"
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.objList != "" && obj.objList.length > 0) {
+                            $("#roleType").append(obj.objList);
+                        }
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                        
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        //品牌管理
+        function LoadCheckBox4() {
+            var index = layer.load(2);
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnBox";
+            var json = {
+                type: "Pc_GetBrandType"
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        if (obj.objList != "" && obj.objList.length > 0) {
+                            $("#sceneBrand").append(obj.objList);
+                        }
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                    }
+                    else if (type == "1") {
+                        layer.close(index);
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        var lock = false;
+        //优惠券存盘
+        function Save_Coupon() {
+            var index = layer.load(2);
+            var typeCoding = $("#typeCoding").val();
+            if (typeCoding == '') {
+                layer.msg("渠道平台不能为空", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var receivingType = $("#receivingType").val();
+            if (typeCoding == '') {
+                layer.msg("领取类型不能为空", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var SceneCoding = $("#sceneType").val();
+            if (SceneCoding == '') {
+                layer.msg("范围类型不能为空", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var SceneId = '';
+            switch (SceneCoding) {
+                case "1"://分类商品
+                    SceneId = $("#txtCategryId").val();
+                    break;
+                case "2"://品牌商品
+                    SceneId = $("#sceneBrand").val();
+                    break;
+                case "3"://独立商品
+                    SceneId = $("#txtArticleId").val();
+                    break;
+            }
+            if (SceneCoding != 0 && SceneId == '') {
+                layer.msg("范围规则不完整，请补充完整", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var couponName = $("#couponName").val();
+            if (couponName == '') {
+                layer.msg("优惠券名称不能为空", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var couponsNumber = $("#couponsNumber").val();
+            if (couponsNumber == '' || couponsNumber <= 0) {
+                layer.msg("优惠券数量不能为空或者为0", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var startingTime= $("#datemin").val();
+            if (startingTime == '') {
+                layer.msg("开始时间不能为空或格式不正确", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            var Num = $("#Num").val();
+            var AllAmount = $("#AllAmount").val();
+           
+            var endTime = $("#datemax").val();
+            if (endTime == '') {
+                layer.msg("结束时间不能为空或格式不正确", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            switch (receivingType) {
+                case "4"://件数规则
+                    if (Num == '' && Num == '0') {
+                        layer.msg("订单赠送-条件不能为空或者为0", { time: 3000 });
+                        layer.close(index);
+                        return;
+                    }
+                    break;
+                case "5"://满额规则
+                    if (AllAmount == '' && AllAmount == '0') {
+                        layer.msg("订单赠送-金额不能为空或者为0", { time: 3000 });
+                        layer.close(index);
+                        return;
+                    }
+                    break;
+            }
+            var roleType = $("#roleType").val();
+            var fullAmount = $("#fullAmount").val();//满额
+            var deduction = $("#deduction").val();//减额
+            var discount = $("#discount").val();//折扣
+            var number = $("#number").val();//件数
+            var premiumId = $("#txtGiftId").val();//赠品
+            switch (roleType) {
+                case "0"://无门槛
+                    if (deduction <= 0) {
+                        layer.alert("优惠规则-满额条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+                    break;
+                case "1"://满减
+                    if (fullAmount <= 0 || deduction <= 0) {
+                        layer.alert("优惠规则-满减条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+                    break;
+                case "2"://折扣
+                    if (discount <= 0 || discount > 1) {
+                        layer.alert("优惠规则-折扣条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+                    break;
+                case "3"://满额赠
+                    if (fullAmount <= 0 || premiumId == '') {
+                        layer.alert("优惠规则-满额赠条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+                    break;
+                case "4"://满件赠
+                    if (number <= 0 || premiumId == '') {
+                        layer.alert("优惠规则-满件赠条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+                    break;
+                case "5"://免邮
+                    break;
+                case "6"://满件折扣
+                    if (number <= 0 || discount <= 0 || discount > 1) {
+                        layer.alert("优惠规则-满件折扣条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+
+                    break;
+                case "7"://满件减额
+                    if (number <= 0 || deduction <= 0) {
+                        layer.alert("优惠规则-满件折扣条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+
+                    break;
+                case "9"://满额折扣
+                    if (fullAmount <= 0 || discount <= 0 || discount > 1) {
+                        layer.alert("优惠规则-满件折扣条件不符合正常设定", {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        }); return;
+                    }
+
+                    break;
+                default:
+                    layer.alert('规则类型异常，请勿修改源代码', {
+                        icon: 2,
+                        skin: 'layer-ext-moon',
+                        yes: function () { layer.closeAll(); }
+                    });
+                    return;
+                    break;
+            }
+            var cxdatemin = $("#cxdatemin").val();
+            var cxdatemax = $("#cxdatemax").val();
+            if (cxdatemin == "" || cxdatemax == "") {
+                layer.alert('活动时间不能为空', {
+                    icon: 2,
+                    skin: 'layer-ext-moon',
+                    yes: function () { layer.closeAll(); }
+                });
+                return;
+            }
+            var id = GetQueryString("id");
+            var data = {
+                type: "PC_AddCoupon",
+                typeCoding: typeCoding,
+                receivingType: receivingType,
+                couponName: couponName,
+                couponsNumber: couponsNumber,
+                startingTime: startingTime,
+                endTime: endTime,
+                couponCode: id,
+                SceneCoding: SceneCoding,
+                SceneId: SceneId,
+                AllAmount: AllAmount,
+                Num: Num,
+                types: roleType,
+                ProductCode: premiumId,
+                fullAmount: fullAmount,
+                deduction: deduction,
+                maximumAmount: '0',
+                discount: discount,
+                number: number,
+                cxdatemin: cxdatemin,
+                cxdatemax: cxdatemax
+            }
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnNumber";
+            ///加载页面数据
+            $.ajax({
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                type: "Post",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.alert('优惠券添加成功', {
+                            icon: 1,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        });
+                        //window.location.reload();
+                        //parent.location.reload();
+                    }
+                    else {
+                        layer.alert(result.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                    layer.close(index);
+                    layer.alert("加载失败", {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            });
+
+        }
+
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1,                 //月份
+                "d+": this.getDate(),                    //日
+                "h+": this.getHours(),                   //小时
+                "m+": this.getMinutes(),                 //分
+                "s+": this.getSeconds(),                 //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds()             //毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
+        function gainData() {
+            var sceneType = $("#sceneType").val();
+            if (sceneType == '') {
+                layer.msg("范围类型不能为空", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            switch (sceneType) {
+                case "1"://分类商品
+                    $("#sceneCategoryFather").css("display", "inherit");
+                    $("#sceneBrandFather").css("display", "none");
+                    $("#sceneProuctFather").css("display", "none");
+                    break;
+                case "2"://品牌商品
+                    $("#sceneCategoryFather").css("display", "none");
+                    $("#sceneBrandFather").css("display", "inherit");
+                    $("#sceneProuctFather").css("display", "none");
+                    break;
+                case "3"://独立商品
+                    $("#sceneCategoryFather").css("display", "none");
+                    $("#sceneBrandFather").css("display", "none");
+                    $("#sceneProuctFather").css("display", "inherit");
+                    break;
+                default:
+                    $("#sceneCategoryFather").css("display", "none");
+                    $("#sceneBrandFather").css("display", "none");
+                    $("#sceneProuctFather").css("display", "none");
+                    break;
+            }
+        }
+
+        ///选择商品信息
+        function GetDPGoods(ty) {
+            switch (ty) {
+                case '1':
+                    var strWhere = $("#txtGoodsCode").val();
+                    layer_show("选择商品", "SearchInfo.html?type=singlegift&proc=Proc_Admin_SearchInfo&sqlType=GoodsList&strWhere=" + encodeURI(strWhere), 1000, 600);
+                    break;
+                case '2':
+                    var strWhere = $("#txtCategryCode").val();
+                    layer_show("选择分类", "SearchInfo.html?type=categry&proc=Proc_Admin_SearchInfo&sqlType=CategrysListHG&strWhere=" + encodeURI(strWhere), 1000, 600);
+                    break;
+                default:
+                    return;
+                    break;
+            }
+        }
+        //选择商品或赠品
+        function ChoseGift() {
+            var strWhere = $("#txtGiftName").val();
+            layer_show("选择赠品", "SearchInfo.html?type=gift&proc=Proc_Admin_SearchInfo&sqlType=GoodsListMZ&strWhere=" + encodeURI(strWhere), 1000, 600);
+        }
+        //赠品品检测
+        function CheckPremium(model) {
+            var index = layer.load(2);
+            var proId = $(model).val()
+            if (proId == '') {
+                layer.close(index);
+                return;
+            }
+            var proc = "Pc_Coupon";//存储过程名
+            var type = "ReturnList";
+            var json = {
+                type: "PC_CheckData",
+                CheckType: "CheckPremium",
+                productId: proId
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        $("#premiumname").text(obj.data[0]["msg"]);
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+                       
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+
+        function Bianhua() {
+            var receivingType = $("#receivingType").val();
+            if (typeCoding == '') {
+                layer.msg("领取类型不能为空", { time: 3000 });
+                layer.close(index);
+                return;
+            }
+            $("#NumFather").css("display", "none");
+            $("#AllAmountFather").css("display", "none");
+
+            switch (receivingType) {
+                case "4"://件数规则
+                    $("#NumFather").css("display", "inherit");
+                    break;
+                case "5"://满额规则
+                    $("#AllAmountFather").css("display", "inherit");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // case "4"://商品件数规则
+        //$("#NumFather").css("display", "none");
+        //$("#productCodeFather").css("display", "inherit");
+        //$("#AllAmountFather").css("display", "inherit");
+        //break;
+        //        case "5"://商品满额规则
+        //$("#productCodeFather").css("display", "inherit");
+        //$("#NumFather").css("display", "inherit");
+        //$("#AllAmountFather").css("display", "none");
+        //break;
+        //case "5"://商品件数规则
+        //if (Num == '') {
+        //    layer.msg("件数不能为空", { time: 3000 });
+        //    layer.close(index);
+        //    return;
+        //}
+        //if (productCode == '') {
+        //    layer.msg("商品不能为空", { time: 3000 });
+        //    layer.close(index);
+        //    return;
+        //}
+        //break;
+        //        case "6"://商品满额规则
+        //if (productCode == '') {
+        //    layer.msg("商品不能为空", { time: 3000 });
+        //    layer.close(index);
+        //    return;
+        //}
+        //if (AllAmount == '') {
+        //    layer.msg("金额不能为空", { time: 3000 });
+        //    layer.close(index);
+        //    return;
+        //}
+        //break;
+
+        //优惠券规则
+
+        function receiveType() {
+            var sceneType = $("#roleType").val();
+            $("#fullAmountFather").css("display", "none");//满额
+            $("#deductionFather").css("display", "none");//减额
+            $("#discountFather").css("display", "none");//折扣
+            $("#numberFather").css("display", "none");//件数
+            $("#premiumIdFather").css("display", "none");//赠品
+
+            if (sceneType == '') {
+                return;
+            }
+            switch (sceneType) {
+                case "0"://无门槛
+                    $("#deductionFather").css("display", "inherit");
+                    break;
+                case "1"://满减
+                    $("#fullAmountFather").css("display", "inherit");
+                    $("#deductionFather").css("display", "inherit");
+                    break;
+                case "2"://折扣
+                    $("#discountFather").css("display", "inherit");
+                    break;
+                case "3"://满额赠
+                    $("#fullAmountFather").css("display", "inherit");
+                    $("#premiumIdFather").css("display", "inherit");
+                    break;
+                case "4"://满件赠
+                    $("#numberFather").css("display", "inherit");
+                    $("#premiumIdFather").css("display", "inherit");
+                    break;
+                case "5"://免邮
+                    break;
+                case "6"://满件折扣
+                    $("#numberFather").css("display", "inherit");
+                    $("#discountFather").css("display", "inherit");
+                    break;
+                case "7"://满件减额
+                    $("#numberFather").css("display", "inherit");
+                    $("#deductionFather").css("display", "inherit");
+                case "9"://满额折扣
+                    $("#fullAmountFather").css("display", "inherit");
+                    $("#discountFather").css("display", "inherit");
+                default:
+                    break;
+            }
+        }
+
+    </script>
+</body>
+</html>

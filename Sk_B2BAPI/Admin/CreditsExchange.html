@@ -1,0 +1,128 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreditsExchange.aspx.cs" Inherits="DTcms.Web.admin.IntegralGoods.CreditsExchange" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../scripts/artdialog/ui-dialog.css" rel="stylesheet" />
+    <link href="../skin/default/style.css" rel="stylesheet" />
+    <link href="../promotion/css/cxgz.css" rel="stylesheet" />
+    <link href="../pinpaiZG/css/common.css" rel="stylesheet" />
+    <script src="../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script src="../../../scripts/datepicker/WdatePicker.js"></script>
+    <script src="../../../scripts/artdialog/dialog-plus-min.js"></script>
+    <script src="../../../scripts/webuploader/webuploader.min.js"></script>
+    <script src="../../../editor/kindeditor-min.js"></script>
+    <script src="../js/uploader.js"></script>
+    <script src="../js/laymain.js"></script>
+    <script src="../ImgUrl/js/common.js"></script>
+    <script src="../ImgUrl/js/layeralert/layer.js"></script>
+    <script src="../../aspx/Promotion/js/PromotionMain.js"></script>
+    <script src="../Premium/js/Main.js"></script>
+    <script src="js/PostFile.js"></script>
+    <script src="js/CreditsExchange.js"></script>
+    <title>积分兑换</title>
+    <script>
+        $(window).load(function () {
+            $("#txtCoupon").keydown(function (even) {
+                if (event.keycode == "13") {
+                    LoadPage();
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server" style="position: absolute; z-index: 1;">
+        <!--导航栏-->
+        <p id="TEST"></p>
+        <div class="location">
+            <a href="#" class="back"><i></i><span>返回列表页</span></a>
+            <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
+            <i class="arrow"></i>
+            <a href="#"><span>内容管理</span></a>
+            <i class="arrow"></i>
+            <span>编辑内容</span>
+        </div>
+        <div class="line10"></div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div id="floatHead" class="content-tab-wrap">
+            <div class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a class="selected" href="javascript:;">积分兑换</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <dl>
+                <dt>商品分类：</dt>
+                <dd>
+                    <select id="classification" style="height:32px;width:122px;border: 1px solid #eee;" onchange="ChoseGoodsType()">
+                        <option value="积分兑换" selected="selected">积分兑换</option>
+                        <option value="积分抽奖">积分抽奖</option>
+                    </select>
+                    <span class="Validform_checktip">*选择商品分类</span>
+                </dd>
+            </dl>
+            <dl id="CJnameDiv" style="display:none">
+                <dt>商品名称：</dt>
+                <dd>
+                    <input type="text" id="CJnametxt" value="" class="input normal" />
+                </dd>
+            </dl>
+            <dl id="YhgTxtId">
+                <dt id="spmch">优惠券：</dt>
+                <dd>
+                    <input type="text" id="txtCoupon" value="" class="input normal" onclick="LoadPage()" />
+                    <input type="text" id="txtCode" value="" hidden="hidden" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>展示楼层：</dt>
+                <dd>
+                    <select id="floor" style="height:32px;width:122px;border: 1px solid #eee;">
+                        <option value="积分兑换" selected="selected">其它</option>
+                    </select>
+                    <span class="Validform_checktip">*选择楼层分类</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>上传图片：</dt>
+                <dd>
+                    <input type="text" id="pictureText" class="input normal" value="" readonly="readonly" />
+                    <input type="file" id="file" style="display:none;" onchange="PostFile(this)" />
+                    <input type="button" value="浏览..." onclick="fileBtn()" class="anniu" />
+                    <input type="hidden" value="" id="hiddenUrl" />
+                </dd>
+            </dl>
+            <dl id="CjDivId" style="display:none">
+                <dt>抽奖次数：</dt>
+                <dd>
+                    <input type="text" id="CjAmountId" value="1" class="input normal" />
+                    <span class="Validform_checktip">*填写数量</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>兑换积分：</dt>
+                <dd>
+                    <input type="text" id="txtInteger" value="" class="input normal" />
+                    <span class="Validform_checktip">*填写积分</span>
+                </dd>
+            </dl>
+        </div>
+        <!--工具栏-->
+        <div class="page-footer">
+            <div class="btn-wrap">
+                <input type="button" id="btnSubmit" value="提交" class="btn" onclick="AddInfo()" />
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript: history.back(-1);" />
+            </div>
+        </div>
+        <!--/工具栏-->
+    </form>
+</body>
+</html>

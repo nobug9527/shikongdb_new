@@ -1,0 +1,391 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+  <title>专区商品</title>
+</head>
+
+<body>
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 专区商品 <span
+      class="c-gray en">&gt;</span> 专区商品 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a href="javascript:;" onclick="datajy()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+          批量删除</a>
+      </span>
+      <div class="text-c" style="display:flex;align-items: center;float:right">
+        <input type="text" class="input-text" style="width:250px" placeholder="编号/名称" id="txtStrWhere">
+        <a href="javascript:QueryReproList(1)" class="btn btn-success"><i
+            class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+      </div>
+    </div>
+    <!--  -->
+    <div class="mt-20" style="width: 100%;">
+      <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:100%">
+        <thead>
+          <tr class="text-c">
+            <th style="width:30px">专区分类</th>
+            <th style="width:30px">请选择推荐商品</th>
+            <th style="width:130px">商品名称</th>
+            <th style="width:130px">排序</th>
+            <th style="width:50px">操作</th>
+          </tr>
+        </thead>
+        <tbody id="TbGoods">
+          <tr class="text-c">
+            <td>
+              <select id="sltZqType" class="input-text" onchange="QueryReproList()">
+                <option value="2" selected="selected">保健专区</option>
+                <option value="1">药店专区</option>
+                <option value="0">门诊专区</option>
+              </select>
+            </td>
+            <td id="tdGoodsCode">选择商品</td>
+            <td>
+              <input type="text" id="txtGoodsName" value="" class="input-text" ondblclick="QueryGoods()" />
+
+              <input type="hidden" id="txtArticleId">
+            </td>
+            <td>
+              <input type="number" id="txtSort" value="0" class="input-text" min="0" max="99" />
+            </td>
+            <td><a onclick="AddRecommendGoods()" class="btn btn-secondary radius">保存</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 240px);">
+      <table class="table table-border table-bordered table-hover table-bg table-sort">
+        <thead>
+          <tr class="text-c">
+            <th><input type="checkbox" name="" value=""></th>
+            <th>商品编号</th>
+            <th>排序</th>
+            <th>商品名称</th>
+            <th>商品规格</th>
+            <th>建议零售价</th>
+            <th>库存</th>
+            <th>国药准字</th>
+            <th>生产厂家</th>
+            <th>添加时间</th>
+          </tr>
+        </thead>
+        <tbody id="TbShows"></tbody>
+      </table>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:btnfirst(QueryReproList)">首页</a>
+        <a href="javascript:btnup(QueryReproList)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(QueryReproList)">下一页</a>
+        <a href="javascript:btnlast(QueryReproList)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(QueryReproList)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <!--请在下方写此页面业务相关的脚本-->
+  <script src="js/main.js"></script>
+  <!--<script src="goods/js/Category.js"></script>-->
+  <script>
+    $(function () {
+      QueryReproList();
+    });
+    function QueryReproList(obj) {
+      var index = layer.load(2);
+      //var ArrondiType = GetQueryString("ArrondiType");
+      var ArrondiType = $("#sltZqType").val();
+      var pageIndex = $("#pageIndex").html();
+      switch (obj) {
+        case 1:
+          pageIndex = '1';
+          $("#pageIndex").html(1)
+          break;
+        default:
+          break;
+      }
+      var strWhere = $("#txtStrWhere").val();//搜索条件
+      var pageSize = '15';
+      var proc = "Proc_Admin_Brand";//存储过程名
+      var type = "ReturnList";
+      var json = {
+        type: "Pc_GetArrondiProduct",
+        strWhere: strWhere,
+        ArrondiType: ArrondiType,
+        PageIndex: pageIndex,
+        PageSize: pageSize,
+      };
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "brand/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            var obj = result.data;
+            var html = "";
+            for (var i = 0; i < obj.length; i++) {
+              html += '<tr class="text-c">'
+              html += '<td><input type="checkbox" name="arronPro" value="' + obj[i]["article_id"] + '"></td>'
+              html += '<td>' + obj[i]["article_id"] + '</td>'
+              html = html + '<td><input type="number" class="input-text radius size-M" onchange="UpSort(this,' + obj[i]["article_id"] + ')" value="' + obj[i]["sort_id"] + '" ></td>'
+              html = html + '<td>' + obj[i]["sub_title"] + '</td>'
+              html += '<td>' + obj[i]["drug_spec"] + '</td>'
+              html += '<td>' + obj[i]["price"] + '</td>'
+              html += '<td>' + obj[i]["stock_quantity"] + '</td>'
+              html += '<td>' + obj[i]["approval_number"] + '</td>'
+              html += '<td>' + obj[i]["drug_factory"] + '</td>'
+              html += '<td>' + obj[i]["add_time"] + '</td>'
+              html += '</tr>'
+            }
+            $('#TbShows').empty();
+            $("#TbShows").append(html);
+            layer.close(index);
+            var recordCount = result["recordCount"];
+            var pageCount = result["pageCount"];
+            $("#recordCount").html(recordCount);
+            $("#pageCount").html(pageCount);
+          }
+          else if (type == '1') {
+            $("#recordCount").html(0);
+            $("#pageCount").html(1);
+            $('#TbShows').empty();
+            layer.close(index);
+          }
+          else if (type == '2') {
+            layer.close(index);
+            layer.alert(obj.msg, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+          }
+          else {
+            layer.close(index);
+            layer.alert(result.msg, {
+              icon: 2,
+              skin: 'layer-ext-moon'
+            });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+
+    function datajy() {
+      var ArrondiType = $("#sltZqType").val();
+      var s = '';
+      $('input[name="arronPro"]:checked').each(function () {
+        s += '\'' + $(this).val() + '\',';
+      });
+      if (s.length > 0) {
+        //得到选中的checkbox值序列
+        s = s.substring(0, s.length - 1);
+      }
+      if (s == '') {
+        alert('你还没有选择任何内容！')
+      }
+      var data = {
+        type: "PC_DelArronPro",
+        strWhere: s,
+        ArrondiType: ArrondiType
+      };
+      var proc = "Proc_Admin_Brand";//存储过程名
+      var type = "ReturnNumber";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "coupon/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.alert('操作成功', {
+              icon: 1,
+              skin: 'layer-ext-moon'
+            });
+            QueryReproList();
+          }
+          if (type == '1') {
+            layer.alert('操作失败', {
+              icon: 2,
+              skin: 'layer-ext-moon'
+            });
+          }
+          else if (type == '2') {
+            layer.alert(result.msg, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+
+    function QueryGoods() {
+      var strWhere = $("#txtGoodsName").val();
+      layer_show("选择商品", "SearchInfo.html?type=single&proc=Proc_Admin_SearchInfo&sqlType=GoodsList&strWhere=" + encodeURI(strWhere), 1000, 600);
+    }
+
+    function UpSort(obj, id) {
+      var ArrondiType = $("#sltZqType").val();
+      var sort = $(obj).val();
+      if (sort <= 0) {
+
+        layer.alert("不能为小于0！", {
+          icon: 2,
+          skin: 'layer-ext-moon'
+        });
+        return;
+      }
+      var proc = "Proc_Admin_Brand";//存储过程名
+      var type = "ReturnNumber";
+      var json = {
+        type: "Pc_SetArrondiProduct",
+        article_id: id,
+        ArrondiType: ArrondiType,
+        sort_id: sort,
+      };
+      $.ajax({
+        url: "main/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        type: "Post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            QueryReproList();
+          }
+          if (type == '1') {
+            layer.alert('失败', {
+              icon: 1,
+              skin: 'layer-ext-moon'
+            });
+          }
+          else if (type == '2') {
+            layer.alert(obj.msg, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+
+    function AddRecommendGoods() {
+      var article_Id = $("#txtArticleId").val();
+      var sort = $("#txtSort").val();
+      var ArrondiType = $("#sltZqType").val();
+      if (ArrondiType != "0" && ArrondiType != "1" && ArrondiType != "2") {
+
+        layer.alert("请刷新重试！", {
+          icon: 2,
+          skin: 'layer-ext-moon'
+        });
+        return;
+      }
+      if (article_Id == "") {
+        layer.alert("请选择商品！", {
+          icon: 2,
+          skin: 'layer-ext-moon'
+        });
+        return;
+      }
+      var proc = "Proc_Admin_Brand";//存储过程名
+      var type = "ReturnNumber";
+      var json = {
+        type: "Pc_SetArrondiProduct",
+        article_id: article_Id,
+        sort_id: sort,
+        ArrondiType: ArrondiType
+      };
+      $.ajax({
+        url: "brand/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        type: "Post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.alert('添加成功', {
+              icon: 1,
+              skin: 'layer-ext-moon'
+            });
+            $("#txtGoodsName").val("");
+            $("#txtArticleId").val("");
+            $("#txtSort").val(0);
+            QueryReproList();
+          }
+          if (type == '1') {
+            layer.alert('添加失败', {
+              icon: 0,
+              skin: 'layer-ext-moon'
+            });
+          }
+          else if (type == '2') {
+
+            layer.alert(obj.msg, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

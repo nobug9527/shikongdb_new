@@ -1,0 +1,387 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册</title>
+    <link href="http://47.105.206.10:8081/css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/layer/2.4/skin/layer.css">
+    <style>
+        .container {
+            background: #F6F6F6;
+        }
+
+        .header {
+            width: 100%;
+            height: 138px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .header_cen {
+            width: 1200px;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .header img {
+            width: 230px;
+            height: 66px;
+            margin-top: 36px;
+            float: left;
+            cursor: pointer;
+        }
+
+        .header p {
+            height: 100%;
+            margin-left: 44px;
+            line-height: 138px;
+            font-size: 34px;
+            color: #000;
+            float: left;
+        }
+
+        .main {
+            width: 100%;
+            height: auto;
+            padding: 50px 0;
+        }
+
+        .maincen {
+            width: 1200px;
+            height: auto;
+            background: #fff;
+            padding: 34px 103px;
+            margin: 0 auto;
+        }
+
+        .main_top {
+            width: 100%;
+            height: 62px;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+            .main_top > div {
+                width: 331px;
+                height: 62px;
+                background-image: url(/image/jindu.png);
+                line-height: 62px;
+                text-align: center;
+                font-size: 20px;
+                float: left;
+            }
+
+            .main_top span {
+                color: #000;
+            }
+
+        .main_cen {
+            width: 500px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .tel {
+            width: 100%;
+            height: 46px;
+            line-height: 46px;
+            font-size: 18px;
+            color: #353535;
+            overflow: hidden;
+        }
+
+            .tel p {
+                width: 100px;
+                height: 100%;
+                float: left;
+            }
+
+            .tel input {
+                width: 360px;
+                height: 100%;
+                background: #EFF0F4;
+                border-radius: 3px;
+                padding: 17px;
+            }
+
+        input::placeholder {
+            font-size: 18px;
+            color: #353535;
+        }
+
+        .teltext {
+            padding-left: 100px;
+            height: 46px;
+            line-height: 46px;
+            font-size: 18px;
+            color: #808080;
+            margin-bottom: 20px;
+        }
+
+        .check {
+            width: 100%;
+            height: 46px;
+            line-height: 46px;
+            font-size: 18px;
+            color: #353535;
+            overflow: hidden;
+            margin-bottom: 46px;
+        }
+
+            .check p {
+                width: 100px;
+                height: 100%;
+                float: left;
+            }
+
+            .check input {
+                width: 160px;
+                height: 100%;
+                background: #EFF0F4;
+                border-radius: 3px;
+                padding: 17px;
+                float: left;
+                margin-right: 20px;
+            }
+
+        .note {
+            width: 140px;
+            height: 40px;
+            border-radius: 20px;
+            background: #FFF;
+            line-height: 40px;
+            text-align: center;
+            font-size: 18px;
+            color: #fff;
+            float: left;
+            cursor: pointer;
+        }
+
+        .agreement {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            overflow: hidden;
+            padding-left: 88px;
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+
+        .dui {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: 1px solid #ADACAC;
+            float: left;
+            margin-right: 7px;
+        }
+
+            .dui img {
+                width: 15px;
+                height: 15px;
+                position: relative;
+                top: -2px;
+                left: 2px;
+            }
+
+        .none {
+            display: none;
+        }
+
+        .agreement p {
+            color: #353535;
+            float: left;
+        }
+
+        .agreement span {
+            color: #008C90;
+            float: left;
+            cursor: pointer;
+        }
+
+        .button {
+            width: 100%;
+            height: 46px;
+            line-height: 46px;
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 40px;
+        }
+
+        .button_cen {
+            width: 160px;
+            height: 46px;
+            margin: 0 auto;
+            background: #008C90;
+            border-radius: 23px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .footer {
+            width: 100%;
+            height: 144px;
+            background: #fff;
+            font-size: 16px;
+            color: #666;
+            padding-top: 20px;
+        }
+
+            .footer p {
+                width: auto;
+                height: 16px;
+                margin: 13px auto;
+                line-height: 16px;
+                text-align: center;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header_cen">
+                <img src="/images/logo.jpg">
+                <p>业务员注册</p>
+            </div>
+        </div>
+        <div class="main">
+            <div class="maincen">
+                <div class="main_cen">
+                    <!--<div class="main_top">
+                        <div class="main_top1" style="background-image: url(http://47.105.206.10:8081/image/jindu1.png);">
+                            <span style="color: #fff;">业务员注册</span>
+                        </div>
+                    </div>-->
+                    <div class="tel">
+                        <p>&nbsp;登&nbsp;录&nbsp;名：</p>
+                        <input type="text" placeholder="请输入您的登录账号" id="username" />
+                    </div>
+                    <div class="teltext">*请填写您的登录账号</div>
+                    <div class="tel">
+                        <p>登录密码：</p>
+                        <input type="password" placeholder="请输入您的登录密码" id="password">
+                    </div>
+                    <div class="teltext">*请输入登录密码</div>
+                    <div class="tel">
+                        <p>重复密码：</p>
+                        <input type="password" placeholder="请再次输入密码" id="cpassword">
+                    </div>
+                    <div class="teltext">*验证两次密码输入是否一致</div>
+                    <div class="tel">
+                        <p>真实姓名：</p>
+                        <input type="text" placeholder="请务必输入您的真实姓名" id="name" maxlength="10">
+                    </div>
+                    <div class="teltext">*请务必填写您的真实姓名</div>
+                    <div class="tel">
+                        <p>&nbsp;手&nbsp;机&nbsp;号：</p>
+                        <input type="text" placeholder="请务必输入您的真实手机号" id="telphone">
+                    </div>
+                    <div class="teltext">*请务必填写您常用的手机号</div>
+                    <div class="check">
+                        <p>&nbsp;验&nbsp;证&nbsp;码：</p>
+                        <input type="text" placeholder="请输入验证码" id="code">
+                        <div class="note"><a style="cursor:pointer" title="点击刷新" onclick="javascript:codepic.src='../Users/AdminImgCode?r='+Math.random()"><img src="../Users/AdminImgCode" id="codepic" style="width:120px;height:40px;"></a></div>
+                    </div>
+
+                    <div class="button">
+                        <div class="button_cen" id="btnQue">确认注册</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="lib/layer/2.4/layer.js"></script>
+    <script>
+        $(function () {
+            $("#btnQue").click(function () {
+                var username = $("#username").val().trim();
+                var password = $("#password").val().trim();
+                var cpassword = $("#cpassword").val().trim();
+                var name = $("#name").val().trim();
+                var telphone = $("#telphone").val().trim();
+                var code = $("#code").val().trim();
+                var unameerr = valids.username(username);
+                var pwderr = valids.pass(password);
+                var cpwderr = valids.pass(cpassword);
+                var phoneerr = valids.telphone(telphone);
+                var errstr = "";
+                if (unameerr != "") {
+                    errstr += unameerr + "<br />";
+                }
+                if (pwderr != "") {
+                    errstr += pwderr + "<br />";
+                }
+                if (cpwderr != "") {
+                    errstr += "重复"+cpwderr + "<br />";
+                }
+                if (pwderr != cpwderr) {
+                    errstr += "请确保两次密码输入相同" + "<br />";
+                }
+                if (phoneerr != "") {
+                    errstr += phoneerr + "<br />";
+                }
+                if (name == '') {
+                    errstr += "请输入真实姓名" + "<br />";
+                }
+                if (code == '') {
+                    errstr += "请输入验证码" + "<br />";
+                }
+                if (errstr != "") {
+                    layer.msg(errstr);
+                    return false;
+                }
+                var loading = layer.load(1, { shade: [0.1, '#fff'] });
+                $.post("/Users/RegisterSalesman", { username: username, password: password, name: name, telphone: telphone, code: code },
+                    function (m) {
+                        //var d = JSON.parse(m);
+                        if (m.success == true) {
+                            layer.alert(m.message, function () {
+                                layer.close(loading);
+                                location.reload();
+                            });
+                        }
+                        else {
+                            layer.alert(m.message, function () {
+                                layer.close(loading);
+                            });
+                        }                                     
+                    },'json'
+                );
+            });
+        });
+        var valids = {
+            username: function (value) { //value:值
+                if (value.length < 6 || value.length > 12 || value == "") {
+                    return '用户名必须6到12位，且必填';
+                }
+                if (!new RegExp("^[a-zA-Z0-9_\\s·]+$").test(value)) {
+                    return '用户名不能有特殊字符和汉字';
+                }
+                if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                return "";
+                //if (/^\d+\d+\d$/.test(value)) {
+                //    return '用户名不能全为数字';
+                //}
+            },
+            pass: function (value) {
+                if(!(/^[\S]{6,12}$/.test(value)))
+                {
+                    return '密码必须6到12位，且不能出现空格';
+                }
+                return "";
+            },
+            telphone: function (value) {
+                if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(value))) {
+                    return '请输入正确手机号';
+                }
+                return "";
+            }
+        };
+    </script>
+</body>
+</html>

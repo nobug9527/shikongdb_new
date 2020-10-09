@@ -1,0 +1,226 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+
+    <title>活动模板</title>
+    <!--<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+    <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">-->
+</head>
+<body>
+    <article class="page-container">
+        <form class="form form-horizontal" id="form-article-news-add">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>模板标题：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="1到25个字..." id="txtTitle" name="title">
+                </div>
+            </div>
+            <!--<div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select class="select" id="sltType">
+                            <option value="0">商品分类</option>
+                            <option value="1">商品组合活动</option>
+                            <option value="2">公告新闻</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">排序值：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="0" placeholder="" id="txtSortId" name="txtSortId">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>发布日期：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate: '%y-%M-#{%d}' })" id="dateTime" name="dateTime" class="input-text Wdate">
+                </div>
+            </div>-->
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">内容：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <script id="editor" type="text/plain" style="width:100%;height:400px;"> </script>
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a class="btn btn-primary radius" href="javascript:SaveTemplate()"><i class="Hui-iconfont">&#xe632;</i> 存&nbsp;&nbsp;盘</a>
+                </div>
+            </div>
+        </form>
+    </article>
+
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <!-- 日期控件-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <!-- 页面控件验证-->
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <!--文本编辑器-->
+    <script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.config.js"></script>
+    <script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="lib/webuploader/0.1.5/webuploader.min.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script type="text/javascript">
+       
+        window.onload = function () {
+            var id = GetQueryString("id");
+            if (id != ""&id!=null) {
+                LoadTemplateDetail();
+            } else {
+                id = "";
+            }
+        };
+        $(function () {
+            //表单验证
+            $("#form-article-news-add").validate({
+                rules: {
+                    title: {
+                        required: true,
+                    },
+                    sltType: {
+                        required: true,
+                    },
+                    txtSortId: {
+                        required: true,
+                    },
+                    dateTime: {
+                        required: true,
+                    }
+                },
+                onkeyup: false,
+                focusCleanup: true,
+                success: "valid",
+                submitHandler: function (form) {
+                    //$(form).ajaxSubmit();
+                    var index = parent.layer.getFrameIndex(window.name);
+                    //parent.$('.btn-refresh').click();
+                    parent.layer.close(index);
+                }
+            });
+            var ue = UE.getEditor('editor');
+            //设置默认日期
+            initDate();
+
+        });
+        //新闻资讯存盘
+        function SaveTemplate() {
+            var index = layer.load(2);
+            var title = $("#txtTitle").val();
+            //var newsType = $("#sltType").val();
+            //var sortId = $("#txtSortId").val();
+            //var dates = $("#dateTime").val();
+            var ue = UE.getEditor('editor');
+            var content = ue.getContent();
+            var type = "SaveTemplate";
+            var id = GetQueryString("id");
+            if (id==""|id==null|id=="null") {
+                id = "";
+            }
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                url: "../Prom/SaveTemplate",
+                data: {
+                    type: type,
+                    title: title,
+                    content: content,
+                    strwhere: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    var obj = data;
+                    if (obj.success) {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 1,
+                            skin: 'layer-ext-moon',
+                            yes: function () { layer.closeAll(); }
+                        });
+                        parent.location.reload();
+                    }else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+
+        ////加载详情信息
+        function LoadTemplateDetail() {
+            var index = layer.load(2);
+            var strwhere = GetQueryString("id");
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "Template/ashx/ReturnJson.ashx?type=TemplateDetail&strwhere=" + strwhere,
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (result) {
+
+                    var strs = new Array(); //定义一数组 
+                    
+                    if (result != '') {
+                        strs = result.split("|||"); //字符分割 
+                     
+                        $("#txtTitle").val(strs[0]);
+                        var ue = UE.getEditor('editor');
+                        // editor准备好之后才可以使用
+                        ue.addListener("ready", function () {
+                            //赋值
+                        ue.setContent(strs[1]);
+                        });
+                        layer.close(index);
+                    }else {
+                        layer.close(index);
+                        layer.alert("网络异常", {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            })
+        }
+    </script>
+    <!--/请在上方写此页面业务相关的脚本-->
+    <!--url: "Template/ashx/ReturnJson.ashx?type=" + type + "&title=" + title + "&newsType=" + newsType + "&sortId=" + sortId + "&dates=" + dates + "&content=" + content,-->
+</body>
+</html>

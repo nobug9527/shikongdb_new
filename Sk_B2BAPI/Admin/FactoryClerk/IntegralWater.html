@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="../scripts/artdialog/ui-dialog.css" rel="stylesheet" type="text/css" />
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/artdialog/dialog-plus-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js1/laymain.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js1/common.js"></script>
+    <script src="../js1/layeralert/layer.js"></script>
+    
+    <script src="../js1/layeralert/laydate.js"></script>
+    <link href="../SignLog/css/laydate.css" rel="stylesheet" />
+    <script src="js/SearchInfo.js"></script>
+    <script src="../js1/common.js"></script>
+    <script src="js/IntegralWater.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+    <title>积分流水</title>
+</head>
+<body>
+  <!-- 面包屑导航 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 订单管理 <span
+    class="c-gray en">&gt;</span> 流水积分列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+    href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <!-- 主体内容 -->
+  <div class="page-container">
+    <!-- 搜索栏 -->
+    <div class="text-c">
+      起始日期：
+      <input type="text" id="startDate" onclick="laydate(starts)" 
+        class="input-text" style="width: 150px;" />
+      截止日期:<input type="text" id="endDate" onclick="laydate(ends)" 
+        class="input-text" style="width: 150px;" />
+      <input type="text" id="txtKeyword" class="input-text" style="width:150px;"/>
+      <a href="javascript:IntegralWater()" class="btn btn-success"><i
+          class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 100px);">
+       <table class="table table-border table-bordered table-hover table-bg table-sort">
+        <thead>
+          <tr class="text-c">
+            <th>行号</th>
+            <th>客户编号</th>
+            <th>客户名称</th>
+            <th>类型</th>
+            <th>积分变动</th>
+            <th>变动后积分</th>
+            <th>现存积分</th>
+            <th>改动时间</th>
+            <th>电商单号</th>
+            <th>ERP单号</th>
+          </tr>
+        </thead>
+        <tbody id="TBShow"></tbody>
+      </table>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:btnfirst(IntegralWater)">首页</a>
+        <a href="javascript:btnup(IntegralWater)">上一页</a>
+        <b id="PageIndex">1</b>/<b id="PageCount">1</b>
+        <a href="javascript:btnnext(IntegralWater)">下一页</a>
+        <a href="javascript:btnlast(IntegralWater)">尾页</a>
+        <span class="r">共有数据：<strong id="RecordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+</body>
+</html>

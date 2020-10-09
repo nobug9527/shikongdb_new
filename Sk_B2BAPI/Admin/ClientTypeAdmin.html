@@ -1,0 +1,88 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+  <title>商城会员分类管理</title>
+</head>
+
+<body>
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 会员管理 <span
+      class="c-gray en">&gt;</span> 分类管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索 -->
+    <div class="text-c">
+      <input type="text" class="input-text" style="width:250px" placeholder="编号/名称" id="txtStrWhere">
+      <a href="javascript:LoadClientTypeList()" id="btnQueryType" class="btn btn-success"><i
+          class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a class="btn btn-success radius" onclick="AddClientType()" href="javascript:;"><i
+            class="Hui-iconfont">&#xe600;</i> 新增客户分类</a>
+      </span>
+      <span style="float:right;display:none">
+        <a href="javascript:btnfirst(QueryList)">首页</a>
+        <a href="javascript:btnup(QueryList)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(QueryList)">下一页</a>
+        <a href="javascript:btnlast(QueryList)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(QueryList)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 130px);">
+      <div class="autodiv">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+          <thead>
+            <tr class="text-c">
+              <th>序号</th>
+              <th>类型</th>
+              <th>分类名称</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="TbShows"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 分页 -->
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <!--请在下方写此页面业务相关的脚本-->
+  <script src="js/main.js"></script>
+  <script src="qualification/js/qualification.js"></script>
+  <script>
+    $(function () {
+      LoadClientTypeList();
+    });
+    function AddClientType() {
+      layer_show("添加资质分类", "AddQualification.html?Type=B2BType", 900, 400);
+    }
+  </script>
+</body>
+
+</html>

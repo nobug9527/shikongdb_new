@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <!--/meta 作为公共模版分离出去-->
+    <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+    <title></title>
+</head>
+<body>
+    <nav class="breadcrumb">
+        <i class="Hui-iconfont">&#xe67f;</i> 数据 <span class="c-gray en">&gt;</span> 促销管理 <span class="c-gray en">&gt;</span> 促销活动列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+    </nav>
+    <div class="page-container">
+        <!-- 搜索 -->
+        <div class="text-c">
+            活动类型：
+            <span class="select-box inline">
+                <select name="" class="select" id="sltShowType">
+                    <option value="" selected="selected">全部分类</option>
+                    <option value="DHG">换购</option>
+                    <option value="DMZ">买赠</option>
+                    <option value="DZK">折扣</option>
+                    <option value="DQG">抢购</option>
+                    <option value="DMJ">满减</option>
+                    <option value="GZH">组合</option>
+                </select>
+            </span>
+            活动状态：
+            <span class="select-box inline">
+                <select name="" class="select" id="sltStatus">
+                    <option value="" selected="selected">全部</option>
+                    <option value="2">已发布</option>
+                    <option value="1">未发布</option>
+                    <option value="0">已删除</option>
+                </select>
+            </span>
+            <input type="text" class="input-text" style="width:250px" placeholder="促销活动名称/促销规则名称" id="txtStrWhere"
+                   name="">
+
+            <a class="btn btn-success radius" name="" onclick="QueryRuleList(1)" id="searchBtnA">
+                <i class="Hui-iconfont">&#xe665;</i>搜 索
+            </a>
+        </div>
+        <div class="mt-20 cl pd-5 bg-1 bk-gray" style="width: calc(100% - 150px);margin-left:auto;margin-right:auto">
+            <span class="l mr-10">
+                <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+                <a class="btn btn-success radius" onclick="Open('新增折扣','PromSales.html','DZK')" href="javascript:;">
+                    <i class="Hui-iconfont">&#xe600;</i> 新增折扣活动
+                </a>
+            </span>
+            <span class="l mr-10">
+                <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+                <a class="btn btn-success radius" onclick="Open('新增满减','PromSales.html','DMJ')" href="javascript:;">
+                    <i class="Hui-iconfont">&#xe600;</i> 新增满减活动
+                </a>
+            </span>
+            <span class="l mr-10">
+                <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+                <a class="btn btn-success radius" onclick="Open('新增满赠','PromSales.html','DMZ')" href="javascript:;">
+                    <i class="Hui-iconfont">&#xe600;</i> 新增买赠活动
+                </a>
+            </span>
+            <span class="l mr-10">
+                <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+                <a class="btn btn-success radius" onclick="Open('新增换购','PromSales.html','DHG')" href="javascript:;">
+                    <i class="Hui-iconfont">&#xe600;</i> 新增换购活动
+                </a>
+            </span>
+            <span class="l mr-10">
+                <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+                <a class="btn btn-success radius" onclick="Open('新增组合商品','PromSales.html','GZH')" href="javascript:;">
+                    <i class="Hui-iconfont">&#xe600;</i> 新增组合商品活动
+                </a>
+            </span>
+            <span class="l mr-10">
+                <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>-->
+                <a class="btn btn-success radius" onclick="Open('新增抢购','PromSales.html','DQG')" href="javascript:;">
+                    <i class="Hui-iconfont">&#xe600;</i> 新增抢购活动
+                </a>
+            </span>
+        </div>
+        <!-- 表格 -->
+        <div class="mt-20 page-con-tableCon" style="height:calc(100% - 160px);">
+            <div style="width: calc(100% - 150px);margin: 0px auto;">
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                        <tr class="text-c">
+                            <th>序号</th>
+                            <th>机构</th>
+                            <th>活动编号</th>
+                            <th>活动标题</th>
+                            <th>活动类型</th>
+                            <th style="width:300px">规则标题</th>
+                            <th>状态</th>
+                            <th style="width:184px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TbShows"></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 分页 -->
+        <div class="cl pd-5 bg-1 bk-gray">
+            <span>
+                <a href="javascript:btnfirst(QueryRuleList)">首页</a>
+                <a href="javascript:btnup(QueryRuleList)">上一页</a>
+                <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+                <a href="javascript:btnnext(QueryRuleList)">下一页</a>
+                <a href="javascript:btnlast(QueryRuleList)">尾页</a>
+                <input type="number" class="input-text radius size-S" id="pagety" value="1"
+                       onchange="if (this.val <= 0) { this.val = 1; }" />
+                <a href="javascript:btntz(QueryRuleList)">跳转</a>
+                <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+            </span>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+    <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script src="js/main.js"></script>
+    <script src="prom/js/PromSalseList.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            QueryRuleList(1);
+        });
+        function Open(title, url, fatype) {
+            var index = layer.open({
+                type: 2,
+                title: title,
+                content: url + "?fatype=" + fatype
+            });
+            layer.full(index);
+        }
+    </script>
+</body>
+</html>

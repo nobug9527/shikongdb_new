@@ -1,0 +1,84 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+
+    <title>促销商品分组列表</title>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 促销管理 <span class="c-gray en">&gt;</span> 促销商品分组列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            状态：
+            <select name="" class="input-text" id="sltStatus" style="width:80px">
+                <option value="99">全部</option>
+                <option value="1">未启用</option>
+                <option value="2" selected="selected">已启用</option>
+            </select>
+            <input type="text" class="input-text" style="width:250px" placeholder="编号/名称" id="txtStrWhere">
+            <a href="javascript:GetPromGoodsGroup(1)" id="btnClick" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <a class="btn btn-primary radius" onclick="Open('添加商品分组','PromGoodsDetail.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 新增商品分组</a>
+            <span style="float:right">
+                <a href="javascript:btnfirst(GetPromGoodsGroup)">首页</a>
+                <a href="javascript:btnup(GetPromGoodsGroup)">上一页</a>
+                <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+                <a href="javascript:btnnext(GetPromGoodsGroup)">下一页</a>
+                <a href="javascript:btnlast(GetPromGoodsGroup)">尾页</a>
+                <input type="number" class="input-text radius size-S" id="pagety" value="1" min="1" />
+                <a href="javascript:GetPromGoodsGroup()">跳转</a>
+                <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+            </span>
+        </div>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                <thead>
+                    <tr class="text-c">
+                        <th width="80">序号</th>
+                        <th width="100">机构名称</th>
+                        <th width="60">分组编号</th>
+                        <th width="100">分组名称</th>
+                        <th width="100">状态</th>
+                        <th width="100">商品数量</th>
+                        <th width="100">创建日期</th>
+                        <th width="100">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="TbShows"></tbody>
+            </table>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <script src="../js/main.js"></script>
+    <script src="js/PromGroup.js"></script>
+    <script>
+        function Open(title, url) {
+            var index = layer.open({
+                type: 2,
+                title: title,
+                content: url
+            });
+            layer.full(index);
+        }
+        $(function () {
+            GetPromGoodsGroup();
+        })
+    </script>
+
+</body>
+</html>

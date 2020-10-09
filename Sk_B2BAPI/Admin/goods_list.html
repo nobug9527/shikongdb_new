@@ -1,0 +1,153 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+  <title>商品列表</title>
+
+</head>
+
+<body>
+  <!--style="display:none"-->
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 商品管理 <span
+      class="c-gray en">&gt;</span> 商品列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索 -->
+    <div class="text-c">
+      <div style="padding-bottom: 5px;">
+        商品分类：
+        <span class="select-box inline">
+          <select name="" class="select" id="sltCategory">
+            <option value="0">全部分类</option>
+          </select>
+        </span>
+        商品属性：
+        <span class="select-box inline">
+          <select name="" class="select" id="sltAttribute">
+            <option value="0">全部</option>
+          </select>
+        </span>
+        商品状态：
+        <span class="select-box inline">
+          <select name="" class="select" id="sltStatus">
+            <option value="9">全部</option>
+            <option value="2" selected="selected">已启用</option>
+            <option value="1">未启用</option>gg
+            <!--<option value="3">控销</option>-->
+          </select>
+        </span>
+        <input type="text" class="input-text" style="width:300px" placeholder="输入商品名称/编号/助记码/厂家" id="txtStrWhere"
+          name="">
+        <a class="btn btn-success radius" onclick="GoodsQuery(1)"><i class="Hui-iconfont">&#xe665;</i> 搜 索</a>
+
+        <a onclick="GoodsQuery()" id="searchBtn"></a>
+      </div>
+
+      活动专区：
+      <span class="select-box inline">
+        <select name="" class="select" id="sltPromType">
+          <option value="" selected="selected">全部</option>
+          <option value="DZK">折扣专区</option>
+          <option value="DMZ">满赠专区</option>
+          <option value="DHG">换购专区</option>
+          <option value="DQG">抢购专区</option>
+          <!--<option value="DXQ">效期专区</option>-->
+          <option value="GZH">组合专区</option>
+        </select>
+      </span>
+      活动状态：
+      <span class="select-box inline">
+        <select name="" class="select" id="sltPromStatus">
+          <option value="99">全部</option>
+          <option value="2">上架中</option>
+          <option value="1">未上架</option>
+        </select>
+      </span>
+
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a href="javascript:;" onclick="AuditGoods('',1,2)" class="btn btn-danger radius"><i
+            class="Hui-iconfont">&#xe6e2;</i> 批量下架</a>
+        <a href="javascript:;" onclick="AuditGoods('',2,2)" class="btn btn-success radius"><i
+            class="Hui-iconfont">&#xe6e2;</i> 批量上架</a>
+        <!--<a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a>-->
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 200px);">
+      <div style="min-width:1630px;">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+          <thead id="ThShows">
+            <tr class="text-c">
+              <th><input type="checkbox" name="" value=""></th>
+              <th>序号</th>
+              <th style="display:none">机构</th>
+              <th style="display:none">唯一标识</th>
+              <th>商品编号</th>
+              <th>操作</th>
+              <th>商品名称</th>
+              <th>商品规格</th>
+              <th>包装单位</th>
+              <th>生产厂家</th>
+              <th>商品分类</th>
+              <th>库存</th>
+              <th>建议零售价</th>
+              <th>效期时间</th>
+              <th>操作备注</th>
+            </tr>
+          </thead>
+          <tbody id="TbShows"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:btnfirst(GoodsQuery)">首页</a>
+        <a href="javascript:btnup(GoodsQuery)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(GoodsQuery)">下一页</a>
+        <a href="javascript:btnlast(GoodsQuery)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(GoodsQuery)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <script src="js/main.js"></script>
+  <script src="Goods/js/GoodsQuery.js"></script>
+  <script src="Goods/js/GoodsMain.js"></script>
+  <script>
+    $(function () {
+      LoadCheckBox();
+      GoodsQuery();
+      var cliHeight = document.body.clientHeight;
+      var divHeight = cliHeight * 0.57;
+      $('.autodiv').css("height", divHeight + "px");
+    });
+  </script>
+</body>
+
+</html>

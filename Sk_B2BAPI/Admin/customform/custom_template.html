@@ -1,0 +1,199 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui/css/H-ui.min.css" />
+  <!-- 修改样式 -->
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <title>{#custom_name}</title>
+  <style>
+    .table .text-c th,
+    .table .text-c td {
+      max-width: 500px;
+      word-break: normal;
+      max-height: 150px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 自定义表单 <span
+      class="c-gray en">&gt;</span>{#custom_name}<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+      <!-- 搜索 -->
+      <div class="text-c" id="searchbox">
+          {#custom_fields}
+          <a href="javascript:sousuo();" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+      </div>
+      <!-- 表格 -->
+      <div class="mt-20 page-con-tableCon" style="height: calc(100% - 100px);">
+          <div class="autodiv">
+              <table class="table table-border table-bordered table-hover table-bg table-sort" id="DataTable">
+                  <thead>
+                      <tr class="text-c">
+                          <th>序号</th>
+                          {#custom_th}
+                      </tr>
+                  </thead>
+                  <tbody id="TbShows">
+                      {#custom_td}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <!-- 分页 -->
+      <div class="cl pd-5 bg-1 bk-gray">
+          <span>
+              <a href="javascript:first();">首页</a>&nbsp;&nbsp;
+              <a href="javascript:prve();">上一页</a>&nbsp;&nbsp;
+              <b id="pageIndex">1</b>/<b id="pageCount">{#custom_pagecount}</b>&nbsp;&nbsp;
+              <a href="javascript:next();">下一页</a>&nbsp;&nbsp;
+              <a href="javascript:last();">尾页</a>&nbsp;&nbsp;
+              <input type="number" class="input-text radius size-S" id="pagety" onmouseout="if (this.value <= 0) { this.value = 1; } if (this.value > pageCount) { this.value = pageCount;}" value="1" min="1" />
+              <a href="javascript:jump();">跳转</a>
+              <span class="r">&nbsp;&nbsp;共有数据：<strong id="recordCount">{#custom_recordcount}</strong> 条</span>
+          </span>
+      </div>
+    </div>
+    <script type="text/javascript" src="/admin/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/admin/lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="/admin/static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="/admin/static/h-ui.admin/js/H-ui.admin.js"></script>
+    <script type="text/javascript" src="/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script>
+      var pageSize = 10;
+      var pageIndex = 1;
+      var recordCount = { #custom_recordcount};
+      var pageCount = { #custom_pagecount};
+      $(function () {
+        var cliHeight = document.body.clientHeight;
+        var divHeight = cliHeight * 0.57;
+        $('.autodiv').css("height", divHeight + "px");
+        $('body').removeAttr("style");
+      });
+      function GetList(pageindex) {
+        var index = layer.load(2);
+        pageIndex = pageindex;
+        $("#pageIndex").html(pageindex);
+        var wherestr = soustr();
+        var data = {
+          PageIndex: pageindex,
+          PageSize: pageSize,
+          Where: wherestr
+        };
+        $.ajax({
+          type: "post",
+          url: "{#custom_data_url}",
+          data: data,
+          dataType: "json",
+          async: false,
+          success: function (result) {
+            if (result.IsSuccess == false) {
+              layer.close(index);
+              layer.msg(result.Message, { time: 2000 });
+              return false;
+            }
+            var obj = result.data;
+            var html = "";
+            for (var i = 0; i < obj.length; i++) {
+              html += "<tr class='text-c'>";
+              html += "<td align='center'>" + ((parseInt(pageindex) - 1) * parseInt(pageSize) + parseInt(i) + 1) + "</td>";
+              html += { #custom_jstd}
+              html += "</tr>";
+            }
+            $('#TbShows').empty();
+            $("#TbShows").append(html);
+            recordCount = result.total;
+            pageCount = result.pagecount;
+            $("#recordCount").html(recordCount);
+            $("#pageCount").html(pageCount);
+            $("#pagety").attr("max", pageCount);
+            layer.close(index);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert("出错了，请重试！" + "\nreadyState:" + jqXHR.readyState + "\nresponseText:" + jqXHR.responseText + "\nstatus:" + jqXHR.status + "\nstatusText:" + jqXHR.statusText + "\ntextStatus:" + textStatus + "\nerrorThrown:" + errorThrown);
+            layer.close(index);
+          }
+        })
+      }
+      function first() {
+        if (pageIndex == 1) {
+          return false;
+        }
+        else {
+          GetList(1);
+        }
+      }
+      function next() {
+        if (pageCount == 1 || pageCount == pageIndex) {
+          return false;
+        }
+        else {
+          pageIndex += 1;
+          GetList(pageIndex);
+        }
+      }
+      function last() {
+        if (pageCount == pageIndex || pageCount == 1) {
+          return false;
+        }
+        else {
+          pageIndex = pageCount;
+          GetList(pageIndex);
+        }
+      }
+      function prve() {
+        if (pageIndex == 1) {
+          return false;
+        }
+        else {
+          pageIndex -= 1;
+          GetList(pageIndex);
+        }
+      }
+      function jump() {
+        var num = parseInt($("#pagety").val());
+        if (num == pageIndex) {
+          return false;
+        }
+        else if (num > pageCount) {
+          $("#pagety").val(pageCount);
+          pageIndex = pageCount;
+        }
+        else if (num < 1) {
+          pageIndex = 1;
+        }
+        else {
+          pageIndex = num;
+        }
+        GetList(pageIndex);
+      }
+      function sousuo() {
+        pageIndex = 1;
+        GetList(pageIndex);
+      }
+      function soustr() {
+        var str = "{";
+        var len = $("#searchbox .sou").length;
+        $("#searchbox .sou").each(function (i) {
+          var name = $(this).attr("name");
+          var value = $(this).val();
+          if (i == len - 1)
+            str += "\"" + name + "\":\"" + value + "\"";
+          else
+            str += "\"" + name + "\":\"" + value + "\",";
+        });
+        str += "}";
+        return str;
+      }
+    </script>
+</body>
+</html>

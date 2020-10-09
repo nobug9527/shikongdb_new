@@ -1,0 +1,315 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+  <title> 控销商品 </title>
+  <script>
+
+  </script>
+</head>
+
+<body>
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 数据 <span class="c-gray en">&gt;</span> 商品管理 <span
+      class="c-gray en">&gt;</span> 控销商品 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索框 -->
+    <div class="text-c">
+      状态：
+      <span class="select-box inline">
+        <select class="select" id="sltStatus">
+          <option value="9">全部</option>
+          <option value="1">下架</option>
+          <option value="2">上架</option>
+        </select>
+      </span>
+      <input type="text" class="input-text" style="width:300px" id="txtStrWhere" name="">
+      <a class="btn btn-success radius" onclick="GovernSearch(1)"><i class="Hui-iconfont">&#xe665;</i> 搜 索</a>
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a href="javascript:;" onclick="datajy(0)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+          批量删除</a>
+        <a href="javascript:;" onclick="EditGovern('控销商品维护','AddGovernGood.html',0)" class="btn btn-success radius"><i
+            class="Hui-iconfont">&#xe600;</i> 控销新增</a>
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 160px);">
+      <div style="min-width:1378px;">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+          <thead>
+            <tr class="text-c">
+              <th><input type="checkbox" name="fgoverngood" value="" onclick="funbind(this)"></th>
+              <th>序号</th>
+              <th>操作</th>
+              <th>机构</th>
+              <th>产品名</th>
+              <th>规格</th>
+              <th>国药准字</th>
+              <th>生产公司</th>
+              <th>可销客户</th>
+              <th>不可销客户</th>
+              <th>可销客户分类</th>
+              <th>不可销客户分类</th>
+              <th>可销区域</th>
+              <th>不可销区域</th>
+            </tr>
+          </thead>
+          <tbody id="TbShows"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:btnfirst(GovernSearch)">首页</a>
+        <a href="javascript:btnup(GovernSearch)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(GovernSearch)">下一页</a>
+        <a href="javascript:btnlast(GovernSearch)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(GovernSearch)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+  <script src="js/main.js"></script>
+  <script src="statistical/js/goods.js"></script>
+  <script>
+    $(function () {
+      GovernSearch();
+      var cliHeight = document.body.clientHeight;
+      var divHeight = cliHeight * 0.57;
+      $('.autodiv').css("height", divHeight + "px");
+    });
+    ///查询控销信息
+    function GovernSearch(obj) {
+      var index = layer.load(2);
+      var pageSize = "15";
+      var pageIndex = $("#pageIndex").html();
+      switch (obj) {
+        case 1:
+          pageIndex = '1';
+          $("#pageIndex").html(1)
+          break;
+        default:
+          break;
+      }
+      var status = $("#sltStatus").val();
+      var strWhere = $("#txtStrWhere").val();//搜索条件
+      var data = {
+        type: "Pc_GovernGoodList",
+        strWhere: strWhere,
+        status: status,
+        PageIndex: pageIndex,
+        PageSize: pageSize,
+      };
+      var proc = "Proc_Admin_GoodsList";//存储过程名
+      var type = "ReturnList";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "goods/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            var obj = result.data;
+            var html = "";
+            for (var i = 0; i < obj.length; i++) {
+              html += "<tr class='text-c'>";
+              html += '<td><input type="checkbox" name="governgood" value="' + obj[i]["Id"] + '" onclick="unbind()"></td>'
+              html += "<td align='center'>" + ((parseInt(pageIndex) - 1) * parseInt(pageSize) + parseInt(i) + 1) + "</td>";
+              html += '<td class="td-manage"> '
+              if (obj[i]["status"] == "1") {
+                html += '<a class="btn btn-danger radius" style = "text-decoration:none;margin-left:5px" class="ml-5" onClick = "AuditOrder(\'' + obj[i]["Id"] + '\',2)" href = "javascript:;" title = "上架" >上架</a>'
+              } else if (obj[i]["status"] == "2") {
+                html += '<a class="btn btn-success radius" style = "text-decoration:none" class="ml-5" onClick = "AuditOrder(\'' + obj[i]["Id"] + '\',1)" href = "javascript:;" title = "下架" > 下架</a >'
+              }
+              html += '<a class="btn btn-success radius" style = "text-decoration:none" class="ml-5" onClick = "EditGovern(\'控销商品维护\',\'AddGovernGood.html\',\'' + obj[i]["Id"] + '\')" href = "javascript:;" title = "编辑" > 编辑</a >'
+              html += '</td>'
+              html += "<td  title=\"" + obj[i]["entname"] + "\"><div class=\"text-overflow\" style=\"width: 80px;\">" + obj[i]["entname"] + "</div></td>";
+              html += "<td>" + obj[i]["sub_title"] + "</td>";
+              html += "<td>" + obj[i]["drug_spec"] + "</td>";
+              html += "<td>" + obj[i]["approval_number"] + "</td>";
+              html += "<td>" + obj[i]["drug_factory"] + "</td>";
+              html += "<td>" + obj[i]["kxdwmch"] + "</td>";
+              html += "<td>" + obj[i]["bkxdwmch"] + "</td>";
+              html += "<td>" + obj[i]["kxkehuflmc"] + "</td>";
+              html += "<td>" + obj[i]["bkxkehuflmc"] + "</td>";
+              html += "<td>" + obj[i]["kxquyuflmc"] + "</td>";
+              html += "<td>" + obj[i]["bkxquyuflmc"] + "</td>";
+              html += "</tr>";
+            }
+            $('#TbShows').empty();
+            $("#TbShows").append(html);
+            var recordCount = result["recordCount"];
+            var pageCount = result["pageCount"];
+            $("#recordCount").html(recordCount);
+            $("#pageCount").html(pageCount);
+            layer.close(index);
+          }
+          if (type == '1') {
+            $("#recordCount").html(0);
+            $("#pageCount").html(1);
+            $('#TbShows').empty();
+            layer.close(index);
+          }
+          if (type == '2') {
+            layer.close(index);
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+
+    //批量删除
+    function datajy() {
+      var s = '';
+      $('input[name="governgood"]:checked').each(function () {
+        s += $(this).val() + ',';
+      });
+      if (s.length > 0) {
+        //得到选中的checkbox值序列
+        s = s.substring(0, s.length - 1);
+      }
+      if (s == '') {
+        alert('你还没有选择任何内容！')
+      }
+      var data = {
+        type: "DeleteGovernGood",
+        splitStr: s
+      };
+      var proc = "Proc_Admin_GoodsList";//存储过程名
+      var type = "ReturnNumber";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "goods/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.alert('删除成功', {
+              icon: 1,
+              skin: 'layer-ext-moon'
+            });
+            GovernSearch();
+          }
+          if (type == '1') {
+            layer.alert('删除失败', {
+              icon: 2,
+              skin: 'layer-ext-moon'
+            });
+          }
+          else if (type == '2') {
+            layer.alert(obj.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+          layer.close(index);
+        }
+      })
+    }
+    //控销信息上下架
+    function AuditOrder(id, status) {
+      var index = layer.load(2);
+      var txt = '';
+      if (status == 1) {
+        txt = 'ForbiddenLimitpin'
+      } else {
+        txt = 'StartUsingLimitpin'
+      }
+      var proc = "Proc_Admin_RegionControlPin";//存储过程名
+      var type = "ReturnNumber";
+      var json = {
+        type: txt,
+        limitId: id
+      };
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "goods/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.close(index);
+            GovernSearch();
+          }
+          else {
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { layer.closeAll(); }
+            });
+          }
+        }
+      })
+    }
+    //控销信息编辑
+    function EditGovern(title, url, id) {
+      var index = layer.open({
+        type: 2,
+        title: title,
+        content: url + "?id=" + id
+      });
+      layer.full(index);
+    }
+    function funbind(obj) {
+      $('input[type="checkbox"][name="governgood"]').prop("checked", obj.checked);
+    }
+    function unbind() {
+      var bool = $('input[type="checkbox"][name="governgood"]').length == $('input[type="checkbox"][name="governgood"]:checked').length ? true : false;
+      if (bool) {
+        $('input[type="checkbox"][name="fgoverngood"]').prop("checked", true);
+      } else {
+        $('input[type="checkbox"][name="fgoverngood"]').prop("checked", false);
+      }
+    }
+  </script>
+</body>
+
+</html>

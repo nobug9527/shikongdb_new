@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--系统配置-->
+<Xml>
+  <!--基础信息-->
+  <Base>
+    <!--折扣拦截 订单金额满足条件可以参与优惠-->
+    <Threshold>666</Threshold>
+    <!--账期付款折扣-->
+    <OffLine>100</OffLine>
+    <!--线上付款折扣-->
+    <OnLine>100</OnLine>
+    <!--证书到期预警天数-->
+    <Day>100</Day>
+    <!--订单限定金额-->
+    <OrderAmount>50</OrderAmount>
+    <!--默认机构-->
+    <EntId>E26FMM0XNYQ</EntId>
+    <!--url拼接-->
+    <SercerIp>http://42.51.10.96:8087</SercerIp>
+    <!--库存显示-->
+    <InventoryShows>100</InventoryShows>
+    <!--库存保留小数位-->
+    <InventoryPlace>0</InventoryPlace>
+    <!--价格小数位-->
+    <PricePlace>3</PricePlace>
+    <!--中包装位数-->
+    <PackagePlace>0</PackagePlace>
+    <!--专区推荐补位图 https://placehold.it/645x913-->
+    <PrefecturePicture>https://placehold.it/645x913</PrefecturePicture>
+    <!--品牌推荐补位图 https://placehold.it/149x98-->
+    <RecommendPicture>http://47.105.206.10:8077/Images/GoodsParatope.png</RecommendPicture>
+  </Base>
+  <!--物流信息-->
+  <Express>
+    <!--物流信息单位编号-->
+    <ExpressCustomer>24F9B0C5138262039A91C362F14EB337</ExpressCustomer>
+    <!--物流信息单位密钥-->
+    <ExpressKey>eMDkAKsX1278</ExpressKey>
+  </Express>
+  <!--推送-->
+  <Push>
+    <!--极光推送用户名-->
+    <AppKey>2618ee5a67adabfede94d31d</AppKey>
+    <!--极光推送密码-->
+    <MasterSecret>f9cf7341e03d5cbb00f84212</MasterSecret>
+    <!--Timer执行间隔时间(毫秒)-->
+    <Interval>30000</Interval>
+  </Push>
+  <!--阿里短信-->
+  <AlNote>
+    <!--阿里短信访问密钥，标识用户-->
+    <AccessKeyId></AccessKeyId>
+    <!--阿里短信访问密钥，验证用户-->
+    <AccessSecret></AccessSecret>
+    <!--阿里短信签名名称-->
+    <SignName></SignName>
+    <!--阿里短信模板ID-->
+    <TemplateCode></TemplateCode>
+  </AlNote>
+  <!--乐信-->
+  <LxNote>
+    <!--用户名(乐信登录账号)-->
+    <AccName></AccName>
+    <!--密码(乐信登录密码-->
+    <AccPassword></AccPassword>
+    <!--签名(乐信签名)-->
+    <Sign></Sign>
+    <!--返回数据类型-->
+    <DataType>xml</DataType>
+  </LxNote>
+  <!--甜塔支付-->
+  <TianTa>
+    <!--甜塔支付商户号-->
+    <MchID>169490674000425603</MchID>
+    <!--甜塔支付店铺编号(商户ID)-->
+    <OperatorId>4112</OperatorId>
+    <!--甜塔支付密钥 -->
+    <Key>942FECED34</Key>
+    <!--甜塔支付AppId-->
+    <AppId></AppId>
+    <!--甜塔支付版本号-->
+    <Version>V1.0.10</Version>
+    <!--甜塔支付微信异步回调-->
+    <NotifyUrlWeChat>/Apliay/NotifyReturnTianTaWechat</NotifyUrlWeChat>
+    <!--甜塔支付支付宝异步回调-->
+    <NotifyUrlAlipay>/Apliay/NotifyReturnTianTaAlipay</NotifyUrlAlipay>
+  </TianTa>
+  <!--微信支付-->
+  <WeChat>
+    <!--APPID：绑定支付的APPID（必须配置）-->
+    <!--华烁wx5a2e7bf54e9586d3-->
+    <AppID>wx5a2e7bf54e9586d3</AppID>
+    <!--MCHID：商户号（必须配置）-->
+    <MchID>1587477321</MchID>
+    <!--KEY：商户支付密钥，参考开户邮件设置（必须配置），请妥善保管，避免密钥泄露-->
+    <Key>hsyywxzfhsyywxzfhsyywxzfhsyywxzf</Key>
+    <!--APPSECRET：公众帐号secert（仅JSAPI支付的时候需要配置），请妥善保管，避免密钥泄露-->
+    <AppSecret></AppSecret>
+    <!--证书路径,注意应该填写绝对路径（仅退款、撤销订单时需要）
+    1.证书文件不能放在web服务器虚拟目录，应放在有访问权限控制的目录中，防止被他人下载；
+    2.建议将证书文件名改为复杂且不容易猜测的文件
+    3.商户服务器要做好病毒和木马防护工作，不被非法侵入者窃取证书文件。-->
+    <SSlCertPath>/WxPayAPI/ZsCertificate/hsyyapiclient_cert.p12</SSlCertPath>
+    <!--证书密码(仅退款、撤销订单时需要）-->
+    <SSlCertPassword>1587477321</SSlCertPassword>
+    <!--支付结果通知url,支付结果通知回调url，用于商户接收支付结果-->
+    <NotifyUrl></NotifyUrl>
+    <!--商户系统后台机器IP,此参数可手动配置也可在程序中自动获取-->
+    <Ip>0.0.0.0</Ip>
+    <!--代理服务器设置,默认IP和端口号分别为0.0.0.0和0，此时不开启代理（如有需要才设置）-->
+    <ProxyUrl></ProxyUrl>
+    <!--上报信息配置,测速上报等级，0.关闭上报; 1.仅错误时上报; 2.全量上报-->
+    <ReportLevel>1</ReportLevel>
+    <!--日志级别,日志等级，0.不输出日志；1.只输出错误信息; 2.输出错误和正常信息; 3.输出错误信息、正常信息和调试信息-->
+    <LogLevel>1</LogLevel>
+  </WeChat>
+  <!--支付宝支付-->
+  <Alipay>
+    <!--支付宝网关地址
+    开发环境地址:https://openapi.alipay.com/gateway.do
+    沙箱地址:https://openapi.alipaydev.com/gateway.do-->
+    <ServiceUrl>https://openapi.alipay.com/gateway.do</ServiceUrl>
+    <!--应用ID,以2088开头由16位纯数字组成的字符串-->
+    <!--<AppId>2021001153650345</AppId>-->
+    <!--华烁appId<2021001157668409>-->
+    <AppId>2021001157668409</AppId>
+    <!--开发者私钥，由开发者自己生成-->
+    <!--<PrivateKey>MIIEowIBAAKCAQEA14PgC4Zca6cv9DAQu+yu7ll1DOVfXOnvShG/RpCyUv+yb8mbc+rjDaUw9NnZDo3Hwti3wDsm0Ciw9LCapQ/QadHj7lhecC1a0UgvACBj4/3dIDiHpoLrwwthy3ci4rNcnFe0Qfket8AhHnAZbW6v6krkgNCdSBuCzkYhypWtw7Jqf2Ri0CDFXb7hqJAx892JYdlK+vMSGctQo4fvf2fWrDaeds9oLmVfEcfv3s+4d9buEY8VcW2yWkrqzcpMzLbBYaycBdck4yS3JNgjbaLwvsBWS6KWOvx2Exw1lWq0INFkWnIItsGEGXh/TYpDGYX3Z9NEwi0qrdf3PyZKf8Wh1QIDAQABAoIBABhCRujlMegIRLSW6HtO1A4OUcem1gouZvoOb1pxFTGUiLBeoDn3GaHCk3UsRGuH+BFttZlUzzSlL+4LJw0nb41Jy/9bQR4dbNib6HZ6LuROAiMLWfGbURB+an6tpWahS+5pTOgUM6n5XYEAm0wfJnwX/Aqn8NxaBGpVqJ4WJR4e9U28C9Vb9zj4K3PUw65Wcqnz51FGiRN/Qawg5TNtL0yyjhZyMEvYJgST52u5tgK7VKSJu2sLuvLs7bHtUjV+pQfeiOyBCbQIL7APMrG+YuxjdjEZ8txh1QHvCE0hDP7Ssxmmshso6ucXBcyokv4RJne8alZg5CiK7J3ZSemR100CgYEA7b8SDVturELj7Jox0w4kNjLDXvCjyOT2pxwAONbAa45lXQdujzJf5OHQLhoXm5bIpHpURld3q1im/JGIFIMV0lhBDVLEPzhG6YVrEM6LtFY+Tsv+NnbVazk96wmN9ECTzNRnI7crXh77E53EPtTd/SpTpgcbC7wPkN4kBK7+I0MCgYEA6A/Y9am6XyvhbpWG9G07h0sJPwrV2ZFEOYf/CzevIcJzbXjyVEf4OcoDw5X4bPT/dN6HvvAR7aaevQhGGhFzUQTI+8171IWib+IGJ2AjQSuXfW7FlezegDAsBDvKoWlcTmSzWUGxoWozIGSy+iXEGkZIRF9p5kKi/DKCyMC4eQcCgYBUdZaCLEMq6zBxc23T3qg6oNoLNk3ZJo4BW88wYgpFq3aTD/rU4D5030vHtPlCCtUIqXSa8KPQuVPJUiIXt2HfMf8aLpcNJn76oq0gcV/sFt9Xutx6mMjEqLc4clJ9vRtEnwhtBbtgWn0zwM5gy9p4/7prtwaCqrKU8nW1PD2IZQKBgQCykMc0uYa0hvJvglWXLZpZz85smSzWvmYOEuyYuB9lzde+DAwD+GE0LpNY48SGKruLNVSlAtv4z3ZkJMK0emsOk60HvSUk8jN8/iIYGGzoT9/A4ATgCaVoZCjqlQulyooBtJEhBGDnwO1YZsQlofvU7/HZ0sWNLgd2InPqgAky7wKBgBc/svWhZjOm3u4Pcdqeb0N8y+YvEx2DSp2Yq0wcvPmje3rNPiXliebiI1XgQZYRoVhlNbEds8ccreME7cTIwv37QuZ988lbqzo1O2cGFPbDh1A5vtkKhI0Zkw+VKHpeoguutL9+dwvR3f1v/g6bfNCUziir7dpYxO6zSPBYPMdd</PrivateKey>-->
+    <PrivateKey>MIIEpQIBAAKCAQEAuL8E623kNbTlJRTbsOYpqgXjuxVffx/DhzsmwMHjGFPMg+9fc94jS3kk9+Kc2+pAjKRmKURnaC/gK73ZD6fVrfoVozhSoayiDpY/YuDCrx4A54mnw1gk5HmEyEk6MTfH67vieW46DTpqArHAzMzxBD1IKUYi4YqPJIPNVDaQ55Hk4mNgbJwZs0luuV4i7splov3c/TnhGHsm8Sy7csBESYdZr8ZNDL2aJmZOz+V71H84qP56T/HWEgPM1e4qpywOEQl4UODjD9ewm/ftu4ZMZV4RAsSm0JqbnJ1AQC0fXvoAtaswptj1m5OyBtTzS4MzAk9AZ3nvTl5ISKz7zPPwEQIDAQABAoIBAFwYbT1nlKHpQWmQ0kuHETH+qZ2zc92NWg1pwVHJ1YllDMigZXb/P5z6ESG5R/Sg+/igY4Ui4mGfrCJiC3iwc+a8iljJVPffdRHMeGC0JpjhXhYOGyFYKVvz7+tgBbBPXEv5Z1adSjcZ7YrWTYRKjcNNQVHB8tV4Gw9a3NqkMOwehT0jUm/rl4tSszjzKwkfXhMATG+v99N+ayX9c3V88o5QiR1H99EEV6nvW1u6kJs1gBSzGbwDCy2K3a/iJR3N4b7sNtbz+Ta3KBr9b/El2IWtg/5CLkU8BLvNExQSPBPLbUuskuuU8z9zGmXSxpicmIRV4ZDPGnvG0uB0lqu6kRkCgYEA/GiINsf9Qll2kNUCy2MVWb3gQtr2C6Xv1MoxF6k+M+6RzEtciWj+kkCVIZBuFJJxmD58hpTsvFOA4ACh/6LjWcVhT2qk/Mv1Ii07OH97lhyDzJp+S91mjfQIRNu/vaI6LqptoaNWTsYn/OPbzvW10dG68S90b5ST6re6jhm20+MCgYEAu2ACQGuTG3Afc2+NIbHlepUfnMxVO73wjmBGTg39runUwWyd4ViFHjJVuCOiP2P7Y9/BW2gsHTwC7F9yRjExFx21D0BDM4WoLBcmkGqu2JwV6rwSKe7YI1mM22mmwV3oMscZplUNV1vF3njEey2EJt4QVmAe3I8bEgySJbuA9nsCgYEA2TbgGjyrH4E7/tHBUOSZCBzWNNKYMVgA9990tgcIp8pkICqunPYFNjlr3XGcugl4xmrn4S2iOUOnQZ5py0QTYTryTlTZXU/sShggwbM72Of7KIW/sGv9CKZ8wz1VWc2VQnmaVSLqcGopGYHBtO5RJRrXRR3wluGHFdQ9MHLCmr8CgYEAikvTfZ6ohiDcZcQYw5zcxfwYyA8cfaq0STGP0n6LFbWqfVTgtnkyT1ZRZEaQsv7lhhKZURDzNmSbt8C+xEX8eJZJk8cXkoh81oYDxaWoBWI23vkO4vpRds3ao/s3xBK+lfPT36t43Fh1E73JLy0qE9Hk9wuc26eYEFtM5yKcjc8CgYEA4d8R0pbNwL7p47cvZ/SCWo8uMSrawmU94/xEy86Nv8wnpu4Ug/IBKaXwMuqm2ap2loIfxTzBNJzTb+0N4RZ2bRoONZIg0hmYlZCsy5Bq12M9mnda7SgplGqFnhW5DLOdaqdPSgq8NIWH4aMN/QuEnjUIxlKjiUS653B60EhX2dw=</PrivateKey>
+    <!--支付宝的公钥，由支付宝生成-->
+    <!--<PublicKey>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArDXsPUNNCYtE1LxPmr0SFlg4Y8SL7g/3nfpiSHOTk8tCUwgyZmw9fGtCuL5kXEPVymOwOHqBkZ6C7ZJlM6JG/2uipnoJrXDaPI/Db03mi5IexP9xN0So4brW8+oeq2v7PtRtt6uihGtWBOQUzVU7gcIOOKsBJgswcXQhBV6ifJyMTtIWFXtgs0woOXXu0rdUlNgk2dSADBZtrBZ8A/adi7l8PS566cdUgqMTD81Lxs+1aniw6+GHbKSRd9s/+rucuIFwLaUS+Dg96/zoFpjX9r6h97XBJSqlTocjp7Ev5UuzvagaCxycMbAytbdfulDNUVctHjgRoCDKPP7v2p+43wIDAQAB</PublicKey>-->
+    <PublicKey>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl/fQ7zhLYh6wD0lfnSNihqQimJDwpj2eMm1RfvQbcpVaFETMfO7Aa03ltSsQu0KQkA91foSKg2o9f2DWuZoKhGsQIDiuwROHSYOBKechtRYvHhKIBL5KHwPcrmaYefRi7zqkIsKWX8/5Nc3I03uix4XCZ04qPJe+7Ya9kCb5Vt4fFzee5EnTI7BjUkuZ2xW+T0ULHDysUem4Bqls+3NAgEeasvZ9koXCG9/tgOvo7KK480ywAVYA/XOCMoXguhZaLCuDsaMvcfBQSTWlfase92V+sqE5rc9ArdUSL+gY0lIz1ODLNSr5rz8Pt722Rod6Qv6GTPj6eSe7571PXvi+dQIDAQAB</PublicKey>
+    <!--服务器异步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数,必须外网可以正常访问
+    public static string notify_url = "http://" + System.Web.HttpContext.Current.Request.Url.Host + ":" + System.Web.HttpContext.Current.Request.Url.Port + "/College/NotifyUrl";-->
+    <NotifyUrl>http://ryan.wicp.net/College/NotifyUrl</NotifyUrl>
+    <!--页面跳转同步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+    public static string return_url = "http://" + System.Web.HttpContext.Current.Request.Url.Host + ":" + System.Web.HttpContext.Current.Request.Url.Port + "/College/ReturnUrl";-->
+    <ReturnUrl>http://ryan.wicp.net/College/ReturnUrl</ReturnUrl>
+    <!--参数返回格式，只支持json-->
+    <Format>json</Format>
+    <!--调用的接口版本，固定为：1.0-->
+    <Version>1.0</Version>
+    <!--商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2-->
+    <SignType>RSA2</SignType>
+    <!--字符编码格式 目前支持utf-8-->
+    <Charset>utf-8</Charset>
+    <!--false 表示不从文件加载密钥-->
+    <KeyFromFile>false</KeyFromFile>
+  </Alipay>
+  <!--银联支付-->
+  <NetPay>
+	<!-- PC商户号 -->
+	<PCMid>898150959120022</PCMid>
+	<!-- PC终端号 -->
+	<PCTid>15090530</PCTid>
+	<!-- APP商户号 -->
+	<APPMid>898150959120245</APPMid>
+	<!-- APP终端号 -->
+	<APPTid>15090919</APPTid>
+	<!-- APP机构商户号 -->
+	<APPInstMid>APPDEFAULT</APPInstMid>
+	<!-- PC机构商户号 -->
+	<PCInstMid>YUEDANDEFAULT</PCInstMid>
+	<!-- 消息来源 -->
+	<MsgSrc>WWW.NMGBFLGYY.COM</MsgSrc>
+	<!-- 来源编号 -->
+	<MsgSrcId>109G</MsgSrcId>
+	<!-- 密匙 -->
+	<Key>crHrnFrnKcMcAfW2FE7KEwxnsNXJGGBHHZwPKwwPjJ6KScKr</Key>
+	<!-- APP 使用微信时使用 389707050-->
+	<SubAppId>384021549</SubAppId>
+	<!-- 服务窗接口地址 -->
+	<SwApiUrl>https://qr.chinaums.com/netpay-portal/webpay/pay.do</SwApiUrl>
+	<!-- APP和C扫B接口地址 -->
+	<ApiUrl>https://qr.chinaums.com/netpay-route-server/api/</ApiUrl>
+	<!-- 回传银联服务器通知地址 -->
+	<NotifyUrl>http://59.110.47.212:82/NetPay/ReceiveNotify</NotifyUrl>
+	<!-- 付款成功后，跳转页面，用于PC服务窗 -->
+	<ReturnUrl>http://59.110.47.212:80/paysuccess.html</ReturnUrl>
+  </NetPay>
+  <!--建设银行-->
+  <Construction>
+    <!--商户代码-->
+    <MERCHANTID></MERCHANTID>
+    <!--商户柜台代码-->
+    <POSID></POSID>
+    <!--分行代码-->
+    <BRANCHID></BRANCHID>
+    <!--对应柜台公钥-->
+    <PublicKey></PublicKey>
+  </Construction>
+</Xml>

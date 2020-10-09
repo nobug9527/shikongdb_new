@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link href="order/css/order.css" rel="stylesheet" />
+  <title>订单明细</title>
+  <link rel="Bookmark" href="/favicon.ico">
+  <link rel="Shortcut Icon" href="/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+</head>
+
+<body>
+  <div class="tab-content">
+    <dl>
+      <dt>基本信息</dt>
+      <dd>
+        <div class="table-container">
+          <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+            <tbody>
+              <tr>
+                <th width="20%">机构</th>
+                <td><span v-text="data[0].Entid"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">单位名称</th>
+                <td><span v-text="data[0].businessname"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">单位地址</th>
+                <td><span v-text="data[0].address"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">账号</th>
+                <td><span v-text="data[0].username"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">姓名</th>
+                <td><span v-text="data[0].name"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">手机</th>
+                <td><span v-text="data[0].telphone"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">订单号</th>
+                <td><span v-text="data[0].order_no"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">渠道</th>
+                <td><span v-text="data[0].Source"></span></td>
+              </tr>
+              <tr>
+                <th width="20%">下单时间</th>
+                <td><span v-text="data[0].add_time"></span></td>
+              </tr>
+              <!--<tr>
+                            <th width="20%">退单时间</th>
+                            <td><span v-text="data[0].AddTime"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="20%">退货理由</th>
+                            <td><span v-text="data[0].Remark"></span></td>
+                        </tr>-->
+
+            </tbody>
+          </table>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>退货商品列表</dt>
+      <dd>
+        <div class="table-container">
+          <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+            <thead>
+              <tr>
+                <!--<th>选择</th>-->
+                <th>产品名</th>
+                <th>商品原价</th>
+                <th>商品活动价</th>
+                <th>数量</th>
+                <th>合计金额</th>
+                <th>折扣</th>
+                <th>减额</th>
+                <th>国药准字</th>
+                <th>厂家</th>
+                <th>规格</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="td_c" v-for="list in data">
+                <td><span v-text="list.sub_title"></span> </td>
+                <td><span v-text="list.goods_price"></span> </td>
+                <td><span v-text="list.real_price"></span> </td>
+                <td><span v-text="list.quantity"></span> </td>
+                <td><span v-text="list.taxAmount"></span> </td>
+                <td><span v-text="list.discount"></span> </td>
+                <td><span v-text="list.derate"></span> </td>
+                <td><span v-text="list.approval_number"></span> </td>
+                <td><span v-text="list.drug_spec"></span> </td>
+                <td><span v-text="list.drug_factory"></span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="outerdiv"
+          style="position: fixed; top: 0; left: 0; background: rgba(0, 0, 0, 0.1); z-index: 30; width: 100%; height: 100%; display: none;">
+          <div id="innerdiv" style="width:600px;">
+            <img id="bigimg" class="bigimg" style="border: 1px solid #48C9B1;width:100%;height:100%;" />
+          </div>
+        </div>
+      </dd>
+    </dl>
+    <dl v-if="data[0].TypeStatus==0">
+      <dt>操作</dt>
+      <dd>
+        <div>
+          <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2" style="margin-top:20px">
+              <a class="btn btn-success radius" onClick="UpStatus('1')"><i class="Hui-iconfont">&#xe6e1;</i>
+                退&nbsp;&nbsp;款</a>
+              <a id="closeId" style="display:none" class="btn btn-default radius" href="javascript:layer_close()"><i
+                  class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</a>
+            </div>
+          </div>
+        </div>
+      </dd>
+    </dl>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script>
+    $(function () {
+      LoadDetail();
+    });
+    ////加载详情信息
+    function LoadDetail() {
+      var index = layer.load(2);
+      var data = {
+        type: "ActiveRefund",
+        strwhere: GetQueryString("id")
+      };
+      var proc = "proc_OrderQuery";//存储过程名
+      var type = "ReturnList";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "qualification/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            var obj = result;
+            new Vue({
+              el: '.tab-content',
+              data: obj
+            });
+            layer.close(index);
+          }
+          else {
+            layer.close(index);
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon'
+            });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          layer.close(index);
+          layer.msg("未知错误", { time: 3000 });
+        }
+      })
+    }
+    /*查看*/
+    function ExamineImg_s(obj) {
+      layer_show("图片详情", "/admin/imgs/index.html?ur=" + $(obj).attr("src"), 1000, 600);
+    }
+    function UpStatus(num) {
+      layer.confirm("确定进行退款操作吗",
+        function (index) {
+          var data = {
+            type: "ActiveRefundWriteBack",
+            strwhere: GetQueryString("id"),
+            source: GetQueryString("source"),
+            amount: GetQueryString("amount"),
+            uptype: num
+          };
+          var proc = "proc_OrderQuery";//存储过程名
+          var type = "ReturnNumber";
+          ///加载页面数据
+          $.ajax({
+            type: "Post",
+            cache: false,
+            url: "article/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+              var type = result.flag;
+              if (type == '0') {
+                layer.alert(result.message, {
+                  icon: 1,
+                  skin: 'layer-ext-moon'
+                });
+                parent.location.reload();
+              }
+              if (type == '1') {
+                layer.alert(result.message, {
+                  icon: 2,
+                  skin: 'layer-ext-moon'
+                });
+              }
+              else if (type == '2') {
+                layer.alert(result.message, {
+                  icon: 2,
+                  skin: 'layer-ext-moon',
+                  yes: function () { parent.location.replace("login.html") }
+                });
+              }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+              layer.close(index);
+            }
+          })
+        });
+    }
+  </script>
+</body>
+
+</html>

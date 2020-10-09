@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link href="order/css/order.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title>促销详情</title>
+</head>
+<body>
+    <div class="tab-content">
+        <dl>
+            <dt>促销方案</dt>
+            <dd>
+                <div class="table-container">
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+                        <tbody>
+                            <tr>
+                                <th width="20%">促销方案编号</th>
+                                <td><span v-text="data[0].fabh" id="fabhtext"></span></td>
+                            </tr>
+                            <tr>
+                                <th width="20%">促销方案标识</th>
+                                <td>
+                                    <!--<span v-text="data[0].fabs"></span>-->
+                                    <input type="text" v-model="data[0].fabs" id="fabstext" name="fabstext" class="input-text" style="width:764px;" autocomplete="off">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="20%">促销方案描述(最多两个字)</th>
+                                <td>
+                                    <!--<span v-text="data[0].describe"></span>-->
+                                    <input type="text" v-model="data[0].describe" id="describetext" name="describetext" placeholder="最多2个字....." class="input-text" style="width:764px;" autocomplete="off">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="20%">促销名称</th>
+                                <td><span v-text="data[0].faTitle"></span></td>
+                            </tr>
+                            <tr>
+                                <th>类型</th>
+                                <td><span v-text="data[0].faname"></span></td>
+                            </tr>
+                            <tr>
+                                <th>商品范围</th>
+                                <td v-if="data[0].PromScenario=='0'">全场商品</td>
+                                <td v-else-if="data[0].PromScenario=='1'">分类商品 <span v-text="data[0].ScenarioName"></span></td>
+                                <td v-else-if="data[0].PromScenario=='2'">品牌商品 <span v-text="data[0].ScenarioName"></span></td>
+                                <td v-else-if="data[0].PromScenario=='3'">独立商品 <span v-text="data[0].ScenarioName"></span></td>
+                            </tr>
+                            <tr>
+                                <th>开始时间</th>
+                                <td>
+                                    <!--<span v-text="data[0].startDate"></span>-->
+                                    <input type="text" v-model="data[0].startDate" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss' })" id="datemin" name="datemin" class="input-text Wdate" style="width: 764px;" autocomplete="off">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>结束时间</th>
+                                <td>
+                                    <!--<span v-text="data[0].endDate"></span>-->
+                                    <input type="text" v-model="data[0].endDate" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" name="datemax" class="input-text Wdate" style="width: 764px;" autocomplete="off">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>商品列表</dt>
+            <dd>
+                <div class="table-container">
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="100%">
+                        <thead>
+                            <tr>
+                                <th>名称(停放查看详情)</th>
+                                <th>原价</th>
+                                <th v-if="data[0].faname=='折扣'">无</th>
+                                <th v-else-if="data[0].faname=='换购'">换购价格</th>
+                                <th v-else-if="data[0].faname=='买赠'">赠品价格</th>
+                                <th v-else-if="data[0].faname=='单品满减'">优惠力度</th>
+                                <th v-else-if="data[0].faname=='商品组合'">新价格</th>
+                                <th v-else-if="data[0].faname=='抢购'">新价格</th>
+                                <th v-else>无</th>
+                                <th>条件</th>
+                                <th>条件目标</th>
+                                <th>折扣</th>
+                                <th>总库存</th>
+                                <th>活动库存</th>
+                                <th>限购数量</th>
+                                <th>赠品/换购商品</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="td_c" v-for="list in data">
+                                <td style="text-align:left;white-space:inherit;word-break:break-all;line-height:20px;" v-bind:title="list.factoryName">
+                                    <span v-text="list.articlename"></span>
+                                </td>
+                                <td><span v-text="list.price"></span></td>
+                                <td><span v-text="list.giftprice"></span></td>
+                                <td v-if="list.contentType=='0'">件数</td>
+                                <td v-else-if="list.contentType=='1'">金额</td>
+                                <td v-else>无限制</td>
+                                <td><span v-text="list.meetCount"></span></td>
+                                <td><span v-text="list.discount"></span></td>
+                                <td><span v-text="list.stock_quantity"></span></td>
+                                <td><span v-text="list.amount"></span></td>
+                                <td><span v-text="list.xgAmount"></span></td>
+                                <td>
+                                    <span v-if='list.giftname!=""'><span v-text="list.giftname"></span></span>
+                                    <span v-else=''></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>操作</dt>
+            <dd>
+                <div>
+                    <div class="row cl">
+                        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2" style="margin-top:20px">
+                            <a class="btn btn-success radius" onClick="Edit()"><i class="Hui-iconfont">&#xe6e1;</i> 修&nbsp;&nbsp;改</a>
+                            <a id="closeId" style="display:none" class="btn btn-default radius" href="javascript:layer_close()"><i class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</a>
+                        </div>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="prom/js/Porm.js"></script>
+    <script>
+        $(function () {
+            LoadPromDetail();
+        });
+    </script>
+</body>
+</html>

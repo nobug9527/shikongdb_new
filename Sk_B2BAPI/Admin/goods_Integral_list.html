@@ -1,0 +1,162 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+  <title>礼品列表</title>
+</head>
+
+<body>
+  <!-- 面包屑 -->
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 平台 <span class="c-gray en">&gt;</span> 商品管理 <span
+      class="c-gray en">&gt;</span> 礼品列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索框 -->
+    <div class="text-c">
+      礼品状态：
+      <span class="select-box inline">
+        <select name="" class="select" id="sltStatus">
+          <option value="99">全部</option>
+          <option value="2" selected="selected">上架中</option>
+          <option value="1">下架中</option>
+        </select>
+      </span>
+
+      <input type="text" class="input-text" style="width:300px" placeholder="输入商品名称/编号/厂家" id="txtStrWhere" name="">
+
+      <a class="btn btn-success radius" onclick="GoodsGift(1)"><i class="Hui-iconfont">&#xe665;</i> 搜 索</a>
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a href="javascript:;" onclick="AuditGifts(1,2)" class="btn btn-danger radius"><i
+            class="Hui-iconfont">&#xe6e2;</i> 批量下架</a>
+        <a href="javascript:;" onclick="AuditGifts(2,2)" class="btn btn-success radius"><i
+            class="Hui-iconfont">&#xe6e2;</i> 批量上架</a>
+        <a href="javascript:;" onclick="GiftEnditOpen('添加礼品','goods_Integral_editor.html','')"
+          class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加礼品</a>
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 160px);">
+      <table class="table table-border table-bordered table-hover table-bg table-sort">
+        <thead>
+          <tr class="text-c">
+            <th><input type="checkbox" name="" value=""></th>
+            <th width="25">序号</th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品规格</th>
+            <th>包装单位</th>
+            <th>生产厂家</th>
+            <th>库存</th>
+            <!--<th width="80">兑换积分</th>-->
+            <th>建议零售价</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="TbShows">
+        </tbody>
+      </table>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:btnfirst(GoodsGift)">首页</a>
+        <a href="javascript:btnup(GoodsGift)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(GoodsGift)">下一页</a>
+        <a href="javascript:btnlast(GoodsGift)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(GoodsGift)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <script src="js/main.js"></script>
+  <script src="goods/js/gift.js"></script>
+  <script>
+    $(function () {
+      GoodsGift();
+    });
+
+    //商品资料状态修改
+    function AuditGifts(status, type)//type 1 单用 2 批量
+    {
+      if (status != 2 && status != 1) {
+        layer.alert('方法执行异常！', {
+          icon: 2,
+          skin: 'layer-ext-moon',
+          yes: function () { layer.closeAll(); }
+        });
+        return;
+      }
+      if (type == 2) {
+        var s = '';
+        $('input[name="GiftList"]:checked').each(function () {
+          s += '\'' + $(this).val() + '\',';
+        });
+        if (s.length > 0) {
+          //得到选中的checkbox值序列 
+          s = s.substring(0, s.length - 1);
+        }
+        if (s == '') {
+          alert('你还没有选择任何内容！')
+          return;
+        }
+      }
+      var index = layer.load(2);
+      var proc = "Proc_Admin_GiftList";//存储过程名
+      var type = "ReturnNumber";
+      var json = {
+        type: "AuditGifts",
+        id: s,
+        status: status
+      };
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "brand/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.close(index);
+            GoodsGift();
+          }
+          else {
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { layer.closeAll(); }
+            });
+          }
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

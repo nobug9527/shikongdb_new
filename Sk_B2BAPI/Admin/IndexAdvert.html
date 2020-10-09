@@ -1,0 +1,223 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title>广告配置</title>
+</head>
+<body>
+    <div class="page-container">
+        <form class="form form-horizontal" id="form_brand_editor">
+            <div class="row cl">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;">开始时间：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')}' })" id="datemin" class="input-text Wdate" style="width:180px;">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;">结束时间：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" class="input-text Wdate" style="width:180px;">
+                </div>
+            </div>
+            <div class="row cl" id="linkurl">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;"><span class="c-red">*</span>链接地址：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="链接地址" id="txtlinkurl" name="name">
+                </div>
+            </div>
+            <div class="row cl" id="linkurl">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;"><span class="c-red">*</span>广告展示-长度（px）：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" min="1" value="765" placeholder="链接地址" id="txtchang" name="name">
+                </div>
+            </div>
+            <div class="row cl" id="linkurl">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;"><span class="c-red">*</span>广告展示-宽度（px）：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="number" class="input-text" min="1" value="440" placeholder="链接地址" id="txtkuan" name="name">
+                </div>
+            </div>
+            <div class="row cl" id="imgup">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;"><span class="c-red">*</span>广告图：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input class="input-text upload-url" type="text" name="uploadfile" id="txtTemImgUrl" placeholder="请选择图片！" style="width:25%">
+                    <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                    <input type="file" class="input-file" id="TemFile" style="height:30px" onchange="UpLoadImg()">
+                </div>
+            </div>
+            <div class="row cl" id="divimg" style="display:none">
+                <label class="form-label col-xs-3 col-sm-2" style="text-align: end;"><span class="c-red">*</span>图片预览：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <img src="" id="imgId" style="width:40%;height:160px" />
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a class="btn btn-primary radius" onClick="Save_Advert()"><i class="Hui-iconfont">&#xe632;</i> 提&nbsp;&nbsp;交</a>
+                    <a id="closeId" style="display:none" class="btn btn-default radius" href="javascript:layer_close()"><i class="Hui-iconfont">&#xe632;</i> 关&nbsp;&nbsp;闭</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(function () {
+            QueryAdvert();
+        });
+        //存盘
+        function Save_Advert() {
+            var index = layer.load(2);
+            var startDate = $("#datemin").val();
+            var endDate = $("#datemax").val();
+            var linkurl = $("#txtlinkurl").val();
+            var txtImgUrl = $("#txtTemImgUrl").val();
+            var height = $("#txtchang").val();
+            var width = $("#txtkuan").val();
+            var json = {
+                type: "PC_AddAdvert",
+                Statertime: startDate,
+                EndTime: endDate,
+                imgurl: txtImgUrl,
+                linkurl: linkurl,
+                height: height,
+                width: width
+            }
+            var proc = "PC_Log";//存储过程名
+            var type = "ReturnNumber";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "rechargeorder/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        layer.close(index);
+                        layer.msg("保存成功", { time: 3000 });
+                        layer_close();
+                        parent.location.reload();
+                    }
+                    else {
+                        layer.close(index);
+                        layer.msg("保存异常，请检查网络，以及联系维护人员", { time: 3000 });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+
+        //上传图片
+        function UpLoadImg() {
+
+            var index = layer.load(2);   //页面正在加载提示
+
+            var fileName = $('#TemFile').val();
+            var files = $('#TemFile').get(0).files;
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append("uploadfile", files[i]);
+            }
+            $.ajax({
+                type: "post",
+                url: "/Admin/ashx/UploadImg.ashx?type=UploadImage&imgType=guanggao",
+                data: fileData,
+                cache: false,
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    layer.close(index);
+                    if (result.flag == "0") {
+                        $('#TemFile').attr('src', result.message);
+                        $("#txtTemImgUrl").val(result.message);
+                        $('#imgId').attr('src', result.message);
+                        $("#divimg").show();
+                    }
+                    else {
+                        layer.alert(result.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.close(index);
+                    layer.msg("未知错误", { time: 3000 });
+                }
+            });
+        }
+
+        function QueryAdvert() {
+            var index = layer.load(2);
+            var json = {
+                type: "PC_GetAdvert",
+            }
+            var proc = "Pc_Log";//存储过程名
+            var type = "ReturnList";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "configuration/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result.data[0];
+                        //WdatePicker({ minDate: obj["Statertime"], maxDate: obj["EndTime"] });
+                        $("#datemin").val(obj["Statertime"]);
+                        $("#datemax").val(obj["EndTime"]);
+                        $("#txtchang").val(obj["height"]);
+                        $("#txtkuan").val(obj["width"]);
+                        $("#txtlinkurl").val(obj["linkurl"]);
+                        if (obj["imgurl"] != '') {
+                            $("#txtTemImgUrl").val(obj["imgurl"]);
+                            $('#imgId').attr('src', obj["imgurl"]);
+                            $("#divimg").show();
+                        }
+                    }
+                    layer.close(index);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加管理角色</title>
+    <!--<meta name="viewport" content="width=device-width" />-->
+    <script src="Assets/js/jquery-2.0.3.min.js"></script>
+    <link href="Assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Assets/css/ace.min.css" rel="stylesheet" />
+    <link href="Assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Assets/tool/dtree/dtree.css" rel="stylesheet" />
+    <link href="Assets/css/ZhiLin.css" rel="stylesheet">
+    <style>
+        .dtree {
+            font-size:18px;
+        }
+    </style>
+</head>
+<body onload="GetRoleList()">
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12 margin-b50">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="roleName"> 类型 </label>
+                        <div class="col-xs-9">
+                            <select id="sltSource" onchange="GetRoleList()">
+                                <option value="ALL">全部</option>
+                                <option value="B2B" selected="selected">后台功能</option>
+                                <option value="YWT">业务通</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="entids"> 所属机构 </label>
+                        <div class="col-xs-9">
+                            <select class="input-xlarge valid" id="entids" name="entids"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="roleName"> 角色名称 </label>
+                        <div class="col-xs-9">
+                            <input type="text" id="roleName" placeholder="角色名称" class="input-xlarge">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="describe"> 角色描述 </label>
+                        <div class="col-xs-9">
+                            <input type="text" id="describe" placeholder="角色描述" class="input-xlarge">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="sort"> 排序 </label>
+                        <div class="col-xs-9">
+                            <input type="number" id="sort" placeholder="排序（请输入正整数）" class="input-xlarge">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="widget-box" style="width: 70%; margin: auto;">
+                            <div class="widget-header header-color-green3" style="min-height: 30px;">
+                                <h5 class="lighter smaller" style="line-height: 30px;">权限选择</h5>
+                                <span style="margin-left: 200px;">
+                                    <a style="color: #fff; cursor: pointer;" onclick="d.closeAll()">展开</a>
+                                    <a style="color: #fff; cursor: pointer;" onclick="d.openAll()">收缩</a>
+                                </span>
+                            </div>
+                            <div class="widget-body" id="dreebody">
+                                <script>
+                                    function GetRoleList() {
+                                        var Source = $("#sltSource").val();
+                                        var keyid = GetQueryString("id");
+                                        var data = {
+                                            Source: Source,
+                                            keyId: keyid,
+                                        };
+                                        $.ajax({
+                                            type: "Post",
+                                            url: "../Role/RoleAdd",
+                                            data: data,
+                                            cache: false,
+                                            dataType: "json",
+                                            contentType: "application/x-www-form-urlencoded",
+                                            success: function (result) {
+                                                if (result.Code) {
+                                                    var str = '{"item":' + JSON.stringify(result.Obj) + '}';
+                                                    d = new DTree('d');
+                                                    d.add(0, -1, '权限路径', '0', "权限路径");
+                                                    var data = $.parseJSON(str);
+                                                    $.each(data.item,
+                                                        function (n, value) {
+                                                            if (value.FatherId != null) {
+                                                                d.add(value.Id, value.FatherId, 'treemenu', value.Id, value.Title + "(" + value.Source + ")");
+                                                            } else {
+                                                                d.add(value.Id, 0, 'treemenu', value.Id, value.Title + "(" + value.Source + ")");
+                                                            }
+                                                        });
+                                                    var cont = document.getElementById("dreebody");
+                                                    cont.innerHTML = d;
+                                                    ///加载角色信息
+                                                    var roleList = result.RoleList
+                                                    if (roleList != null && roleList.length > 0) {
+                                                        $("#sltSource").prop("disabled", true);
+                                                        $("#sltSource").val(roleList[0].Source);
+                                                        $("#roleName").val(roleList[0].RoleName);
+                                                        $("#describe").val(roleList[0].Describe);
+                                                        $("#sort").val(roleList[0].Sort);
+                                                        $.each(roleList, function (n, role) {
+                                                            $("#treemenu_" + role.MethodId).attr("checked", "checked");
+                                                        });
+                                                    }
+                                                }
+                                                else {
+
+                                                }
+                                            },
+                                            error: function (jqXHR, textStatus, errorThrown) {
+                                                alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+                                            }
+                                        })
+                                    }
+                                </script>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="text-center bottomBtn">
+                <a class="btn btn-white btn-purple btn-sm" id="close">
+                    取消
+                </a>
+
+                <a class="btn btn-white btn-purple btn-sm" id="add">
+                    提交
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="Assets/js/jquery.mobile.custom.min.js"></script>
+    <script src="Assets/js/bootstrap.min.js"></script>
+    <script src="Assets/js/typeahead-bs2.min.js"></script>
+    <!--[if lte IE 8]>
+      <script src="Assets/js/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="Assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="Assets/tool/dtree/dtree.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(function () {
+            $('#close').click(function () {
+                window.parent.layer.closeAll();
+            });
+            $('#add').click(function () {
+                var roleName = $('#roleName').val();
+                var describe = $('#describe').val();
+                var sort = $('#sort').val();
+                var obj = document.all.treemenu;
+                var source = $("#sltSource").val();
+                var ids = '';
+                $.each(obj, function (n, value) {
+                    if (value.checked) {
+                        ids += value.value + ',';
+                    }
+                });
+                var entId = $("#entids").val();
+                var keyId = GetQueryString("id");
+                if (roleName == "") {
+                    window.parent.layer.msg('请填写角色名称');
+                    return;
+                }
+                if (sort == "") {
+                    window.parent.layer.msg('请填写角色排序序号');
+                    return;
+                }
+                if (ids == "") {
+                    window.parent.layer.msg('请填选择角色权限');
+                    return;
+                }
+                if (source == "") {
+                    window.parent.layer.msg('请填选择角色类型');
+                    return;
+                }
+                else if (entId == "") {
+                    window.parent.layer.msg('请填选择所属机构');
+                    return;
+                }
+                window.parent.layer.load(1);
+                $.ajax({
+                    url: '../Role/RoleAdd_Action',
+                    data: { roleName: roleName, describe: describe, sort: sort, ids: ids, source: source, keyId: keyId, entId: entId },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        window.parent.layer.closeAll('loading');
+                        if (data.Code == true) {
+                            //window.parent.reloadIframe();
+                            window.parent.layer.msg(data.Msg, {
+                                time: 1000
+                            }, function () {
+                                parent.document.getElementById("btnClick").click();
+                                window.parent.layer.closeAll();
+                                parent.location.reload();
+                            });
+                        } else {
+                            window.parent.layer.msg(data.Msg);
+                        }
+                    },
+                    error: function (data) {
+                        window.parent.layer.closeAll('loading');
+                        window.parent.layer.msg('网络连接错误');
+                    }
+                });
+            });
+        });
+        $.ajax({
+            type: "Post",
+            cache: true,
+            async: false,
+            url: "../Role/EntidAdd",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+                var menus = result.Obj;
+                var htmlstr = ""
+                if (result.Code) {
+                    if (menus != null && menus.length > 0) {
+                        for (var i = 0; i < menus.length; i++) {
+
+                            htmlstr += ' <option value="' + menus[i]["entid"] + '">' + menus[i]["entname"] + '</option>'
+                        }
+                    } else {
+                        htmlstr += '<option value="0">--请先添加机构--</option>'
+                    }
+                    var cont = document.getElementById("entids");
+                    cont.innerHTML += htmlstr;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+            }
+        })
+    </script>
+
+</body>
+</html>

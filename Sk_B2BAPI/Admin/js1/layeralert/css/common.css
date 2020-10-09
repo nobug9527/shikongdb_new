@@ -1,0 +1,46 @@
+﻿/*加载弹框样式*/
+.popup  {position: fixed; left: 50%; background-color: #fff; border-radius: 5px; z-index: 4;}
+/*.loadingPop { top:50%; width: 100px; padding: 10px; margin-left: -55px; text-align: center; font-weight: bold; font-size: 15px;  }*/
+.winPop {top:50px; width: 1100px; margin-left: -550px; max-height: 80%; overflow: auto;}
+.popup h3.winPopTit{ text-align: center; padding: 10px; margin: 0; font-size: 16px; font-weight: bold; border-bottom: 1px solid #d4d4d4; background-color: #EFEFEF; border-top-left-radius: 5px; border-top-right-radius: 5px;}
+.winPopCon { padding:20px 30px;}
+.winPoph2 { font-size:24px; font-weight:normal; margin: 0;}
+.winPop .conForm { border:none;}
+.hasBorder{border:1px solid #d4d4d4 !important;}
+.winPopConf { padding: 20px 0px; text-align: center;}
+.closeBtn { position: absolute; right: 15px; top:7px;}
+/*/!*alert弹框*!//!*confirm弹框*!/*/
+/*.msgPop {top:50px; width: 500px; margin-left: -250px; max-height: 80%; overflow: auto;}*/
+/*.msgPop h3.popTit { text-align: left; padding-left: 15px;}*/
+/*.msgCon { padding: 30px 0px; text-align: center;}*/
+/*.msgCon p { margin-bottom: 50px;}*/
+/*.msgCon a { margin:0px 30px;}*/
+
+
+
+table.dataintable {
+  margin-top:15px;
+  border-collapse:collapse;
+  border:1px solid #aaa;
+  width:100%;
+}
+table.dataintable th {
+  vertical-align:baseline;
+  padding:5px 15px 5px 6px;
+  background-color:#3F3F3F;
+  border:1px solid #3F3F3F;
+  text-align:left;
+  color:#fff;
+}
+table.dataintable td {
+  vertical-align:text-top;
+  padding:6px 15px 6px 6px;
+  border:1px solid #aaa;
+}
+table.dataintable tr:nth-child(odd) {
+  background-color:#fff;
+}
+table.dataintable tr:nth-child(even) {
+  background-color:#fff;
+}
+

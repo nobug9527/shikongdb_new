@@ -1,0 +1,510 @@
+﻿<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <title>编辑商品</title>
+    <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+
+ </head>
+ <body>
+     <div class="page-container">
+         <form class="form form-horizontal" id="form_article_editor">
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属分类：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <!--txtCategory-->
+                     <select name="" class="input-text" id="sltCategory" style="width:15%">
+                         <option value="0">请选择类别</option>
+                     </select>
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">推荐类型：</label>
+                 <div class="formControls col-xs-8 col-sm-9 skin-minimal" id="isRecommend">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" datatype="*1-100" placeholder="" id="txtGoodsName" name="goodsName" style="width:25%;">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">助记码：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="mnemonicCode" id="txtMnemonicCode" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">通用名：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" datatype="*0-100" placeholder="" id="txtGeneric" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品规格：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="drugSpec" id="txtDrugSpec" style="width:25%;">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>包装单位：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="packageUnit" id="txtPackageUnit" style="width:25%;">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>中包装：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="minPackage" id="txtMinPackage" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>计量规格：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="bigPackage" id="txtBigPackage" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>生产厂家：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="drugFactory" id="txtDrugFactory" style="width:25%;">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>批准文号：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="approvalNumber" id="txtApprovalNumber" style="width:25%;">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">剂型：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="dosageForm" id="txtDosageForm" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">类别：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="leibie" id="txtLeiBie" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">储存条件：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" name="storageConditions" id="txtStorageConditions" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">建议零售价：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" value="0" name="ckPrice" id="txtCkPrice" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">中包装控制：</label>
+                 <div class="formControls col-xs-8 col-sm-9" style="width:25%">
+                     <select id="sltIsZbz"  class="input-text">
+                         <option value="N" selected="selected">否</option>
+                         <option value="Y">是</option>
+                     </select>
+                 </div>
+                 <label class="form-label col-xs-4 col-sm-2">大包装控制：</label>
+                 <div class="formControls col-xs-8 col-sm-9" style="width:25%">
+                     <select id="sltIsDbz" class="input-text">
+                         <option value="N" selected="selected">否</option>
+                         <option value="Y">是</option>
+                     </select>
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择品牌：</label>
+                 <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                     <input type="text" class="input-text" name="goods" id="txtBrandId" ondblclick="QueryBrand()" style="width:15%">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">封面图片：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input class="input-text upload-url" type="text" name="uploadfile" id="txtGoodsImg" placeholder="请选择图片！" style="width:25%"><!--onchange="UpLoadImage(this)"-->
+                     <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                     <input type="file" multiple name="goodsfile" class="input-file" id="GoodsImg" style="position: relative; width: 100px;left: -105px;font: 400 13.3333px Arial;" onchange="UpLoadPicture('goods','GoodsImg','goodsfile')">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">排序值：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" value="99" name="sortId" id="txtSortId" style="width:25%">
+                 </div>
+             </div>
+             <div class="row cl" style="display:none">
+                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>发布日期：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="" class="input-text Wdate">
+                 </div>
+             </div>
+             <div  class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">商品摘要：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <input type="text" class="input-text" value="" id="txtzhaiyao">
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">产品详情图：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:100%">
+                         <thead>
+                             <tr class="text-c">
+                                 <th>上传图片</th>
+                                 <th>图片名称</th>
+                                 <th>图片地址</th>
+                                 <th>排序</th>
+                                 <th>操作</th>
+                             </tr>
+                         </thead>
+                         <tbody id="TbGoods">
+                             <tr class="text-c">
+                                 <td id="tdGoodsCode">选择图片</td>
+                                 <td>
+                                     <input type="text" id="txtRemark" placeholder="请输入名称" class="input-text" />
+                                 </td>
+                                 <td>
+                                     <input class="input-text upload-url" type="text" name="uploadfile" id="txtGoodsXQImg" placeholder="请选择图片！" style="width:25%"><!--onchange="UpLoadImage(this)"-->
+                                     <a href="javascript:void();" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                                     <input type="file" multiple name="goodsfile" class="input-file" id="GoodsXQImg" style="position: relative; width: 100px;left: -105px;font: 400 13.3333px Arial;" onchange="UpLoadPicture('goods','GoodsXQImg','goodsfile')">
+                                 </td>
+                                 <td>
+                                     <input type="number" id="txtSort" value="0" class="input-text" min="0" max="99" />
+                                 </td>
+                                 <td><a onclick="AddGoodImgs()" class="btn btn-secondary radius">保存</a></td>
+                             </tr>
+                         </tbody>
+                     </table>
+                     <table class="table table-border table-bordered table-hover table-bg table-sort">
+                         <thead>
+                             <tr class="text-c">
+                                 <th><input type="checkbox" name="" value=""></th>
+                                 <th>商品编号</th>
+                                 <th width="50px">排序</th>
+                                 <th>图片名称</th>
+                                 <th>图片</th>
+                                 <th>添加时间</th>
+                                 <th>操作</th>
+                             </tr>
+                         </thead>
+                         <tbody id="TbShows"></tbody>
+                     </table>
+                 </div>
+             </div>
+             <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">商品说明书：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                     <script id="editor" type="text/plain" style="width:100%;height:400px;">
+                     </script>
+                 </div>
+             </div>
+             <div class="row cl">
+                 <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                     <a onClick="UpdateGoodsInfo();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe632;</i> 保存</a>
+                     <button onClick="layer_close();" class="btn btn-default radius" type="submit">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                 </div>
+             </div>
+         </form>
+     </div>
+     <!--_footer 作为公共模版分离出去-->
+     <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+     <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+     <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+     <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+
+     <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+     <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+     <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
+     <script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.config.js"></script>
+     <script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.all.min.js"></script>
+     <script type="text/javascript" src="lib/webuploader/0.1.5/webuploader.min.js"></script>
+     <script src="js/jquery.base64.js"></script>
+
+     <script src="js/main.js"></script>
+     <script src="Goods/js/GoodsMain.js"></script>
+     <script src="Goods/js/GoodsMaintenance.js"></script>
+     <script src="js/SearchInfo.js"></script>
+     <script>
+         $(function () {
+             var article_id = GetQueryString("article_id");
+             if (article_id == null || article_id == "") {
+                 window.location.href = "goods_list.html"
+             } else {
+                 LoadCheckBox('CheckBox');
+                 LoadGoodsInfo();
+                 QueryReproList();
+             }
+         });
+         function QueryReproList() {
+             var article_id = GetQueryString("article_id");
+             var index = layer.load(2);
+             var pageIndex = $("#pageIndex").html();
+             var strWhere = $("#txtStrWhere").val();//搜索条件
+
+             var pageSize = '15';
+             var proc = "Proc_Admin_Img";//存储过程名
+             var type = "ReturnList";
+             var json = {
+                 type: "Pc_GetProductImg",
+                 strWhere: strWhere,
+                 article_id: article_id,
+                 PageIndex: pageIndex,
+                 PageSize: pageSize,
+             };
+             $.ajax({
+                 type: "Post",
+                 cache: false,
+                 url: "main/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                 contentType: "application/json; charset=utf-8",
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (result) {
+                     var type = result.flag;
+                     if (type == '0') {
+                         var obj = result.data;
+                         var html = "";
+                         for (var i = 0; i < obj.length; i++) {
+                             html += '<tr class="text-c">'
+                             html += '<td><input type="checkbox" name="imgPro" value="' + obj[i]["Id"] + '"></td>'
+                             html += '<td>' + obj[i]["article_id"] + '</td>'
+                             html = html + '<td><input type="number" class="input-text radius size-M" onchange="UpSort(this,' + obj[i]["Id"] + ')" value="' + obj[i]["sort_id"] + '" ></td>'
+                             html += '<td>' + obj[i]["remark"] + '</td>'
+                             html += '<td ><img style=\"width: 100px;\" src=\"' + obj[i]["img_url"] + '\"></td>'
+                             html += '<td>' + obj[i]["add_time"] + '</td>'
+                             html += "<td class='td-manage'>";
+                             html += "<a title=\"删除\" class=\"btn btn-warning radius\" onclick=\"datajy('" + obj[i]["Id"] + "',2)\" class=\"ml-5 btn btn-danger radius\" style=\"text-decoration:none\">删除</a>";
+                             html += "</td>";
+                             html += '</tr>'
+
+                         }
+                         $('#TbShows').empty();
+                         $("#TbShows").append(html);
+                         layer.close(index);
+                         var recordCount = result["recordCount"];
+                         var pageCount = result["pageCount"];
+                         $("#recordCount").html(recordCount);
+                         $("#pageCount").html(pageCount);
+                     }
+                     else if (type == '1') {
+                         $("#recordCount").html(0);
+                         $("#pageCount").html(1);
+                         $('#TbShows').empty();
+                         layer.close(index);
+                     }
+                     else if (type == '2') {
+                         layer.close(index);
+                         layer.alert(result.message, {
+                             icon: 2,
+                             skin: 'layer-ext-moon',
+                             yes: function () { parent.location.replace("login.html") }
+                         });
+
+                     }
+                     else {
+                         layer.close(index);
+                         layer.alert(result.message, {
+                             icon: 2,
+                             skin: 'layer-ext-moon'
+                         });
+                     }
+                 },
+                 error: function (jqXHR, textStatus, errorThrown) {
+                     alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                     layer.close(index);
+                 }
+             })
+         }
+
+         function datajy(obj, type) {
+             var s = '';
+             if (type == 1) {
+                 $('input[name="imgPro"]:checked').each(function () {
+                     s += $(this).val() + ',';
+                 });
+                 if (s.length > 0) {
+                     //得到选中的checkbox值序列
+                     s = s.substring(0, s.length - 1);
+                 }
+             } else if (type == 2) {
+                 s = obj;
+             }
+             if (s == '') {
+                 alert('你还没有选择任何内容！')
+             }
+             var data = {
+                 type: "PC_DelProImg",
+                 strWhere: s
+             };
+             var proc = "Proc_Admin_Img";//存储过程名
+             var type = "ReturnNumber";
+             ///加载页面数据
+             $.ajax({
+                 type: "Post",
+                 cache: false,
+                 url: "coupon/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (result) {
+                     var type = result.flag;
+                     if (type == '0') {
+                         layer.alert('操作成功', {
+                             icon: 1,
+                             skin: 'layer-ext-moon'
+                         });
+                         QueryReproList();
+                     }
+                     if (type == '1') {
+                         layer.alert('操作失败', {
+                             icon: 2,
+                             skin: 'layer-ext-moon'
+                         });
+                     }
+                     else if (type == '2') {
+                         layer.alert(result.message, {
+                             icon: 2,
+                             skin: 'layer-ext-moon',
+                             yes: function () { parent.location.replace("login.html") }
+                         });
+
+                     }
+                 },
+                 error: function (jqXHR, textStatus, errorThrown) {
+                     alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                     layer.close(index);
+                 }
+             })
+         }
+
+         function UpSort(obj, id) {
+             var sort = $(obj).val();
+             if (sort <= 0) {
+
+                 layer.alert("不能为小于0！", {
+                     icon: 2,
+                     skin: 'layer-ext-moon'
+                 });
+                 return;
+             }
+             var proc = "Proc_Admin_Img";//存储过程名
+             var type = "ReturnNumber";
+             var json = {
+                 type: "Pc_SetProductImg",
+                 id: id,
+                 sort_id: sort,
+             };
+             $.ajax({
+                 url: "main/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                 type: "Post",
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (result) {
+                     var type = result.flag;
+                     if (type == '0') {
+                         QueryReproList()
+                     }
+                     if (type == '1') {
+                         layer.alert('失败', {
+                             icon: 1,
+                             skin: 'layer-ext-moon'
+                         });
+                     }
+                     else if (type == '2') {
+                         layer.alert(result.message, {
+                             icon: 2,
+                             skin: 'layer-ext-moon',
+                             yes: function () { parent.location.replace("login.html") }
+                         });
+
+                     }
+                 },
+                 error: function (jqXHR, textStatus, errorThrown) {
+                     alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                     layer.close(index);
+                 }
+             })
+         }
+
+         function AddGoodImgs() {
+             var goodsImg = $("#txtGoodsXQImg").val();
+             var remark = $("#txtRemark").val();
+             var sort = $("#txtSort").val();
+             var article_id = GetQueryString("article_id");
+             if (goodsImg == "") {
+                 layer.alert("请上传图片！", {
+                     icon: 2,
+                     skin: 'layer-ext-moon'
+                 });
+                 return;
+             }
+             var pattern = /^[a-zA-Z]:(\\(!?))/;
+             if (pattern.test(goodsImg) == true) {
+                 layer.alert("图片未正确上传！", {
+                     icon: 2,
+                     skin: 'layer-ext-moon'
+                 });
+                 return;
+             }
+             var proc = "Proc_Admin_Img";//存储过程名
+             var type = "ReturnNumber";
+             var json = {
+                 type: "Pc_SetProductImg",
+                 article_id: article_id,
+                 sort_id: sort,
+                 img_url: goodsImg,
+                 remark: remark
+             };
+             $.ajax({
+                 url: "main/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                 type: "Post",
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (result) {
+                     var type = result.flag;
+                     if (type == '0') {
+                         layer.alert('添加成功', {
+                             icon: 1,
+                             skin: 'layer-ext-moon'
+                         });
+                         QueryReproList();
+                     }
+                     if (type == '1') {
+                         layer.alert('添加失败', {
+                             icon: 0,
+                             skin: 'layer-ext-moon'
+                         });
+                     }
+                     else if (type == '2') {
+
+                         layer.alert(result.message, {
+                             icon: 2,
+                             skin: 'layer-ext-moon',
+                             yes: function () { parent.location.replace("login.html") }
+                         });
+
+                     }
+                 },
+                 error: function (jqXHR, textStatus, errorThrown) {
+                     alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                     layer.close(index);
+                 }
+             })
+         }
+     </script>
+ </body>
+</html>

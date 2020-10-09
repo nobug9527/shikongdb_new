@@ -1,0 +1,257 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <!--/meta 作为公共模版分离出去-->
+    <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+    <title></title>
+</head>
+<body>
+    <div class="page-container">
+        <form action="" method="post" class="form form-horizontal" id="form_prom_group_design">
+            <div style="display:none" id="lsid"></div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>方案名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="最多20个字....." id="txtFaTitle" name="faTitle">
+                </div>
+            </div>
+            <div class="row cl" style="display:none">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>方案标识：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="无" placeholder="最多2个字....." id="txtFabs" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>方案类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="" class="select" id="sltFaType" onchange="bianhua(this.value)">
+                            <option value="GZH" selected="selected">商品组合</option>
+                            <option value="DQG">抢购（秒杀)</option>
+                            <!--<option value="GTJ" style="display:none">产品推荐</option>-->
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>客户类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select name="" class="select" id="khTypeId">
+                            <option value="All">全部</option>
+                            <option value="F001">终端</option>
+                            <option value="F002">批发</option>
+                            <option value="F003">连锁</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+
+                <label class="form-label col-xs-4 col-sm-2">开始时间：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <p class="c-red">&nbsp;&nbsp;秒杀活动以整点开始[12:49:33=>12:00:00][12:19:33=>12:00:00]</p>
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')}' })" id="datemin" class="input-text Wdate" style="width:180px;">
+                </div>
+            </div>
+            <div class="row cl">
+
+                <label class="form-label col-xs-4 col-sm-2">结束时间：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <p class="c-red">&nbsp;&nbsp;秒杀活动以整点结束[12:59:33=>12:00:00][12:14:33=>12:00:00]!结束时间大于开始时间!</p>
+                    <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" class="input-text Wdate" style="width:180px;">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否显示：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal" id="isShowId">
+                    <div class="radio-box">
+                        <input name="isShow" type="radio" id="sex-1" checked="checked" value="Y">
+                        <label for="sex-1">是</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="sex-2" name="isShow" value="N">
+                        <label for="sex-2">否</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">促销描述：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" name="describe" id="txtdescribe" placeholder="最多150个字....." value="" class="input-text">
+                </div>
+            </div>
+            <div class="row cl" id="spzl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>促销商品总数量：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <input type="number" class="input-text" value="0" id="txtPromQuantity" name="">
+                </div>
+            </div>
+            <div class="row cl" id="xgsl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>客户限购数量：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal" id="Div2">
+                    <input type="number" class="input-text" value="0" id="txtSaleQuantity">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">活动商品：</label>
+                <div class="formControls col-xs-8 col-sm-9" style="MARGIN-TOP: 45PX;MARGIN-LEFT: 100PX;WIDTH: 84%;">
+                    <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:100%">
+                        <thead>
+                            <tr class="text-c">
+                                <th style="width:30px">序号</th>
+                                <th style="width:50px">商品编号</th>
+                                <th style="width:130px">商品名称</th>
+                                <th style="width:80px">商品规格</th>
+                                <th style="width:35px">中包装</th>
+                                <th style="width:50px">数量</th>
+                                <th style="width:50px">促销价</th>
+                                <th style="width:60px">金额</th>
+                                <th style="width:60px">原价</th>
+                                <th style="width:60px">库存</th>
+                                <th style="width:60px">参与活动数量</th>
+                                <th style="width:60px">满足数量</th>
+                                <th style="width:60px">单人限购数量</th>
+                                <th style="width:50px">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TbGoods">
+                            <tr class="text-c">
+                                <td id="tdSort_Id">1</td>
+                                <td id="tdGoodsCode"></td>
+                                <td>
+                                    <input type="text" id="txtGoodsName" value="" class="input-text" ondblclick="QueryGoods()" />
+                                    <input type="hidden" id="txtArticleId">
+                                </td>
+                                <td id="tdDrugSpec"></td>
+                                <td id="tdMinPackage"></td>
+                                <td><input type="text" id="txtGoodsQuantity" value="0" class="input-text" /></td>
+                                <td><input type="text" id="txtGoodsPrice" value="0" class="input-text" /></td>
+                                <td id="tdTaxAmount">0</td>
+                                <td id="tdPrice"></td>
+                                <td id="tdStock_Quantity"></td>
+                                <td><input type="text" id="txtTotalQuantity" value="0" class="input-text" /></td>
+                                <td><input type="text" id="txtlimitQuantity" value="1" class="input-text" /></td>
+                                <td><input type="text" id="txtOnlyQuantity" value="0" class="input-text" /></td>
+                                <td><a onclick="AddGroupGoods()" class="btn btn-secondary radius">保存</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a class="btn btn-primary radius" onclick="SaveGroupDesign()"><i class="Hui-iconfont">&#xe632;</i> 保存并提交</a>
+                    <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+
+
+    <script src="prom/js/Porm.js"></script>
+    <script src="prom/js/Prom_Group.js"></script>
+    <script>
+        $(function () {
+            var timestamp = (new Date()).valueOf();
+            $("#lsid").html(timestamp);///获取唯一单号
+            bianhua('GZH');
+            customType();
+            //加载客户选择回车事件
+            $("#txtGoodsName").keydown(function (even) {
+                if (even.keyCode == "13") {
+                    QueryGoods();
+                }
+            })
+        })
+        function bianhua(obj) {
+            switch (obj) {
+                case 'DQG':
+                    $("#spzl").css("display", "none");
+                    $("#xgsl").css("display", "none");
+                    $("#xgsl").css("display", "none");
+                    $("#txtTotalQuantity").removeAttr("readonly");
+                    $("#txtOnlyQuantity").removeAttr("readonly");
+                    $("#txtGoodsQuantity").attr("readonly", "readonly");
+                    break;
+                case 'GZH':
+                    $("#spzl").css("display", "inherit");
+                    $("#xgsl").css("display", "inherit");
+                    $("#txtTotalQuantity").removeAttr("readonly");
+                    $("#txtOnlyQuantity").attr("readonly", "readonly");
+                    $("#txtGoodsQuantity").removeAttr("readonly");
+                    break;
+            }
+        }
+        //客户类型
+        function customType() {
+            var index = layer.load(2);
+            var proc = "Proc_Admin_CustomerList";//存储过程名
+            var type = "ReturnList";
+            var json = {
+                type: "CustomType"
+            };
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "coupon/ashx/returnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (obj) {
+                    var type = obj.flag;
+                    if (type == '0') {
+                        var html = '<option value="All">全部</option>'
+                        for (var i = 0; i < obj.data.length; i++) {
+                            html += '<option value="' + obj.data[i]["TypeID"] + '">' + obj.data[i]["clienttype"] + '</option>';
+                        }
+                        $('#khTypeId').empty();
+                        $('#khTypeId').append(html);
+                        layer.close(index);
+                    } else if (type == '2') {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon',
+                            yes: function () { parent.location.replace("login.html") }
+                        });
+
+                    }
+                    else {
+                        layer.close(index);
+                        layer.alert(obj.message, {
+                            icon: 2,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+    </script>
+</body>
+</html>

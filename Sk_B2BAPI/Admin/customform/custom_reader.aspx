@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="custom_reader.aspx.cs" Inherits="Sk_B2BAPI.Admin.customform.custom_reader" EnableViewState="false" %>

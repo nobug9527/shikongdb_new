@@ -1,0 +1,118 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+    <!--<link rel="stylesheet" type="text/css" href="../js1/layeralert/skins/default/laydate.css" />-->
+    <link href="../lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+    <title>签到规则编辑</title>
+
+
+</head>
+<body>
+    <div class="page-container">
+        <form class="form form-horizontal" id="form_article_editor">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>方案名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" datatype="*1-100" placeholder="请输入方案名称" id="txtPlanName" name="planName" style="width:25%">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>客户类型：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <select name="" class="input-text" id="sltCategory" style="width:25%">
+                        <option value="0">请选择类别</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>签到模式：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <select id="sltSignModel" class="input-text" style="width:25%">
+                        <option value="1" selected="selected">累计签到</option>
+                        <option value="2" selected="selected">连续签到</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">签到规则编辑：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <table class="table table-border table-bordered table-hover table-bg table-sort" style="width:100%">
+                        <thead>
+                            <tr class="text-c">
+                                <th>序号</th>
+                                <th>奖励方式</th>
+                                <th>签到规则</th>
+                                <th>奖励规则</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TbGoods">
+                            <tr class="text-c">
+                                <td id="signXh">1</td>
+                                <td>
+                                    <select id="stlSignLx" class="input-text">
+                                        <option value="积分">积分</option>
+                                        <option value="优惠券">优惠券</option>
+                                        <option value="礼品">礼品</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="0" id="txtSignRule" class="input-text"  style="width:80%" onchange = "value=value.replace(/[^\d]/g,'1')"  /><span id="spSignRule">天</span>
+                                </td>
+                                <td>
+                                    <input type="text" id="slRewardRule" value="0" class="input-text" style="width:80%" onchange = "value=value.replace(/[^\d]/g,'0')" /><span id="spRewardRule">积分</span>
+                                </td>
+                                <td><a onclick="AddSignRole()" class="btn btn-secondary radius">保存</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">规则说明：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <script id="editor" type="text/plain" style="width:100%;height:400px;"></script>
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <a onClick="SaveSignRole();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe632;</i> 保存</a>
+                    <button onClick="layer_close();" class="btn btn-default radius" type="submit">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+
+    <script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
+    <script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.config.js"></script>
+    <script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.all.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="js/signLogEditor.js"></script>
+    <script>
+        $(function () {
+            UE.getEditor('editor');
+            LoadClientType();
+            QuerySignRole();
+        });
+    </script>
+</body>
+</html>

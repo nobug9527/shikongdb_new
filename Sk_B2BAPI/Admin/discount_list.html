@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+  <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+  <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+  <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+  <title>规则列表</title>
+
+</head>
+
+<body>
+  <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 数据 <span class="c-gray en">&gt;</span> 系统配置 <span
+      class="c-gray en">&gt;</span> 规则列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+      href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+  <div class="page-container">
+    <!-- 搜索 -->
+    <div class="text-c">
+      规则状态：
+      <span class="select-box inline">
+        <select class="select" id="sltStatus">
+          <option value="99" selected="selected">全部</option>
+          <option value="1">启用</option>
+          <option value="2">禁用</option>
+        </select>
+      </span>
+      规则类型：
+      <span class="select-box inline">
+        <select id="ruleType" class="select-box">
+          <option value="" selected="selected">全部</option>
+          <option value="data">日期</option>
+          <option value="week">星期</option>
+        </select>
+      </span>
+      <input type="text" class="input-text" style="width:250px" placeholder="输入规则标题" id="txtStrWhere" name="">
+
+      <button type="submit" class="btn btn-success radius" name="" onclick="RulesList(1)"><i
+          class="Hui-iconfont">&#xe665;</i>搜 索</button>
+    </div>
+    <!-- 操作 -->
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+      <span class="l">
+        <a href="javascript:;" onclick="DeletRuler()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+          批量删除</a>
+        <a href="javascript:;" onclick="InsertRuler()" class="btn btn-success radius"><i
+            class="Hui-iconfont">&#xe6e2;</i> 新增</a>
+      </span>
+    </div>
+    <!-- 表格 -->
+    <div class="mt-20 page-con-tableCon" style="height:calc(100% - 170px);">
+      <table id="aa" class="table table-border table-bordered table-hover table-bg table-sort">
+        <thead>
+          <tr class="text-c">
+            <th><input type="checkbox" name="funbind" value="" onclick="funbind(this)"></th>
+            <th style="display:none;">序号</th>
+            <th>标题</th>
+            <th>线下付款扣率</th>
+            <th>线上付款扣率</th>
+            <th>时间</th>
+            <th>状态</th>
+            <th style="display:none;">企业</th>
+            <th rowspan="2">操作</th>
+          </tr>
+        </thead>
+        <tbody id="TbShows">
+          <tr v-for="item in obj" class="text-c">
+            <td><input type="checkbox" name="unbind" :value="item.id" onclick="unbind()" /> </td>
+            <td style="display:none;">{{item.id}}</td>
+            <td :title="item.title">{{item.title}}</td>
+            <td>{{item.offLine}}</td>
+            <td>{{item.onLine}}</td>
+            <td v-if="item.type=='data'">{{item.startDate}}--{{item.endDate}}</td>
+            <td v-else>{{item.week}}</td>
+            <td v-if="item.status==0"><span class="label label-danger radius">未启用</span></td>
+            <td v-else><span class="label label-success radius">已启用</span></td>
+            <td style="display:none;">{{item.entId}}</td>
+            <td><u style="cursor:pointer;color: blue;" class="text-primary"
+                @click="OrderDtOpen(' 规则详情','discount_detail.html',item.id )">编辑</u></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 分页 -->
+    <div class="cl pd-5 bg-1 bk-gray">
+      <span>
+        <a href="javascript:btnfirst(RulesList)">首页</a>
+        <a href="javascript:btnup(RulesList)">上一页</a>
+        <b id="pageIndex">1</b>/<b id="pageCount">1</b>
+        <a href="javascript:btnnext(RulesList)">下一页</a>
+        <a href="javascript:btnlast(RulesList)">尾页</a>
+        <input type="number" class="input-text radius size-S" id="pagety" value="1"
+          onchange="if (this.val <= 0) { this.val = 1; }" />
+        <a href="javascript:btntz(RulesList)">跳转</a>
+        <span class="r">共有数据：<strong id="recordCount">0</strong> 条</span>
+      </span>
+    </div>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+  <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+  <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+  <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+  <!--/_footer 作为公共模版分离出去-->
+  <!--请在下方写此页面业务相关的脚本-->
+  <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+  <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script>
+    $(function () {
+      RulesList();
+    });
+    var vm;
+    function RulesList(obj) {
+      var index = layer.load(2);
+      var status = $("#sltStatus").val();
+      var ruleType = $('#ruleType').val();
+      var strWhere = $("#txtStrWhere").val();
+      var pageSize = "15";
+      var pageIndex = $("#pageIndex").html();
+      switch (obj) {
+        case 1:
+          pageIndex = '1';
+          $("#pageIndex").html(1)
+          break;
+        default:
+          break;
+      }
+      var data = {
+        type: "RulesList",
+        status: status,
+        strWhere: strWhere,
+        PageIndex: pageIndex,
+        PageSize: pageSize,
+        ruleType: ruleType
+      };
+      var proc = "Proc_Admin_Rules";//存储过程名
+      var type = "ReturnList";
+      ///加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "rules/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(data)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            var obj = result.data;
+            if (vm) {
+              vm.$data.obj = obj;
+            } else {
+              vm = new Vue({
+                el: "#aa",
+                data: { obj },
+                methods: {
+                  OrderDtOpen: function (title, url, id) {
+                    var index = layer.open({
+                      type: 2,
+                      title: title,
+                      content: url + "?id=" + id,
+                      end: function () {
+                        RulesList();
+                      }
+                    });
+                    layer.full(index);
+                  }
+                }
+              })
+            }
+            var recordCount = result["recordCount"];
+            var pageCount = result["pageCount"];
+
+            $("#recordCount").html(recordCount);
+            $("#pageCount").html(pageCount);
+            //$('#TbShows').empty();
+            //$("#TbShows").append(html);
+            layer.close(index);
+          }
+          else if (type == '1') {
+            $("#recordCount").html(0);
+            $("#pageCount").html(1);
+            //$('#TbShows').empty();
+            layer.close(index);
+          } else if (type == '2') {
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { parent.location.replace("login.html") }
+            });
+          }
+          else {
+            layer.close(index);
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon'
+            });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          layer.close(index);
+          layer.msg("未知错误", { time: 3000 });
+        }
+      })
+    }
+    function InsertRuler() {
+      var index = layer.open({
+        type: 2,
+        title: "规则详情",
+        content: "discount_detail.html?id=0",
+        end: function () {
+          RulesList();
+        }
+      });
+      layer.full(index);
+    }
+    function DeletRuler() {
+      var splitId = '';
+      $('input[name=unbind]:checked').each(function () {
+        splitId += $(this).val() + ',';
+      });
+      if (splitId.length > 0) {
+        splitId = splitId.substring(0, splitId.length - 1);
+      }
+      if (splitId == '') {
+        alert('你还没有选择任何内容！')
+        return;
+      }
+      var index = layer.load(2);
+      var proc = "Proc_Admin_Rules";//存储过程名
+      var type = "ReturnNumber";
+      var json = {
+        type: "RulesDelete",
+        splitId: splitId
+      };
+      //加载页面数据
+      $.ajax({
+        type: "Post",
+        cache: false,
+        url: "rules/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+          var type = result.flag;
+          if (type == '0') {
+            layer.close(index);
+            RulesList();
+          }
+          else {
+            layer.alert(result.message, {
+              icon: 2,
+              skin: 'layer-ext-moon',
+              yes: function () { layer.closeAll(); }
+            });
+          }
+        }
+      })
+    }
+
+    function funbind(obj) {
+      $('input[type="checkbox"][name="unbind"]').prop("checked", obj.checked);
+    }
+    function unbind() {
+      var bool = $('input[type="checkbox"][name="unbind"]').length == $('input[type="checkbox"][name="unbind"]:checked').length ? true : false;
+      if (bool) {
+        $('input[type="checkbox"][name="funbind"]').prop("checked", true);
+      } else {
+        $('input[type="checkbox"][name="funbind"]').prop("checked", false);
+      }
+    }
+  </script>
+</body>
+
+</html>

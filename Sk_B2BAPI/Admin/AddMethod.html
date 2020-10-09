@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加权限路径</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="Assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Assets/css/ace.min.css" rel="stylesheet" />
+    <link href="Assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Assets/css/ZhiLin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="power"> 类型 </label>
+                        <div class="col-xs-9">
+                            <select id="sltSource" onchange="LoadInfo()">
+                                <option value="ALL">全部</option>
+                                <option value="B2B" selected="selected">后台功能</option>
+                                <option value="YWT">业务通</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="power"> 权限名称 </label>
+                        <div class="col-xs-9">
+                            <input type="text" id="power" placeholder="权限名称" class="input-xlarge">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="action"> 控制器 </label>
+                        <div class="col-xs-9">
+                            <input type="text" id="action" placeholder="控制器" class="input-xlarge">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="father"> 父级 </label>
+                        <div class="col-xs-9">
+                            <select class="input-xlarge valid" id="father" name="father"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="action"> 图标 </label>
+                        <div class="col-xs-9">
+                            <input type="text" id="ico" class="input-xlarge">
+                        </div>
+                        <div class="col-xs-9 mt-10">
+                            图标地址:http://www.h-ui.net/Hui-3.7-Hui-iconfont.shtml
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label no-padding-right text-right" for="sort"> 排序 </label>
+                        <div class="col-xs-9">
+                            <input type="number" id="sort" placeholder="排序(正整数)" class="input-xlarge">
+                        </div>
+                    </div>
+                    <div class="text-center" style="margin-top: 10%;">
+                        <a class="btn btn-white btn-purple btn-sm" id="close">
+                            取消
+                        </a>
+
+                        <a class="btn btn-white btn-purple btn-sm" id="add">
+                            提交
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script src="Assets/js/jquery-2.0.3.min.js"></script>
+    <!--[if IE]>
+    <script src="Assets/js/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+    <script src="Assets/js/jquery.mobile.custom.min.js"></script>
+    <script src="Assets/js/bootstrap.min.js"></script>
+    <script src="Assets/js/typeahead-bs2.min.js"></script>
+    <!--[if lte IE 8]>
+      <script src="Assets/js/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="Assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(function () {
+            LoadInfo();
+            var id = GetQueryString("id");
+            if (id != "") {
+                Query(id);
+            }
+            $('#close').click(function () {
+                window.parent.layer.closeAll();
+            });
+            $('#add').click(function () {
+                var power = $('#power').val();
+                var action = $('#action').val();
+                var father = $('#father').val();
+                var sort = $('#sort').val();
+                var ico = $('#ico').val();
+                var id = GetQueryString("id");
+                var source = $("#sltSource").val();
+                var url = "PowerAdd_Action";
+                if (id == "") {
+                    id = 0
+                } else {
+                    url = "PowerEdit_Action";
+                }
+                if (power == "") {
+                    window.parent.layer.msg('请填写权限路径名称');
+                    return;
+                }
+                if (action == "") {
+                    window.parent.layer.msg('请填写控制器');
+                    return;
+                }
+                if (sort == "") {
+                    window.parent.layer.msg('请填写排序序号');
+                    return;
+                }
+                if ($('#ico').val() == "") {
+                    window.parent.layer.msg('请填写图标');
+                    return;
+                }
+                if (source == "") {
+                    window.parent.layer.msg('请选择类型');
+                    return;
+                }
+                window.parent.layer.load(1);
+                $.ajax({
+                    url: '../Role/' + url,
+                    type: 'POST',
+                    data: { Idico: encodeURIComponent(ico), id: id, power: power, action: action, father: father, sort: sort, source: source},
+                    dataType: 'json',
+                    success: function (data) {
+                        window.parent.layer.closeAll('loading');
+                        if (data.Code == true) {
+                            window.parent.layer.msg(data.Msg, {
+                                time: 1000
+                            }, function () {
+                                location.reload();
+                                parent.document.getElementById("btnClick").click();
+                                //window.parent.layer.closeAll();
+                            });
+                        } else {
+                            window.parent.layer.msg(data.Msg);
+                        }
+                    },
+                    error: function (data) {
+                        window.parent.layer.closeAll('loading');
+                        window.parent.layer.msg('网络连接错误');
+                    }
+                });
+            });
+
+           
+        });
+        function LoadInfo() {
+            var source = $("#sltSource").val();
+            $.ajax({
+                type: "Post",
+                cache: true,
+                url: "../Role/PowerAdd?source=" + source,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var menus = result.Obj;
+                    var htmlstr = ""
+                    if (result.Code) {
+                        htmlstr += ' <option value="0">--顶级菜单--</option>';
+                        for (var i = 0; i < menus.length; i++) {
+
+                            htmlstr += ' <option value="' + menus[i]["Id"] + '">' + menus[i]["Title"] + '</option>'
+                        }
+                        var cont = document.getElementById("father");
+                        cont.innerHTML = htmlstr;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+
+                }
+            })
+        }
+        //加载品牌详情信息
+        function Query(obj) {
+            var json = {
+                type: "PC_GetMethod",
+                MethodId: obj
+            }
+            var proc = "Proc_Admin_MembersQuery";//存储过程名
+            var type = "ReturnList";
+            ///加载页面数据
+            $.ajax({
+                type: "Post",
+                cache: false,
+                url: "manage/ashx/ReturnJson.ashx?type=" + type + "&json=" + encodeURIComponent(JSON.stringify(json)) + "&proc=" + proc,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var type = result.flag;
+                    if (type == '0') {
+                        var obj = result.data[0];
+                        $("#power").val(obj["Title"]);
+                        $("#action").val(obj["Power"]);
+                        $("#father").val(obj["FatherId"]);
+                        //$('#sleectId').children('option').eq(index).prop('selected', true);
+                        $("#sort").val(obj["Sort"]);
+                        $("#ico").val(obj["IcoAddress"]);
+                    }
+                   
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                   
+                }
+            })
+
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <title>注册业务员审核</title>
+</head>
+<body>
+    <!--style="display:none"-->
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 权限管理 <span class="c-gray en">&gt;</span> 注册业务员审核 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            <input type="text" class="input-text" style="width:250px" id="txtStrWhere" placeholder="单位/登录名/姓名/电话">
+            <a href="javascript:sousuo()" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>搜&nbsp;&nbsp;索</a>
+        </div> 
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a href="javascript:batchdet();" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            </span>
+        </div>
+        <div class="mt-20" style="width: 100%;overflow-x: auto;">
+            <div class="autodiv">
+                <table class="table table-border table-bordered table-hover table-bg table-sort" id="DataTable">
+                    <thead>
+                        <tr class="text-c">
+                            <th><input type="checkbox" name="" value=""></th>
+                            <th>序号</th>
+                            <th>单位</th>
+                            <th>用户名</th>
+                            <th>真实姓名</th>
+                            <th>手机号</th>
+                            <th>创建日期</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TbShows"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span style="float:right">
+                <a href="javascript:first();">首页</a>&nbsp;&nbsp;
+                <a href="javascript:prve();">上一页</a>&nbsp;&nbsp;
+                <b id="pageIndex">1</b>/<b id="pageCount">1</b>&nbsp;&nbsp;
+                <a href="javascript:next();">下一页</a>&nbsp;&nbsp;
+                <a href="javascript:last();">尾页</a>&nbsp;&nbsp;
+                <input type="number" class="input-text radius size-S" id="pagety" onmouseout="if (this.value <= 0) { this.value = 1; } if (this.value > pageCount) { this.value = pageCount;}" value="1" min="1" />
+                <a href="javascript:jump();">跳转</a>
+                <span class="r">&nbsp;&nbsp;共有数据：<strong id="recordCount">0</strong> 条</span>
+            </span>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <!--<script src="js/main.js"></script>-->
+    <script>
+        // 记录页面分页信息
+        var pageSize = 15;
+        var pageIndex = 1;
+        var recordCount = 0; // 总记录数
+        var pageCount = 1; // 总页数
+
+        $(function () {
+            GetSalesnameList(1);
+            var cliHeight = document.body.clientHeight;
+            var divHeight = cliHeight * 0.57;
+            $('.autodiv').css("height", divHeight + "px");
+            $('body').removeAttr("style");
+            window.getListRefresh = GetSalesnameList;
+        });
+        //获取列表信息
+        function GetSalesnameList(pageindex,whr) {
+            var index = layer.load(2);
+            pageIndex = pageindex;
+            $("#pageIndex").html(pageindex);
+            var strWhere = (whr == undefined || whr == null) ? "" : whr;
+            var data = {
+                PageIndex: pageindex,
+                PageSize: pageSize,
+                SouStr: strWhere
+            };
+            //加载页面数据
+            $.ajax({
+                type: "Post",
+                url: "/Users/GetSalesmanList",
+                data: JSON.stringify(data),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    var obj = result.data;
+                    var html = "";
+                    for (var i = 0; i < obj.length; i++) {
+                        html = html + "<tr class='text-c'>";
+                        html += "<td><input type='checkbox' value='" + obj[i]["userid"] + "' name='UserList'></td>";
+                        html += "<td align='center'>" + ((parseInt(pageindex) - 1) * parseInt(pageSize) + parseInt(i) + 1) + "</td>";
+                        html += "<td>" + obj[i]["entname"] + "</td>";
+                        html += "<td>" + obj[i]["username"] + "</td>";
+                        html += "<td>" + obj[i]["name"] + "</td>";
+                        html += "<td>" + obj[i]["telphone"] + "</td>";
+                        html += "<td>" + obj[i]["add_time"] + "</td>";
+                        html += "<td>";
+                        if (obj[i]["status"] == "2") {
+                            html += '<span class="label label-success radius">已审核</span>';
+                        } else if (obj[i]["status"] == "1") {
+                            html += '<span class="label label-danger radius">未审核</span>';
+                        }
+                        else {
+                            html += '<span class="label label-danger radius"></span>';
+                        }
+                        html += "</td>"
+                        html += "<td>"
+                        html += '<a href="javascript:admin_audit(\'' + obj[i]["userid"] + '\',\'' + obj[i]["name"]+'\');" style="margin-left:2px;background-color:#0099FF;" class="label label-success radius"><i class="Hui-iconfont">&#xe6df;</i> 审核</a>';
+                        html += "</td>"
+                        html += "</tr>";
+                    }
+                    $('#TbShows').empty();
+                    $("#TbShows").append(html);
+                    recordCount = result.total;
+                    pageCount = parseInt(recordCount/pageSize) + 1;
+                    $("#recordCount").html(recordCount);
+                    $("#pageCount").html(pageCount);
+                    $("#pagety").attr("max", pageCount);
+                    layer.close(index);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请重试！" + "\\nreadyState:" + jqXHR.readyState + "\\nresponseText:" + jqXHR.responseText + "\\nstatus:" + jqXHR.status + "\\nstatusText:" + jqXHR.statusText + "\\ntextStatus:" + textStatus + "\\nerrorThrown:" + errorThrown);
+                    layer.close(index);
+                }
+            })
+        }
+        // 批量删除
+        function batchdet() {
+            var ids = [];
+            $('input[name="UserList"]:checked').each(function (i) {
+                ids[i] = $(this).val();
+            });
+            if (ids.length == 0) {
+                layer.msg('请选择要删除的对象！',{time:1500});
+                return false;
+            }
+            layer.confirm("确定要删除已选中的未审核业务员？",
+                { icon: 3, title: '提示' },
+                function (index) {
+                    $.post("/Users/BatchDeleteSalesman", { userids: ids }, function (res) {
+                        if (res > 0) {
+                            layer.msg('删除成功', { time: 1500 });
+                            GetSalesnameList(pageIndex);
+                            layer.close(index);
+                        }
+                        else if (res == -1) {
+                            layer.msg('登录超时，请重新登陆！', { time: 1500 });
+                            layer.close(index);
+                        }
+                    },'json');
+                }
+            );
+        }
+        // 首页
+        function first() {
+            if (pageIndex == 1) {
+                return false;
+            }
+            else {
+                GetSalesnameList(1);
+            }
+        }
+        // 下一页
+        function next() {
+            if (pageCount == 1 || pageCount == pageIndex) {
+                return false;
+            }
+            else {
+                pageIndex += 1;
+                GetSalesnameList(pageIndex);
+            }
+        }
+        // 最后一页
+        function last() {
+            if (pageCount == pageIndex || pageCount == 1) {
+                return false;
+            }
+            else {
+                pageIndex = pageCount;
+                GetSalesnameList(pageIndex);
+            }
+        }
+        // 上一页
+        function prve() {
+            if (pageIndex == 1) {
+                return false;
+            }
+            else {
+                pageIndex -= 1;
+                GetSalesnameList(pageIndex);
+            }
+        }
+        // 跳转
+        function jump() {
+            var num = parseInt($("#pagety").val());
+            if (num == pageIndex) {
+                return false;
+            }
+            else if (num > pageCount) {
+                $("#pagety").val(pageCount);
+                pageIndex = pageCount;
+            }
+            else if (num < 1) {
+                pageIndex = 1;
+            }
+            else {
+                pageIndex = num;
+            }
+            GetSalesnameList(pageIndex);
+        }
+        // 搜索
+        function sousuo() {
+            pageIndex = 1;
+            var str = $("#txtStrWhere").val().trim();
+            if (str == '') {
+                layer.msg('请输入搜索的关键词！', { time: 1500 });
+                return false;
+            }
+            GetSalesnameList(pageIndex, str);
+        }
+        // 去审核,打开审核页面
+        function admin_audit(userid,name) {
+            var index = layer.open({
+                title: '审核注册业务员：' + userid + " &nbsp;|&nbsp; " + name,
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['90%', '90%'],
+                content: '/admin/salesman_audit_result.html?userid=' + userid
+            });
+        }
+    </script>
+</body>
+</html>
